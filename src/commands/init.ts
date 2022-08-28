@@ -5,7 +5,7 @@ export default new class Init implements GluegunCommand {
   description = "Init discloud.config file.";
 
   async run(toolbox: GluegunToolbox) {
-    const { filesystem, parameters, print, prompt, template, } = toolbox;
+    const { filesystem, parameters, print, prompt, template } = toolbox;
 
     if (filesystem.exists("discloud.config"))
       return print.error("discloud.config file already exists!");
