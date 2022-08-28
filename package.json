@@ -1,0 +1,32 @@
+{
+  "name": "discloud-cli",
+  "version": "0.0.1",
+  "bin": {
+    "discloud": "bin/discloud"
+  },
+  "scripts": {
+    "build": "tsc && npm run copy-templates",
+    "copy-templates": "copyfiles -f ./src/templates/* ./build/templates"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/discloud/cli.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/discloud/cli/issues"
+  },
+  "homepage": "https://github.com/discloud/cli#readme",
+  "dependencies": {
+    "gluegun": "^5.1.2"
+  },
+  "devDependencies": {
+    "@types/eslint": "^8.4.6",
+    "@types/node": "^18.7.13",
+    "@typescript-eslint/eslint-plugin": "^5.35.1",
+    "@typescript-eslint/parser": "^5.35.1",
+    "copyfiles": "^2.4.1",
+    "eslint": "^8.23.0",
+    "typescript": "^4.8.2"
+  }
+}
