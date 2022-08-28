@@ -23,6 +23,11 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
+"@discloudapp/api-types@^0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.0.22.tgz#4c2ef8e88d520c53000be376c2c7f80e40be875c"
+  integrity sha512-pXKz5mJfTO+zY1GXrqXVw04aIho2WrniRy0Wg5AfHf721XeGGpDPEr1WqlQ4sqDp/lr+L6c10B0r1kQjkdO9pw==
+
 "@eslint/eslintrc@^1.3.1":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-1.3.1.tgz#de0807bfeffc37b964a7d0400e0c348ce5a2543d"

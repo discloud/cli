@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/discloud/cli#readme",
   "dependencies": {
+    "@discloudapp/api-types": "^0.0.22",
     "gluegun": "^5.1.2"
   },
   "devDependencies": {
