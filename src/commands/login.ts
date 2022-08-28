@@ -23,7 +23,7 @@ export default new class Login implements GluegunCommand {
 
     if (res.status) {
       if (res.status > 399)
-        return print.error(`[DISCLOUD_API] ${res.data?.message}`);
+        return print.error(`[DISCLOUD API] ${res.data?.message}`);
 
       config.write({ token });
 
