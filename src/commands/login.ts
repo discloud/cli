@@ -1,13 +1,13 @@
 import { RESTGetApiUserResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud } from "../util";
+import { apidiscloud, config } from "../util";
 
 export default new class Init implements GluegunCommand {
   name = "login";
   description = "Login to Discloud API";
 
   async run(toolbox: GluegunToolbox) {
-    const { filesystem, print, prompt } = toolbox;
+    const { print, prompt } = toolbox;
 
     const { token } = await prompt.ask({
       name: "token",
@@ -25,7 +25,7 @@ export default new class Init implements GluegunCommand {
       if (res.status > 399)
         return print.error(`[DISCLOUD_API] ${res.data?.message}`);
 
-      filesystem.write(`${filesystem.homedir()}/.discloud/api`, token);
+      config.write({ token });
 
       print.success("[DISCLOUD API] Logged!");
     }
