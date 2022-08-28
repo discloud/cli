@@ -3,6 +3,7 @@
 /test*.js
 /test*.ts
 build
+discloud.config
 
 # Logs
 logs
