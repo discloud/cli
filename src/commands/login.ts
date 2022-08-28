@@ -2,7 +2,7 @@ import { RESTGetApiUserResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { apidiscloud, config } from "../util";
 
-export default new class Init implements GluegunCommand {
+export default new class Login implements GluegunCommand {
   name = "login";
   description = "Login to Discloud API";
 
