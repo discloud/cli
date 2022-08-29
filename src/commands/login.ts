@@ -12,13 +12,13 @@ export default new class Login implements GluegunCommand {
     const { token } = await prompt.ask({
       name: "token",
       message: "Your discloud token:",
-      type: "password"
+      type: "password",
     });
 
     const res = await apidiscloud.get<RESTGetApiUserResult>(Routes.user(), {}, {
       headers: {
-        "api-token": token
-      }
+        "api-token": token,
+      },
     });
 
     if (res.status) {
