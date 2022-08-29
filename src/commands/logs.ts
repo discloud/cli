@@ -28,7 +28,11 @@ export default new class Logs implements GluegunCommand {
       if (apiRes.status >= 400)
         return spin.fail(print.colors.red(`[DISCLOUD API] ${apiRes.data?.message}`));
 
-      spin.succeed(print.colors.green(`[DISCLOUD API] ${apiRes.data?.message}`));
+      if (apiRes.data?.status === "ok") {
+        spin.succeed(print.colors.green(`[DISCLOUD API] ${apiRes.data?.message}`));
+      } else {
+        spin.fail(print.colors.yellow(`[DISCLOUD API] ${apiRes.data?.message}`));
+      }
 
       if (!apiRes.data) return;
 

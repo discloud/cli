@@ -32,7 +32,11 @@ export default new class Restart implements GluegunCommand {
       if (res.status > 399)
         return spin.fail(print.colors.red(`[DISCLOUD API] ${res.data?.message}`));
 
-      spin.succeed(print.colors.green(`[DISCLOUD API] ${res.data?.message}`));
+      if (res.data?.status === "ok") {
+        spin.succeed(print.colors.green(`[DISCLOUD API] ${res.data?.message}`));
+      } else {
+        spin.fail(print.colors.yellow(`[DISCLOUD API] ${res.data?.message}`));
+      }
 
       if (res.data?.apps)
         print.table(Object.entries(res.data.apps).map(([a, b]) => ([a, b.join("\n")])), {
