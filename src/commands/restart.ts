@@ -22,17 +22,21 @@ export default new class Restart implements GluegunCommand {
       if (!id) return print.error("Please enter your application id!");
     }
 
+    const spin = print.spin({
+      text: print.colors.cyan("Restarting..."),
+    });
+
     const res = await apidiscloud.put<RESTPutApiAppAllRestartResult>(Routes.appRestart(id), {});
 
     if (res.status) {
       if (res.status > 399)
-        return print.error(`[DISCLOUD API] ${res.data?.message}`);
+        return spin.fail(print.colors.red(`[DISCLOUD API] ${res.data?.message}`));
 
-      print.success(`[DISCLOUD API] ${res.data?.message}`);
+      spin.succeed(print.colors.green(`[DISCLOUD API] ${res.data?.message}`));
 
       if (res.data?.apps)
         print.table(Object.entries(res.data.apps).map(([a, b]) => ([a, b.join("\n")])), {
-          format: "lean"
+          format: "lean",
         });
     }
   }
