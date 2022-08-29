@@ -2,6 +2,7 @@ import { RouteBases } from "@discloudapp/api-types/v2";
 import { readFileSync } from "fs";
 import { filesystem, http } from "gluegun";
 import type { RawFile, ResolveArgsOptions } from "../@types";
+import { configPath } from "./constants";
 
 export class FsJson {
   data: Record<string, any> = {};
@@ -19,7 +20,7 @@ export class FsJson {
 
 export const config = new class Config extends FsJson {
   constructor() {
-    super(`${filesystem.homedir()}/.discloud/.cli`);
+    super(`${configPath}/.cli`);
   }
 };
 
