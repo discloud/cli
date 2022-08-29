@@ -45,7 +45,7 @@ export default new class Upload implements GluegunCommand {
       if (res.status > 399)
         return spin.fail(print.colors.red(`[DISCLOUD API] ${res.data?.message}`));
 
-      spin.succeed(`[DISCLOUD API] ${res.data?.message}`);
+      spin.succeed(print.colors.green(`[DISCLOUD API] ${res.data?.message}`));
 
       if (res.data?.app)
         print.table(Object.entries(res.data.app), {
