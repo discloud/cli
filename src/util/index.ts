@@ -1,7 +1,7 @@
 import { RouteBases } from "@discloudapp/api-types/v2";
 import { readFileSync } from "fs";
 import { filesystem, http } from "gluegun";
-import { RawFile } from "../@types";
+import type { RawFile, ResolveArgsOptions } from "../@types";
 
 export class FsJson {
   data: Record<string, any> = {};
@@ -19,23 +19,47 @@ export class FsJson {
 
 export const config = new class Config extends FsJson {
   constructor() {
-    super(`${filesystem.homedir()}/.discloud/cli`);
+    super(`${filesystem.homedir()}/.discloud/.cli`);
   }
 };
 
 export const apidiscloud = http.create({
   baseURL: RouteBases.api,
   headers: {
-    "api-token": config.data.token
-  }
+    "api-token": config.data.token,
+  },
 });
+
+export function resolveArgs(args: string[], options: ResolveArgsOptions[]) {
+  const resolved = <Record<string, string | undefined>>{};
+
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+
+    for (let j = 0; j < options.length; j++) {
+      const option = options[j];
+
+      if (option.pattern.test(arg)) {
+        resolved[option.name] = arg;
+
+        args.splice(i, 1);
+        i--;
+
+        options.splice(j, 1);
+        j--;
+      }
+    }
+  }
+
+  return resolved;
+}
 
 export async function resolveFile(file: string): Promise<RawFile> {
   if (typeof file === "string") {
     return {
       name: file.split("/").pop()!,
       data: readFileSync(file),
-      key: "file"
+      key: "file",
     };
   }
 

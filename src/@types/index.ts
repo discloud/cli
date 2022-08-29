@@ -20,3 +20,8 @@ export interface RawFile {
    */
   contentType?: string
 }
+
+export interface ResolveArgsOptions {
+  name: string
+  pattern: RegExp
+}
