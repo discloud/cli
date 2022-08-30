@@ -8,20 +8,25 @@ export default new class Delete implements GluegunCommand {
   description = "Delete one or all of your apps on Discloud.";
 
   async run(toolbox: GluegunToolbox) {
-    const { filesystem, parameters, print } = toolbox;
+    const { parameters, print, prompt } = toolbox;
 
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
 
-    let id;
+    const { confirmDelete } = await prompt.ask({
+      name: "confirmDelete",
+      message: `You are ${print.colors.red("DELETING")} your Discloud app. This action is irreversible! Are sure about it?`,
+      type: "select",
+      choices: [{
+        name: "Yes",
+      }, {
+        name: "No",
+      }],
+    });
 
-    if (parameters.first) {
-      id = parameters.first;
-    } else {
-      id = filesystem.read("discloud.config")?.match(/ID=(.+)\r?\n/i)?.[1];
+    if (confirmDelete === "No") return;
 
-      if (!id) return print.error("Please enter your application id!");
-    }
+    const id = parameters.first || "all";
 
     const spin = print.spin({
       text: print.colors.cyan("Deleting..."),
