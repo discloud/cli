@@ -2,7 +2,7 @@ import { RESTGetApiAppAllBackupResult, RESTGetApiAppBackupResult, Routes } from 
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { apidiscloud, config } from "../util";
 
-export default new class Backup implements GluegunCommand {
+export default new class Backups implements GluegunCommand {
   name = "backups";
   alias = ["backup", "bkp", "b"];
   description = "Make backup from your applications in Discloud";
