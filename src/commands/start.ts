@@ -4,23 +4,16 @@ import { apidiscloud, config } from "../util";
 
 export default new class Start implements GluegunCommand {
   name = "start";
+  alias = ["i"];
   description = "Start one or all of your apps on Discloud.";
 
   async run(toolbox: GluegunToolbox) {
-    const { filesystem, parameters, print } = toolbox;
+    const { parameters, print } = toolbox;
 
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
 
-    let id;
-
-    if (parameters.first) {
-      id = parameters.first;
-    } else {
-      id = filesystem.read("discloud.config")?.match(/ID=(.+)\r?\n/i)?.[1];
-
-      if (!id) return print.error("Please enter your application id!");
-    }
+    const id = parameters.first || "all";
 
     const spin = print.spin({
       text: print.colors.cyan("Starting..."),
