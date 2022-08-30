@@ -17,11 +17,7 @@ export default new class Delete implements GluegunCommand {
       name: "confirmDelete",
       message: `You are ${print.colors.red("DELETING")} your Discloud app. This action is irreversible! Are sure about it?`,
       type: "select",
-      choices: [{
-        name: "Yes",
-      }, {
-        name: "No",
-      }],
+      choices: ["Yes", "No"],
     });
 
     if (confirmDelete === "No") return;
