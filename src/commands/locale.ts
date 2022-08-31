@@ -27,7 +27,7 @@ export default new class Locale implements GluegunCommand {
         return print.error(`[DISCLOUD API] ${res.data?.message}`);
 
       if (res.data?.status === "ok") {
-        print.success(`[DISCLOUD API] ${res.data?.message ?? "Success"}!`);
+        print.success(`[DISCLOUD API] ${res.data?.message ?? "Success!"}`);
       } else {
         print.warning(`[DISCLOUD API] ${res.data?.message}`);
       }
