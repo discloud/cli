@@ -6,7 +6,9 @@
   },
   "scripts": {
     "build": "tsc && npm run copy-templates",
-    "copy-templates": "copyfiles -f ./src/templates/* ./build/templates"
+    "copy-templates": "copyfiles -f ./src/templates/* ./build/templates",
+    "prepublish": "npm run build",
+    "publish": "npm publish -f"
   },
   "repository": {
     "type": "git",
