@@ -1,6 +1,8 @@
 import { RouteBases } from "@discloudapp/api-types/v2";
-import { readFileSync } from "fs";
+import archiver from "archiver";
+import { GlobSync } from "glob";
 import { filesystem, http } from "gluegun";
+import { createReadStream, createWriteStream, readFileSync, statSync } from "node:fs";
 import type { RawFile, ResolveArgsOptions } from "../@types";
 import { configPath } from "./constants";
 
@@ -65,4 +67,51 @@ export async function resolveFile(file: string): Promise<RawFile> {
   }
 
   return file;
+}
+
+export function configToObj(s: string): Record<any, any> {
+  return Object.fromEntries(s.split(/\r?\n/).map(a => a.split("=")));
+}
+
+export function getMissingValues(obj: Record<any, any>, match: string[]) {
+  return Object.entries(obj).reduce<string[]>((acc, cur) =>
+    match.includes(cur[0]) ?
+      cur[1] ?
+        acc :
+        acc.concat(cur[0]) :
+      acc, []);
+}
+
+export function getGitIgnore(path: string) {
+  return readFileSync(".gitignore", "utf8")
+    .replace(/#[^\n]+/g, "")
+    .split(/\r?\n/)
+    .filter(a => a && ![".env", "discloud.config"].includes(a))
+    .concat([".git", "node_modules"])
+    .map(a => `${path}/${a.replace(/^\/|\/$/, "")}/**`);
+}
+
+export function getNotIngnoredFiles(path: string) {
+  const ignore = getGitIgnore(path);
+
+  return new GlobSync(`${path}/**`, { ignore, dot: true }).found.filter(a => !["."].includes(a));
+}
+
+export async function makeZipFromFileList(files: string[]) {
+  const zipper = archiver("zip");
+
+  const outFileName = `${process.cwd().split(/\/|\\/).pop()}.zip`;
+  const output = createWriteStream(outFileName);
+  zipper.pipe(output);
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+
+    if (statSync(file).isFile())
+      zipper.append(createReadStream(file), { name: file.replace(/^\.\//, "") });
+  }
+
+  await zipper.finalize();
+
+  return outFileName;
 }
