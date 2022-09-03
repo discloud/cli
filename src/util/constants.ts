@@ -8,3 +8,7 @@ export const locales = [
   "en-US",
   "pt-BR",
 ];
+
+export const required_files = ["discloud.config"];
+
+export const requiredDiscloudConfigProps = ["MAIN", "TYPE", "RAM", "VERSION"];
