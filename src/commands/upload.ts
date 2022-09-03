@@ -2,11 +2,11 @@ import { RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
 import { createReadStream } from "fs";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config } from "../util";
+import { apidiscloud, config, configToObj, getMissingValues, getNotIngnoredFiles, makeZipFromFileList } from "../util";
+import { requiredDiscloudConfigProps, required_files } from "../util/constants";
 
 export default new class Upload implements GluegunCommand {
-  name = "upload";
-  alias = ["up"];
+  name = "up";
   description = "Upload one app or site to Discloud.";
 
   async run(toolbox: GluegunToolbox) {
@@ -15,17 +15,34 @@ export default new class Upload implements GluegunCommand {
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
 
+    if (!parameters.first) return print.error("Need a param like path or file name");
+
     const formData = new FormData();
 
-    if (parameters.first) {
-      if (/\/?\w+\.(zip)/.test(parameters.first)) {
-        if (!filesystem.exists(parameters.first))
-          return print.error(`${parameters.first} file does not exists.`);
-      } else {
-        return print.error("File need to be .zip");
-      }
+    if (/\/?\w+\.(zip)/.test(parameters.first)) {
+      if (!filesystem.exists(parameters.first))
+        return print.error(`${parameters.first} file does not exists.`);
 
       formData.append("file", createReadStream(parameters.first));
+    } else {
+      for (let i = 0; i < required_files.length; i++)
+        if (!filesystem.exists(`${parameters.first}/${required_files[i]}`))
+          return print.error(`${required_files[i]} is missing.`);
+
+      const discloudConfigStr = filesystem.read(`${parameters.first}/discloud.config`)!;
+
+      const dConfig = configToObj(discloudConfigStr);
+
+      const missing = getMissingValues(dConfig, requiredDiscloudConfigProps);
+
+      if (missing.length)
+        return print.error(`${missing[0]} param is missing from discloud.config`);
+
+      const allFiles = getNotIngnoredFiles(parameters.first);
+
+      const fileName = await makeZipFromFileList(allFiles);
+
+      formData.append("file", createReadStream(fileName));
     }
 
     const headers = formData.getHeaders({
