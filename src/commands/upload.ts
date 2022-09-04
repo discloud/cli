@@ -1,12 +1,13 @@
 import { RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
-import { createReadStream } from "fs";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
+import { createReadStream, rm } from "node:fs";
 import { apidiscloud, config, configToObj, getMissingValues, getNotIngnoredFiles, makeZipFromFileList } from "../util";
 import { requiredDiscloudConfigProps, required_files } from "../util/constants";
 
 export default new class Upload implements GluegunCommand {
-  name = "up";
+  name = "upload";
+  alias = ["up"];
   description = "Upload one app or site to Discloud.";
 
   async run(toolbox: GluegunToolbox) {
@@ -22,8 +23,6 @@ export default new class Upload implements GluegunCommand {
     if (/\/?\w+\.(zip)/.test(parameters.first)) {
       if (!filesystem.exists(parameters.first))
         return print.error(`${parameters.first} file does not exists.`);
-
-      formData.append("file", createReadStream(parameters.first));
     } else {
       for (let i = 0; i < required_files.length; i++)
         if (!filesystem.exists(`${parameters.first}/${required_files[i]}`))
@@ -40,10 +39,10 @@ export default new class Upload implements GluegunCommand {
 
       const allFiles = getNotIngnoredFiles(parameters.first);
 
-      const fileName = await makeZipFromFileList(allFiles);
-
-      formData.append("file", createReadStream(fileName));
+      parameters.first = await makeZipFromFileList(allFiles);
     }
+
+    formData.append("file", createReadStream(parameters.first));
 
     const headers = formData.getHeaders({
       "api-token": config.data.token,
@@ -57,6 +56,8 @@ export default new class Upload implements GluegunCommand {
       timeout: 300000,
       headers,
     });
+
+    rm(parameters.first, () => null);
 
     if (res.status) {
       if (res.status > 399)
