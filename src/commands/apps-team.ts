@@ -2,7 +2,7 @@ import { RESTGetApiAppTeamResult, RESTPostApiAppTeamResult, Routes } from "@disc
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { apidiscloud, config } from "../util";
 
-export default new class Apps implements GluegunCommand {
+export default new class AppsTeam implements GluegunCommand {
   name = "apps:team";
   alias = ["app:team"];
   description = "Get team information of your applications.";
@@ -43,7 +43,7 @@ export default new class Apps implements GluegunCommand {
         return spin.fail(print.colors.red(`[DISCLOUD API] ${apiRes.data?.message}`));
 
       if (apiRes.data?.status === "ok") {
-        spin.succeed(print.colors.green(`[DISCLOUD API] ${apiRes.data?.message}`));
+        spin.succeed(print.colors.green(`[DISCLOUD API] ${apiRes.data?.message ?? "Success"}`));
       } else {
         spin.fail(print.colors.yellow(`[DISCLOUD API] ${apiRes.data?.message}`));
       }
