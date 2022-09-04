@@ -1,7 +1,6 @@
 import { RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { createReadStream, rm } from "node:fs";
 import { apidiscloud, config, configToObj, getMissingValues, getNotIngnoredFiles, makeZipFromFileList } from "../util";
 import { requiredDiscloudConfigProps, required_files } from "../util/constants";
 
@@ -44,7 +43,7 @@ export default new class Upload implements GluegunCommand {
       parameters.first = await makeZipFromFileList(allFiles);
     }
 
-    formData.append("file", createReadStream(parameters.first));
+    formData.append("file", filesystem.createReadStream(parameters.first), parameters.first);
 
     const headers = formData.getHeaders({
       "api-token": config.data.token,
@@ -59,7 +58,7 @@ export default new class Upload implements GluegunCommand {
       headers,
     });
 
-    rm(parameters.first, () => null);
+    filesystem.remove(parameters.first);
 
     if (res.status) {
       if (res.status > 399)
