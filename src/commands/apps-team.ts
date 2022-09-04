@@ -35,7 +35,7 @@ export default new class Apps implements GluegunCommand {
       ["post", "put"].includes(method) ? {
         modID: parameters.options.c ?? parameters.options.create ??
           parameters.options.e ?? parameters.options.edit,
-        perms: (parameters.options.p ?? parameters.options.perms).split(/\W+/),
+        perms: (parameters.options.p ?? parameters.options.perms ?? "").split(/\W+/),
       } : undefined);
 
     if (apiRes.status) {
