@@ -1,6 +1,6 @@
 # Backups
 
-Make backup from your applications in Discloud
+Make backup from your applications in Discloud.
 
 * [backups](#backups)
 
