@@ -1,2 +1,6 @@
 node_modules
 .env
+discloud.config
+/test*.js
+/test*.ts
+*.zip
