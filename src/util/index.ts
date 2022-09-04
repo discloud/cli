@@ -115,3 +115,23 @@ export async function makeZipFromFileList(files: string[]) {
 
   return outFileName;
 }
+
+export function objToString(obj: any): string {
+  const result = [];
+
+  if (typeof obj === "object") {
+    if (Array.isArray(obj)) {
+      for (let i = 0; i < obj.length; i++)
+        result.push(objToString(obj[i]));
+    } else {
+      const keys = Object.keys(obj);
+
+      for (let i = 0; i < keys.length; i++)
+        result.push(`${keys[i]}: ${objToString(obj[keys[i]])}`);
+    }
+  } else {
+    result.push(obj);
+  }
+
+  return result.join("\n");
+}
