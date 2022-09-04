@@ -28,9 +28,11 @@ export default new class Upload implements GluegunCommand {
         if (!filesystem.exists(`${parameters.first}/${required_files[i]}`))
           return print.error(`${required_files[i]} is missing.`);
 
-      const discloudConfigStr = filesystem.read(`${parameters.first}/discloud.config`)!;
+      const discloudConfigStr =
+        filesystem.read(`${parameters.first}/discloud.config`) ||
+        filesystem.read("discloud.config");
 
-      const dConfig = configToObj(discloudConfigStr);
+      const dConfig = configToObj(discloudConfigStr!);
 
       const missing = getMissingValues(dConfig, requiredDiscloudConfigProps);
 
