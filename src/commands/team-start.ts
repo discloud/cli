@@ -19,7 +19,7 @@ export default new class TeamStart implements GluegunCommand {
       text: print.colors.cyan("Starting..."),
     });
 
-    const res = await apidiscloud.put<RESTPutApiAppAllStartResult>(Routes.teamStart(id), {});
+    const apiRes = await apidiscloud.put<RESTPutApiAppAllStartResult>(Routes.teamStart(id), {});
 
     if (res.status) {
       if (res.status > 399)

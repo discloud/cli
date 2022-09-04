@@ -18,7 +18,7 @@ export default new class Restart implements GluegunCommand {
       text: print.colors.cyan("Restarting..."),
     });
 
-    const res = await apidiscloud.put<RESTPutApiAppAllRestartResult>(Routes.appRestart(id), {});
+    const apiRes = await apidiscloud.put<RESTPutApiAppAllRestartResult>(Routes.appRestart(id), {});
 
     if (res.status) {
       if (res.status > 399)

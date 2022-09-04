@@ -27,7 +27,7 @@ export default new class RAM implements GluegunCommand {
       text: print.colors.cyan("Changing amount of RAM..."),
     });
 
-    const res = await apidiscloud.put<RESTPutApiAppRamResult>(Routes.appRam(appId), {
+    const apiRes = await apidiscloud.put<RESTPutApiAppRamResult>(Routes.appRam(appId), {
       ramMB: ramInt,
     });
 

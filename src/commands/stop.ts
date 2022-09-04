@@ -18,7 +18,7 @@ export default new class Stop implements GluegunCommand {
       text: print.colors.cyan("Stoping..."),
     });
 
-    const res = await apidiscloud.put<RESTPutApiAppAllStopResult>(Routes.appStop(id), {});
+    const apiRes = await apidiscloud.put<RESTPutApiAppAllStopResult>(Routes.appStop(id), {});
 
     if (res.status) {
       if (res.status > 399)

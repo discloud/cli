@@ -28,7 +28,7 @@ export default new class Delete implements GluegunCommand {
       text: print.colors.cyan("Deleting..."),
     });
 
-    const res = await apidiscloud.delete<RESTDeleteApiAppAllDeleteResult>(Routes.appDelete(id));
+    const apiRes = await apidiscloud.delete<RESTDeleteApiAppAllDeleteResult>(Routes.appDelete(id));
 
     if (res.status) {
       if (res.status > 399)

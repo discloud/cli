@@ -53,7 +53,7 @@ export default new class Commit implements GluegunCommand {
       text: print.colors.cyan("Commiting..."),
     });
 
-    const res = await apidiscloud.put<RESTPutApiAppCommitResult>(Routes.appCommit(parameters.second), formData, {
+    const apiRes = await apidiscloud.put<RESTPutApiAppCommitResult>(Routes.appCommit(parameters.second), formData, {
       timeout: 300000,
       headers,
     });

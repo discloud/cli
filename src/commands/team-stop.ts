@@ -18,7 +18,7 @@ export default new class TeamStop implements GluegunCommand {
       text: print.colors.cyan("Stoping..."),
     });
 
-    const res = await apidiscloud.put<RESTPutApiAppAllStopResult>(Routes.teamStop(id), {});
+    const apiRes = await apidiscloud.put<RESTPutApiAppAllStopResult>(Routes.teamStop(id), {});
 
     if (res.status) {
       if (res.status > 399)

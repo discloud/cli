@@ -19,7 +19,7 @@ export default new class Start implements GluegunCommand {
       text: print.colors.cyan("Starting..."),
     });
 
-    const res = await apidiscloud.put<RESTPutApiAppAllStartResult>(Routes.appStart(id), {});
+    const apiRes = await apidiscloud.put<RESTPutApiAppAllStartResult>(Routes.appStart(id), {});
 
     if (res.status) {
       if (res.status > 399)

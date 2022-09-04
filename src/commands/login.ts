@@ -15,7 +15,7 @@ export default new class Login implements GluegunCommand {
       type: "password",
     });
 
-    const res = await apidiscloud.get<RESTGetApiUserResult>(Routes.user(), {}, {
+    const apiRes = await apidiscloud.get<RESTGetApiUserResult>(Routes.user(), {}, {
       headers: {
         "api-token": token,
       },

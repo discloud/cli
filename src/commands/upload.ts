@@ -53,7 +53,7 @@ export default new class Upload implements GluegunCommand {
       text: print.colors.cyan("Uploading..."),
     });
 
-    const res = await apidiscloud.post<RESTPostApiUploadResult>(Routes.upload(), formData, {
+    const apiRes = await apidiscloud.post<RESTPostApiUploadResult>(Routes.upload(), formData, {
       timeout: 300000,
       headers,
     });
