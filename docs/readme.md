@@ -1,5 +1,6 @@
 # Docs
 
+* [apps:team](./apps-team.md)
 * [apps](./apps.md)
 * [backups](./backups.md)
 * [commit](./commit.md)
