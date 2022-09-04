@@ -1,4 +1,4 @@
-# Apps:team
+# Apps:Team
 
 Get team information of your applications.
 
