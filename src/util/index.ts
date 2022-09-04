@@ -2,7 +2,7 @@ import { RouteBases } from "@discloudapp/api-types/v2";
 import archiver from "archiver";
 import { GlobSync } from "glob";
 import { filesystem, http } from "gluegun";
-import { createReadStream, createWriteStream, readFileSync, statSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import type { RawFile, ResolveArgsOptions } from "../@types";
 import { configPath } from "./constants";
 
@@ -83,7 +83,7 @@ export function getMissingValues(obj: Record<any, any>, match: string[]) {
 }
 
 export function getGitIgnore(path: string) {
-  return readFileSync(".gitignore", "utf8")
+  return (filesystem.read(".gitignore", "utf8") ?? "")
     .replace(/#[^\n]+/g, "")
     .split(/\r?\n/)
     .filter(a => a && ![".env", "discloud.config"].includes(a))
@@ -101,14 +101,14 @@ export async function makeZipFromFileList(files: string[]) {
   const zipper = archiver("zip");
 
   const outFileName = `${process.cwd().split(/\/|\\/).pop()}.zip`;
-  const output = createWriteStream(outFileName);
+  const output = filesystem.createWriteStream(outFileName);
   zipper.pipe(output);
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
 
-    if (statSync(file).isFile())
-      zipper.append(createReadStream(file), { name: file.replace(/^\.\//, "") });
+    if (filesystem.isFile(file))
+      zipper.append(filesystem.createReadStream(file), { name: file.replace(/^\.\//, "") });
   }
 
   await zipper.finalize();
