@@ -1,0 +1,15 @@
+# Docs
+
+* [apps](./apps.md)
+* [backups](./backups.md)
+* [commit](./commit.md)
+* [delete](./delete.md)
+* [init](./init.md)
+* [locale](./locale.md)
+* [login](./login.md)
+* [logs](./logs.md)
+* [ram](./ram.md)
+* [restart](./restart.md)
+* [start](./start.md)
+* [stop](./stop.md)
+* [upload](./upload.md)
