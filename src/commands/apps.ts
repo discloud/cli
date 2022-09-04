@@ -38,16 +38,16 @@ export default new class Apps implements GluegunCommand {
 
       if (Array.isArray(apiRes.data.apps)) {
         for (let i = 0; i < apiRes.data.apps.length; i++) {
-          const app = apiRes.data.apps[i];
+          const app = Object.entries(apiRes.data.apps[i]);
 
-          print.table(Object.entries(app), {
+          print.table(app.map(a => ([a[0], a[1].join?.("\n") ?? a[1]])), {
             format: "lean",
           });
         }
       } else {
-        const app = apiRes.data.apps;
+        const app = Object.entries(apiRes.data.apps);
 
-        print.table(Object.entries(app), {
+        print.table(app.map(a => ([a[0], a[1].join?.("\n") ?? a[1]])), {
           format: "lean",
         });
       }
