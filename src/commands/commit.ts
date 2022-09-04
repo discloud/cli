@@ -1,8 +1,8 @@
 import { RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config, configToObj, getMissingValues, getNotIngnoredFiles, makeZipFromFileList } from "../util";
-import { requiredDiscloudConfigProps, required_files } from "../util/constants";
+import { apidiscloud, config, configToObj, getNotIngnoredFiles, makeZipFromFileList } from "../util";
+import { required_files } from "../util/constants";
 
 export default new class Commit implements GluegunCommand {
   name = "commit";
@@ -35,11 +35,6 @@ export default new class Commit implements GluegunCommand {
 
       if (!parameters.second) parameters.second = dConfig.ID;
       if (!parameters.second) return print.error("Need app id to commit.");
-
-      const missing = getMissingValues(dConfig, requiredDiscloudConfigProps);
-
-      if (missing.length)
-        return print.error(`${missing[0]} param is missing from discloud.config`);
 
       const allFiles = getNotIngnoredFiles(parameters.first);
 
