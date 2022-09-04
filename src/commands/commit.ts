@@ -2,7 +2,8 @@ import { RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
 import { createReadStream } from "fs";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config, resolveArgs } from "../util";
+import { apidiscloud, config, configToObj, getMissingValues, getNotIngnoredFiles, makeZipFromFileList } from "../util";
+import { requiredDiscloudConfigProps, required_files } from "../util/constants";
 
 export default new class Commit implements GluegunCommand {
   name = "commit";
@@ -15,30 +16,40 @@ export default new class Commit implements GluegunCommand {
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
 
+    if (!parameters.first) return print.error("Need a param like path or file name");
+
     const formData = new FormData();
 
-    let appId: string | undefined;
-    let filePath: string | undefined;
+    if (/\/?\w+\.(zip)/.test(parameters.first)) {
+      if (!filesystem.exists(parameters.first))
+        return print.error(`${parameters.first} file does not exists.`);
+    } else {
+      for (let i = 0; i < required_files.length; i++)
+        if (!filesystem.exists(`${parameters.first}/${required_files[i]}`))
+          return print.error(`${required_files[i]} is missing.`);
 
-    if (parameters.array) {
-      const { id, file } = resolveArgs(parameters.array, [{
-        name: "file",
-        pattern: /\/?\w+\.(zip)/,
-      }, {
-        name: "id",
-        pattern: /[^zip]$/,
-      }]);
+      const discloudConfigStr =
+        filesystem.read(`${parameters.first}/discloud.config`) ||
+        filesystem.read("discloud.config");
 
-      appId = id ?? filesystem.read("discloud.config")?.match(/ID=(.+)\r?\n/i)?.[1];
-      filePath = file;
+      const dConfig = configToObj(discloudConfigStr!);
+
+      if (!parameters.second) parameters.second = dConfig.ID;
+      if (!parameters.second) return print.error("Need app id to commit.");
+
+      const missing = getMissingValues(dConfig, requiredDiscloudConfigProps);
+
+      if (missing.length)
+        return print.error(`${missing[0]} param is missing from discloud.config`);
+
+      const allFiles = getNotIngnoredFiles(parameters.first);
+
+      parameters.first = await makeZipFromFileList(allFiles);
     }
 
-    if (!(appId || filePath)) return print.error("Need app id and file path arguments");
-    if (!appId) return print.error("Need app id argument");
-    if (!filePath) return print.error("Need file path argument");
-    if (!filesystem.exists(filePath)) return print.error(`${filePath} does not exists`);
+    if (!parameters.second) return print.error("Need app id to commit.");
 
-    formData.append("file", createReadStream(filePath));
+    formData.append("file", createReadStream(parameters.first));
 
     const headers = formData.getHeaders({
       "api-token": config.data.token,
@@ -48,7 +59,7 @@ export default new class Commit implements GluegunCommand {
       text: print.colors.cyan("Commiting..."),
     });
 
-    const res = await apidiscloud.put<RESTPutApiAppCommitResult>(Routes.appCommit(appId), formData, {
+    const res = await apidiscloud.put<RESTPutApiAppCommitResult>(Routes.appCommit(parameters.second), formData, {
       timeout: 300000,
       headers,
     });
