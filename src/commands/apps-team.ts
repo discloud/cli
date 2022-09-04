@@ -1,6 +1,7 @@
 import { RESTGetApiAppTeamResult, RESTPostApiAppTeamResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { apidiscloud, config } from "../util";
+import { ModPermissions } from "../util/constants";
 
 export default new class AppsTeam implements GluegunCommand {
   name = "apps:team";
@@ -25,6 +26,10 @@ export default new class AppsTeam implements GluegunCommand {
             (parameters.options.e || parameters.options.edit) ? "put" :
               method;
 
+    const perms = (parameters.options.p ?? parameters.options.perms) === "all" ?
+      Object.keys(ModPermissions)
+      : (parameters.options.p ?? parameters.options.perms ?? "").split(/\W+/);
+
     const spin = print.spin({
       text: print.colors.cyan("Fetching apps..."),
     });
@@ -35,7 +40,7 @@ export default new class AppsTeam implements GluegunCommand {
       ["post", "put"].includes(method) ? {
         modID: parameters.options.c ?? parameters.options.create ??
           parameters.options.e ?? parameters.options.edit,
-        perms: (parameters.options.p ?? parameters.options.perms ?? "").split(/\W+/),
+        perms,
       } : undefined);
 
     if (apiRes.status) {
