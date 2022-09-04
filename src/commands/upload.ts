@@ -60,22 +60,22 @@ export default new class Upload implements GluegunCommand {
 
     filesystem.remove(parameters.first);
 
-    if (res.status) {
-      if (res.status > 399)
-        return spin.fail(print.colors.red(`[DISCLOUD API] ${res.data?.message}`));
+    if (apiRes.status) {
+      if (apiRes.status > 399)
+        return spin.fail(print.colors.red(`[DISCLOUD API] ${apiRes.data?.message}`));
 
-      if (res.data?.status === "ok") {
-        spin.succeed(print.colors.green(`[DISCLOUD API] ${res.data?.message}`));
+      if (apiRes.data?.status === "ok") {
+        spin.succeed(print.colors.green(`[DISCLOUD API] ${apiRes.data?.message}`));
       } else {
-        spin.fail(print.colors.yellow(`[DISCLOUD API] ${res.data?.message}`));
+        spin.fail(print.colors.yellow(`[DISCLOUD API] ${apiRes.data?.message}`));
       }
 
-      if (res.data?.app)
-        print.table(Object.entries(res.data.app), {
+      if (apiRes.data?.app)
+        print.table(Object.entries(apiRes.data.app), {
           format: "lean",
         });
 
-      if (res.data?.logs) print.info(`[DISCLOUD API] ${res.data.logs}`);
+      if (apiRes.data?.logs) print.info(`[DISCLOUD API] ${apiRes.data.logs}`);
     }
   }
 };

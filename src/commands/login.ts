@@ -21,16 +21,16 @@ export default new class Login implements GluegunCommand {
       },
     });
 
-    if (res.status) {
-      if (res.status > 399)
-        return print.error(`[DISCLOUD API] ${res.data?.message}`);
+    if (apiRes.status) {
+      if (apiRes.status > 399)
+        return print.error(`[DISCLOUD API] ${apiRes.data?.message}`);
 
-      if (res.data?.status === "ok") {
+      if (apiRes.data?.status === "ok") {
         config.write({ token });
 
         print.success("[DISCLOUD API] Logged!");
       } else {
-        print.warning(`[DISCLOUD API] ${res.data?.message}`);
+        print.warning(`[DISCLOUD API] ${apiRes.data?.message}`);
       }
     }
   }

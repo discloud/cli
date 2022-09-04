@@ -22,14 +22,14 @@ export default new class Locale implements GluegunCommand {
 
     const apiRes = await apidiscloud.put<RESTPutApiLocaleResult>(Routes.locale(locale), {});
 
-    if (res.status) {
-      if (res.status > 399)
-        return print.error(`[DISCLOUD API] ${res.data?.message}`);
+    if (apiRes.status) {
+      if (apiRes.status > 399)
+        return print.error(`[DISCLOUD API] ${apiRes.data?.message}`);
 
-      if (res.data?.status === "ok") {
-        print.success(`[DISCLOUD API] ${res.data?.message ?? "Success!"}`);
+      if (apiRes.data?.status === "ok") {
+        print.success(`[DISCLOUD API] ${apiRes.data?.message ?? "Success!"}`);
       } else {
-        print.warning(`[DISCLOUD API] ${res.data?.message}`);
+        print.warning(`[DISCLOUD API] ${apiRes.data?.message}`);
       }
     }
   }

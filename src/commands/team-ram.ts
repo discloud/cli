@@ -31,14 +31,14 @@ export default new class TeamRam implements GluegunCommand {
       ramMB: ramInt,
     });
 
-    if (res.status) {
-      if (res.status > 399)
-        return spin.fail(print.colors.red(`[DISCLOUD API] ${res.data?.message}`));
+    if (apiRes.status) {
+      if (apiRes.status > 399)
+        return spin.fail(print.colors.red(`[DISCLOUD API] ${apiRes.data?.message}`));
 
-      if (res.data?.status === "ok") {
-        spin.succeed(print.colors.green(`[DISCLOUD API] ${res.data?.message}`));
+      if (apiRes.data?.status === "ok") {
+        spin.succeed(print.colors.green(`[DISCLOUD API] ${apiRes.data?.message}`));
       } else {
-        spin.warn(print.colors.yellow(`[DISCLOUD API] ${res.data?.message}`));
+        spin.warn(print.colors.yellow(`[DISCLOUD API] ${apiRes.data?.message}`));
       }
     }
   }
