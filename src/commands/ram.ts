@@ -4,7 +4,7 @@ import { apidiscloud, config } from "../util";
 
 export default new class RAM implements GluegunCommand {
   name = "ram";
-  description = "Set amount of ram for your app";
+  description = "Set amount of ram for your app.";
 
   async run(toolbox: GluegunToolbox) {
     const { parameters, print } = toolbox;

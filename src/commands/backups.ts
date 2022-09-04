@@ -5,7 +5,7 @@ import { apidiscloud, config } from "../util";
 export default new class Backups implements GluegunCommand {
   name = "backups";
   alias = ["backup", "bkp", "b"];
-  description = "Make backup from your applications in Discloud";
+  description = "Make backup from your applications in Discloud.";
 
   async run(toolbox: GluegunToolbox) {
     const { print, parameters } = toolbox;

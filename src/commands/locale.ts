@@ -5,7 +5,7 @@ import { locales } from "../util/constants";
 
 export default new class Locale implements GluegunCommand {
   name = "locale";
-  description = "Set your locale";
+  description = "Set your locale.";
 
   async run(toolbox: GluegunToolbox) {
     const { print, prompt } = toolbox;

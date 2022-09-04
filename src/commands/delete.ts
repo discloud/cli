@@ -4,7 +4,7 @@ import { apidiscloud, config } from "../util";
 
 export default new class Delete implements GluegunCommand {
   name = "delete";
-  alias = ["del"];
+  alias = ["del", "rb"];
   description = "Delete one or all of your apps on Discloud.";
 
   async run(toolbox: GluegunToolbox) {
