@@ -1,6 +1,5 @@
 import { RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
-import { createReadStream } from "fs";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { apidiscloud, config, configToObj, getMissingValues, getNotIngnoredFiles, makeZipFromFileList } from "../util";
 import { requiredDiscloudConfigProps, required_files } from "../util/constants";
@@ -49,7 +48,7 @@ export default new class Commit implements GluegunCommand {
 
     if (!parameters.second) return print.error("Need app id to commit.");
 
-    formData.append("file", createReadStream(parameters.first));
+    formData.append("file", filesystem.createReadStream(parameters.first));
 
     const headers = formData.getHeaders({
       "api-token": config.data.token,
@@ -63,6 +62,8 @@ export default new class Commit implements GluegunCommand {
       timeout: 300000,
       headers,
     });
+
+    filesystem.remove(parameters.first);
 
     if (res.status) {
       if (res.status > 399)
