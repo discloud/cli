@@ -4,7 +4,7 @@ import { apidiscloud, config } from "../util";
 
 export default new class Login implements GluegunCommand {
   name = "login";
-  description = "Login to Discloud API";
+  description = "Login to Discloud API.";
 
   async run(toolbox: GluegunToolbox) {
     const { print, prompt } = toolbox;
@@ -25,9 +25,13 @@ export default new class Login implements GluegunCommand {
       if (res.status > 399)
         return print.error(`[DISCLOUD API] ${res.data?.message}`);
 
-      config.write({ token });
+      if (res.data?.status === "ok") {
+        config.write({ token });
 
-      print.success("[DISCLOUD API] Logged!");
+        print.success("[DISCLOUD API] Logged!");
+      } else {
+        print.warning(`[DISCLOUD API] ${res.data?.message}`);
+      }
     }
   }
 };
