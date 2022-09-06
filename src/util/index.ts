@@ -159,3 +159,34 @@ export function verifyRequiredFiles(path: string, ext: keyof typeof required_fil
 
   return true;
 }
+
+function getKeys(array: Record<string, any>[]) {
+  const keys = <string[]>[];
+  for (let i = 0; i < array.length; i++) {
+    const element = array[i];
+    keys.push(...Object.keys(element));
+  }
+  return [...new Set(keys)];
+}
+
+function getValues(array: Record<string, any>[]) {
+  const keys = getKeys(array);
+  const values = <any[]>[];
+  for (let i = 0; i < array.length; i++) {
+    const element = array[i];
+    const value = <any[]>[];
+    for (let j = 0; j < keys.length; j++) {
+      const key = keys[j];
+
+      value.push(objToString(element[key]));
+    }
+    values.push(value);
+  }
+  return { keys, values };
+}
+
+export function makeTable(apps: Record<string, any> | Record<string, any>[]): any[] {
+  if (!Array.isArray(apps)) return makeTable([apps]);
+  const { keys, values } = getValues(apps);
+  return [keys, ...values];
+}
