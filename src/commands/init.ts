@@ -100,7 +100,7 @@ export default new class Init implements GluegunCommand {
         });
 
         appAvatar = app_avatar;
-      } while (!/^(https?:\/\/.+\.(?:jpg|jpeg|png))(?:\?.*)?$/.test(appAvatar));
+      } while (appAvatar && !/^(https?:\/\/.+\.(?:jpg|jpeg|png))(?:\?.*)?$/.test(appAvatar));
     }
 
     template.generate({
