@@ -9,7 +9,23 @@ export const locales = [
   "pt-BR",
 ];
 
-export const required_files = ["discloud.config"];
+export const blocked_files = {
+  go: [".git", ".vscode"],
+  js: [".git", ".vscode", "node_modules", "package-lock.json"],
+  py: [".git", ".vscode"],
+  rb: [".git", ".vscode", "Gemfile.lock"],
+  rs: [".git", ".vscode", "Cargo.lock", "target"],
+  ts: [".git", ".vscode", "node_modules", "package-lock.json"],
+};
+
+export const required_files = {
+  go: ["discloud.config", "go.mod", "go.sum"],
+  js: ["discloud.config", "package.json"],
+  py: ["discloud.config", "requirements.txt"],
+  rb: ["discloud.config", "Gemfile"],
+  rs: ["discloud.config", "Cargo.toml"],
+  ts: ["discloud.config", "package.json"],
+};
 
 export const requiredDiscloudConfigProps = ["MAIN", "TYPE", "RAM", "VERSION"];
 
