@@ -1,10 +1,10 @@
 import { RouteBases } from "@discloudapp/api-types/v2";
 import archiver from "archiver";
 import { GlobSync } from "glob";
-import { filesystem, http } from "gluegun";
+import { filesystem, http, print } from "gluegun";
 import { readFileSync } from "node:fs";
 import type { RawFile, ResolveArgsOptions } from "../@types";
-import { configPath } from "./constants";
+import { blocked_files, configPath, required_files } from "./constants";
 
 export class FsJson {
   data: Record<string, any> = {};
@@ -83,11 +83,7 @@ export function getMissingValues(obj: Record<any, any>, match: string[]) {
 }
 
 export function getGitIgnore(path: string) {
-  return (filesystem.read(".gitignore", "utf8") ?? "")
-    .replace(/#[^\n]+/g, "")
-    .split(/\r?\n/)
-    .filter(a => a && ![".env", "discloud.config"].includes(a))
-    .concat([".git", "node_modules"])
+  return [...new Set(Object.values(blocked_files).flat())]
     .map(a => `${path}/${a.replace(/^\/|\/$/, "")}/**`);
 }
 
@@ -134,4 +130,32 @@ export function objToString(obj: any): string {
   }
 
   return result.join("\n");
+}
+
+export function getFileExt(path: string) {
+  const requiredFiles = Object.entries(required_files);
+
+  for (let i = 0; i < requiredFiles.length; i++) {
+    const fileEntries = requiredFiles[i];
+
+    for (let j = 0; j < fileEntries[1].length; j++) {
+      const file = fileEntries[1][j];
+
+      if (filesystem.exists(`${path}/${file}`))
+        return <keyof typeof required_files>fileEntries[0];
+    }
+  }
+}
+
+export function verifyRequiredFiles(path: string, ext: keyof typeof required_files) {
+  const requiredFiles = Object.values(required_files[ext]);
+
+  for (let i = 0; i < requiredFiles.length; i++) {
+    const file = requiredFiles[i];
+
+    if (!filesystem.exists(`${path}/${file}`))
+      return print.error(`${file} is missing.`);
+  }
+
+  return true;
 }
