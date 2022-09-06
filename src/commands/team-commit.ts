@@ -2,7 +2,6 @@ import { RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { apidiscloud, config, configToObj, getNotIngnoredFiles, makeZipFromFileList } from "../util";
-import { required_files } from "../util/constants";
 
 export default new class TeamCommit implements GluegunCommand {
   name = "team:commit";
@@ -23,10 +22,6 @@ export default new class TeamCommit implements GluegunCommand {
       if (!filesystem.exists(parameters.first))
         return print.error(`${parameters.first} file does not exists.`);
     } else {
-      for (let i = 0; i < required_files.length; i++)
-        if (!filesystem.exists(`${parameters.first}/${required_files[i]}`))
-          return print.error(`${required_files[i]} is missing.`);
-
       const discloudConfigStr =
         filesystem.read(`${parameters.first}/discloud.config`) ||
         filesystem.read("discloud.config");
