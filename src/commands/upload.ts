@@ -1,8 +1,8 @@
 import { RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config, configToObj, getMissingValues, getNotIngnoredFiles, makeZipFromFileList } from "../util";
-import { requiredDiscloudConfigProps, required_files } from "../util/constants";
+import { apidiscloud, config, configToObj, getFileExt, getMissingValues, getNotIngnoredFiles, makeZipFromFileList, verifyRequiredFiles } from "../util";
+import { requiredDiscloudConfigProps } from "../util/constants";
 
 export default new class Upload implements GluegunCommand {
   name = "upload";
@@ -23,9 +23,9 @@ export default new class Upload implements GluegunCommand {
       if (!filesystem.exists(parameters.first))
         return print.error(`${parameters.first} file does not exists.`);
     } else {
-      for (let i = 0; i < required_files.length; i++)
-        if (!filesystem.exists(`${parameters.first}/${required_files[i]}`))
-          return print.error(`${required_files[i]} is missing.`);
+      const fileExt = getFileExt(parameters.first);
+      if (fileExt)
+        if (!verifyRequiredFiles(parameters.first, fileExt)) return;
 
       const discloudConfigStr =
         filesystem.read(`${parameters.first}/discloud.config`) ||
