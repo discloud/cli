@@ -19,14 +19,7 @@ export default new class Team implements GluegunCommand {
     const apiRes = await apidiscloud.get<RESTGetApiTeamResult>(Routes.team());
 
     if (apiRes.status) {
-      if (apiRes.status >= 400)
-        return spin.fail(print.colors.red(`[DISCLOUD API] ${apiRes.data?.message}`));
-
-      if (apiRes.data?.status === "ok") {
-        spin.succeed(print.colors.green(`[DISCLOUD API] ${apiRes.data?.message ?? "Success"}`));
-      } else {
-        spin.fail(print.colors.yellow(`[DISCLOUD API] ${apiRes.data?.message}`));
-      }
+      if (print.spinApiRes(apiRes, spin) > 399) return;
 
       if (!apiRes.data) return;
 

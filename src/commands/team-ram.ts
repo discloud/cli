@@ -31,15 +31,7 @@ export default new class TeamRam implements GluegunCommand {
       ramMB: ramInt,
     });
 
-    if (apiRes.status) {
-      if (apiRes.status > 399)
-        return spin.fail(print.colors.red(`[DISCLOUD API] ${apiRes.data?.message}`));
-
-      if (apiRes.data?.status === "ok") {
-        spin.succeed(print.colors.green(`[DISCLOUD API] ${apiRes.data?.message}`));
-      } else {
-        spin.warn(print.colors.yellow(`[DISCLOUD API] ${apiRes.data?.message}`));
-      }
-    }
+    if (apiRes.status)
+      if (print.spinApiRes(apiRes, spin) > 399) return;
   }
 };
