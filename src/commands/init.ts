@@ -13,12 +13,12 @@ export default new class Init implements GluegunCommand {
 
     if (parameters.options.y)
       return template.generate({
-        template: "discloud.config.ejs",
+        template: "discloud.config.bot.ejs",
         target: "discloud.config",
         props: { appType: "bot", appAutoRestart: "false", appRam: 100, appVersion: "latest" },
       });
 
-    const { app_apt, appMain, appType, appVersion } = await prompt.ask([
+    const { app_apt, appMain, appType, appAutoRestart, appVersion } = await prompt.ask([
       {
         name: "appType",
         message: "Choose your app type",
@@ -44,6 +44,11 @@ export default new class Init implements GluegunCommand {
           value: name,
         })),
         initial: 5,
+      }, {
+        name: "appAutoRestart",
+        message: "Auto restart?",
+        type: "confirm",
+        initial: false,
       },
     ]);
     /**
@@ -106,7 +111,7 @@ export default new class Init implements GluegunCommand {
     template.generate({
       template: `discloud.config.${appType}.ejs`,
       target: "discloud.config",
-      props: { appApt, appAvatar, appId, appMain, appName, appType, appRam, appVersion },
+      props: { appApt, appAvatar, appId, appMain, appName, appRam, appType, appAutoRestart, appVersion },
     });
   }
 };
