@@ -1,7 +1,7 @@
 import { RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config, configToObj, getFileExt, getMissingValues, getNotIngnoredFiles, makeZipFromFileList, verifyRequiredFiles } from "../util";
+import { apidiscloud, config, configToObj, getFileExt, getMissingValues, getNotIngnoredFiles, makeTable, makeZipFromFileList, verifyRequiredFiles } from "../util";
 import { requiredDiscloudConfigProps } from "../util/constants";
 
 export default new class Upload implements GluegunCommand {
@@ -70,8 +70,10 @@ export default new class Upload implements GluegunCommand {
         spin.fail(print.colors.yellow(`[DISCLOUD API] ${apiRes.data?.message}`));
       }
 
-      if (apiRes.data?.app)
-        print.table(Object.entries(apiRes.data.app), {
+      if (!apiRes.data) return;
+
+      if ("app" in apiRes.data)
+        print.table(makeTable(apiRes.data.app), {
           format: "lean",
         });
 

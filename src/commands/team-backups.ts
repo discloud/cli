@@ -1,6 +1,6 @@
 import { RESTGetApiAppAllBackupResult, RESTGetApiAppBackupResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config } from "../util";
+import { apidiscloud, config, makeTable } from "../util";
 
 export default new class TeamBackup implements GluegunCommand {
   name = "team:backups";
@@ -36,23 +36,10 @@ export default new class TeamBackup implements GluegunCommand {
 
       if (!apiRes.data) return;
 
-      if (Array.isArray(apiRes.data.backups)) {
-        const backups = [];
-
-        for (let i = 0; i < apiRes.data.backups.length; i++) {
-          const backup = apiRes.data.backups[i];
-
-          backups.push([backup.id, backup.url || backup.status]);
-        }
-
-        print.table(backups, {
+      if ("backups" in apiRes.data)
+        print.table(makeTable(apiRes.data.backups), {
           format: "lean",
         });
-      } else {
-        const backup = apiRes.data.backups;
-
-        print.table([[id, backup.url || apiRes.data.status]]);
-      }
     }
   }
 };

@@ -1,6 +1,6 @@
 import { RESTGetApiAppAllStatusResult, RESTGetApiAppStatusResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config, objToString } from "../util";
+import { apidiscloud, config, makeTable } from "../util";
 
 export default new class Status implements GluegunCommand {
   name = "status";
@@ -35,21 +35,10 @@ export default new class Status implements GluegunCommand {
 
       if (!apiRes.data) return;
 
-      if (Array.isArray(apiRes.data.apps)) {
-        for (let i = 0; i < apiRes.data.apps.length; i++) {
-          const app = Object.entries(apiRes.data.apps[i]);
-
-          print.table(app.map(a => ([a[0], objToString(a[1])])), {
-            format: "lean",
-          });
-        }
-      } else {
-        const app = Object.entries(apiRes.data.apps);
-
-        print.table(app.map(a => ([a[0], objToString(a[1])])), {
+      if ("apps" in apiRes.data)
+        print.table(makeTable(apiRes.data.apps), {
           format: "lean",
         });
-      }
     }
   }
 };

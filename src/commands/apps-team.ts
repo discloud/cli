@@ -1,6 +1,6 @@
 import { RESTGetApiAppTeamResult, RESTPostApiAppTeamResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config } from "../util";
+import { apidiscloud, config, makeTable } from "../util";
 import { ModPermissions } from "../util/constants";
 
 export default new class AppsTeam implements GluegunCommand {
@@ -55,24 +55,15 @@ export default new class AppsTeam implements GluegunCommand {
 
       if (!apiRes.data) return;
 
-      if (apiRes.data.app) {
-        const app = Object.entries(apiRes.data.app);
-
-        print.table(app.map(a => ([a[0], a[1].join?.("\n") ?? a[1]])), {
+      if ("app" in apiRes.data)
+        print.table(makeTable(apiRes.data.app), {
           format: "lean",
         });
-      }
 
-      if (apiRes.data.team)
-        if (Array.isArray(apiRes.data.team)) {
-          for (let i = 0; i < apiRes.data.team.length; i++) {
-            const app = Object.entries(apiRes.data.team[i]);
-
-            print.table(app.map(a => ([a[0], a[1].join?.("\n") ?? a[1]])), {
-              format: "lean",
-            });
-          }
-        }
+      if ("team" in apiRes.data)
+        print.table(makeTable(apiRes.data.team), {
+          format: "lean",
+        });
     }
   }
 };

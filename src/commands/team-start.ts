@@ -1,6 +1,6 @@
 import { RESTPutApiAppAllStartResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config } from "../util";
+import { apidiscloud, config, makeTable } from "../util";
 
 export default new class TeamStart implements GluegunCommand {
   name = "team:start";
@@ -31,8 +31,10 @@ export default new class TeamStart implements GluegunCommand {
         spin.fail(print.colors.yellow(`[DISCLOUD API] ${apiRes.data?.message}`));
       }
 
-      if (apiRes.data?.apps)
-        print.table(Object.entries(apiRes.data.apps).map(([a, b]) => ([a, b.join("\n")])), {
+      if (!apiRes.data) return;
+
+      if ("apps" in apiRes.data)
+        print.table(makeTable(apiRes.data.apps), {
           format: "lean",
         });
     }
