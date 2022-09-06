@@ -9,5 +9,5 @@ USAGE
   $ discloud init
 
 OPTIONS
-  -y skip startup questions
+  -y skip init dialogs
 ```
