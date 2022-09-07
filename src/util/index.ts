@@ -90,8 +90,8 @@ export function getGitIgnore(path: string) {
 
 export function getNotIngnoredFiles(path: string) {
   const ignore = getGitIgnore(path);
-
-  return new GlobSync(`${path}/**`, { ignore, dot: true }).found.filter(a => !["."].includes(a));
+  path = (!["."].includes(path) && (filesystem.isFile(path) || /\W+/.test(path))) ? path : `${path}/**`;
+  return new GlobSync(path, { ignore, dot: true }).found.filter(a => !["."].includes(a));
 }
 
 export async function makeZipFromFileList(files: string[]) {
