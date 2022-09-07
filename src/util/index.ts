@@ -70,6 +70,7 @@ export async function resolveFile(file: string): Promise<RawFile> {
 }
 
 export function configToObj(s: string): Record<any, any> {
+  if (typeof s !== "string") return {};
   return Object.fromEntries(s.split(/\r?\n/).map(a => a.split("=")));
 }
 
