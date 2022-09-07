@@ -15,7 +15,7 @@
     "type": "git",
     "url": "git+https://github.com/discloud/cli.git"
   },
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/discloud/cli/issues"
   },
