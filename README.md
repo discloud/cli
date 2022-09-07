@@ -8,6 +8,8 @@
 
 Discloud CLI is a quick option to control your apps in Discloud
 
+See more of the [docs](https://discloud.github.io/cli/).
+
 ## Installation
 
 ```sh
@@ -73,5 +75,4 @@ discloud version 0.2.2
   apps (app)                                     Get information of your applications.                
   help (h)                                       -                                                    
 ```
-
 See more of the [docs](https://discloud.github.io/cli/).
