@@ -16,12 +16,12 @@ export const blocked_files = {
 };
 
 export const required_files = {
-  go: ["discloud.config", "go.mod", "go.sum"],
-  js: ["discloud.config", "package.json"],
-  py: ["discloud.config", "requirements.txt"],
-  rb: ["discloud.config", "Gemfile"],
-  rs: ["discloud.config", "Cargo.toml"],
-  ts: ["discloud.config", "package.json"],
+  go: ["go.mod", "go.sum"],
+  js: ["package.json"],
+  py: ["requirements.txt"],
+  rb: ["Gemfile"],
+  rs: ["Cargo.toml"],
+  ts: ["package.json"],
 };
 
 export const requiredDiscloudConfigProps = ["MAIN", "TYPE", "RAM", "VERSION"];

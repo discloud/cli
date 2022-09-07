@@ -149,7 +149,7 @@ export function getFileExt(path: string) {
 }
 
 export function verifyRequiredFiles(path: string, ext: keyof typeof required_files) {
-  const requiredFiles = Object.values(required_files[ext]);
+  const requiredFiles = Object.values(required_files[ext]).concat("discloud.config");
 
   for (let i = 0; i < requiredFiles.length; i++) {
     const file = requiredFiles[i];
