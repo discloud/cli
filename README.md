@@ -6,14 +6,14 @@ A fast option to manage your apps on Discloud.
 
 To get started using this CLI, first use [`discloud login`](./docs/login.md).
 
-[![asciicast](https://asciinema.org/a/519076.svg)](https://asciinema.org/a/519076)
+[![discloud-login](./assets/discloud-login.gif)](./docs/login.md)
 
 If your app does not contain `discloud.config`, use [`discloud init`](./docs/init.md).
 
-[![asciicast](https://asciinema.org/a/YY4Y82Nou5NpyxEv9gEEJl6vb.svg)](https://asciinema.org/a/YY4Y82Nou5NpyxEv9gEEJl6vb)
+[![discloud-init](./assets/discloud-init.gif)](./docs/init.md)
 
 Do you want to send an app to discloud? Use [`discloud upload`](./docs/upload.md).
 
-[![asciicast](https://asciinema.org/a/lSrJBrnwCPMXO2jsMQnNUDdx6.svg)](https://asciinema.org/a/lSrJBrnwCPMXO2jsMQnNUDdx6)
+[![discloud-upload](./assets/discloud-upload.gif)](./docs/upload.md)
 
 See more of the [`docs`](./docs/readme.md).
