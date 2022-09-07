@@ -1,15 +1,14 @@
 {
   "name": "discloud-cli",
   "description": "A fast option to manage your apps on Discloud.",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "bin": {
     "discloud": "bin/discloud"
   },
   "scripts": {
     "build": "tsc && npm run copy-templates",
     "copy-templates": "copyfiles -f ./src/templates/* ./build/templates",
-    "prepublish": "npm run build",
-    "publish": "npm publish -f"
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
