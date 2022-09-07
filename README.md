@@ -1,8 +1,10 @@
 # Discloud CLI
 
-![GitHub](https://img.shields.io/github/license/discloud/cli)
-![npm](https://img.shields.io/npm/dw/discloud-cli)
-![npm](https://img.shields.io/npm/v/discloud-cli)
+[![GitHub](https://img.shields.io/github/license/discloud/cli)](https://github.com/discloud/cli/blob/main/LICENSE)
+[![npm-downloads](https://img.shields.io/npm/dw/discloud-cli)](https://www.npmjs.com/package/discloud-cli)
+[![npm](https://img.shields.io/npm/v/discloud-cli)](https://www.npmjs.com/package/discloud-cli)
+[![cli](https://img.shields.io/badge/Discloud--CLI-Docs-blue)](https://discloud.github.io/cli)
+[![github](https://img.shields.io/badge/GitHub-100000?logo=github&logoColor=white)](https://github.com/discloud/cli)
 
 Discloud CLI is a quick option to control your apps in Discloud
 
@@ -20,21 +22,24 @@ discloud login
 
 [![discloud-login](./assets/discloud-login.gif)](./docs/login.md)
 
-
 If your app does not contain `discloud.config`, use:
+
 ```sh
 discloud init
 ```
 
 [![discloud-init](./assets/discloud-init.gif)](./docs/init.md)
 
-Do you want to send an app to discloud? Use: 
+Do you want to send an app to discloud? Use:
+
 ```sh
 discloud upload .
 ```
+
 [![discloud-upload](./assets/discloud-upload.gif)](./docs/upload.md)
 
 If you want to see all commands
+
 ```sh
 discloud --help
 
@@ -68,4 +73,5 @@ discloud version 0.2.2
   apps (app)                                     Get information of your applications.                
   help (h)                                       -                                                    
 ```
+
 See more of the [docs](https://discloud.github.io/cli/).
