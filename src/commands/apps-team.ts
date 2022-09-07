@@ -1,6 +1,6 @@
 import { RESTGetApiAppTeamResult, RESTPostApiAppTeamResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config, makeTable } from "../util";
+import { apidiscloud, config, makeTable, RateLimit } from "../util";
 import { ModPermissions } from "../util/constants";
 
 export default new class AppsTeam implements GluegunCommand {
@@ -13,6 +13,9 @@ export default new class AppsTeam implements GluegunCommand {
 
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
+
+    if (RateLimit.isLimited)
+      return print.error(`Rate limited until: ${RateLimit.limited}`);
 
     if (!parameters.first)
       return print.error("Need a param like APP_ID");
@@ -42,6 +45,8 @@ export default new class AppsTeam implements GluegunCommand {
           parameters.options.e ?? parameters.options.edit,
         perms,
       } : undefined);
+
+    new RateLimit(apiRes.headers);
 
     if (apiRes.status) {
       if (print.spinApiRes(apiRes, spin) > 399) return;

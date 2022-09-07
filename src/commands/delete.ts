@@ -1,6 +1,6 @@
 import { RESTDeleteApiAppAllDeleteResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config, makeTable } from "../util";
+import { apidiscloud, config, makeTable, RateLimit } from "../util";
 
 export default new class Delete implements GluegunCommand {
   name = "delete";
@@ -12,6 +12,9 @@ export default new class Delete implements GluegunCommand {
 
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
+
+    if (RateLimit.isLimited)
+      return print.error(`Rate limited until: ${RateLimit.limited}`);
 
     const { confirmDelete } = await prompt.ask({
       name: "confirmDelete",
@@ -29,6 +32,8 @@ export default new class Delete implements GluegunCommand {
     });
 
     const apiRes = await apidiscloud.delete<RESTDeleteApiAppAllDeleteResult>(Routes.appDelete(id));
+
+    new RateLimit(apiRes.headers);
 
     if (apiRes.status) {
       if (print.spinApiRes(apiRes, spin) > 399) return;

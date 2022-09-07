@@ -1,7 +1,7 @@
 import { RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config, configToObj, getFileExt, getMissingValues, getNotIngnoredFiles, makeTable, makeZipFromFileList, verifyRequiredFiles } from "../util";
+import { apidiscloud, config, configToObj, getFileExt, getMissingValues, getNotIngnoredFiles, makeTable, makeZipFromFileList, RateLimit, verifyRequiredFiles } from "../util";
 import { requiredDiscloudConfigProps } from "../util/constants";
 
 export default new class Upload implements GluegunCommand {
@@ -14,6 +14,9 @@ export default new class Upload implements GluegunCommand {
 
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
+
+    if (RateLimit.isLimited)
+      return print.error(`Rate limited until: ${RateLimit.limited}`);
 
     if (!parameters.first) return print.error("Need a param like path or file name");
 
@@ -57,6 +60,8 @@ export default new class Upload implements GluegunCommand {
       timeout: 300000,
       headers,
     });
+
+    new RateLimit(apiRes.headers);
 
     filesystem.remove(parameters.first);
 

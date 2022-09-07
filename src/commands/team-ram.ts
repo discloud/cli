@@ -1,6 +1,6 @@
 import { RESTPutApiAppRamResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config } from "../util";
+import { apidiscloud, config, RateLimit } from "../util";
 
 export default new class TeamRam implements GluegunCommand {
   name = "team:ram";
@@ -11,6 +11,9 @@ export default new class TeamRam implements GluegunCommand {
 
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
+
+    if (RateLimit.isLimited)
+      return print.error(`Rate limited until: ${RateLimit.limited}`);
 
     const appId = parameters.first;
     if (!appId) return print.error("Usage: discloud ram APP_ID RAM_AMOUNT");
@@ -30,6 +33,8 @@ export default new class TeamRam implements GluegunCommand {
     const apiRes = await apidiscloud.put<RESTPutApiAppRamResult>(Routes.teamRam(appId), {
       ramMB: ramInt,
     });
+
+    new RateLimit(apiRes.headers);
 
     if (apiRes.status)
       if (print.spinApiRes(apiRes, spin) > 399) return;

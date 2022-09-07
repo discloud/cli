@@ -1,6 +1,6 @@
 import { RESTGetApiAppAllBackupResult, RESTGetApiAppBackupResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config, makeTable } from "../util";
+import { apidiscloud, config, makeTable, RateLimit } from "../util";
 
 export default new class TeamBackup implements GluegunCommand {
   name = "team:backups";
@@ -13,6 +13,9 @@ export default new class TeamBackup implements GluegunCommand {
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
 
+    if (RateLimit.isLimited)
+      return print.error(`Rate limited until: ${RateLimit.limited}`);
+
     const id = parameters.first || "all";
 
     const spin = print.spin({
@@ -23,6 +26,8 @@ export default new class TeamBackup implements GluegunCommand {
       | RESTGetApiAppBackupResult
       | RESTGetApiAppAllBackupResult
     >(Routes.teamBackup(id));
+
+    new RateLimit(apiRes.headers);
 
     if (apiRes.status) {
       if (print.spinApiRes(apiRes, spin) > 399) return;

@@ -1,6 +1,6 @@
 import { RESTGetApiUserResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config } from "../util";
+import { apidiscloud, config, RateLimit } from "../util";
 
 export default new class Login implements GluegunCommand {
   name = "login";
@@ -8,6 +8,9 @@ export default new class Login implements GluegunCommand {
 
   async run(toolbox: GluegunToolbox) {
     const { print, prompt } = toolbox;
+
+    if (RateLimit.isLimited)
+      return print.error(`Rate limited until: ${RateLimit.limited}`);
 
     const { token } = await prompt.ask({
       name: "token",
@@ -20,6 +23,8 @@ export default new class Login implements GluegunCommand {
         "api-token": token,
       },
     });
+
+    new RateLimit(apiRes.headers);
 
     if (apiRes.status) {
       if (print.printApiRes(apiRes) > 399) return;

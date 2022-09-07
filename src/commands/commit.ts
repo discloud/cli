@@ -1,7 +1,7 @@
 import { RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config, configToObj, getNotIngnoredFiles, makeZipFromFileList } from "../util";
+import { apidiscloud, config, configToObj, getNotIngnoredFiles, makeZipFromFileList, RateLimit } from "../util";
 
 export default new class Commit implements GluegunCommand {
   name = "commit";
@@ -13,6 +13,9 @@ export default new class Commit implements GluegunCommand {
 
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
+
+    if (RateLimit.isLimited)
+      return print.error(`Rate limited until: ${RateLimit.limited}`);
 
     if (!parameters.first) return print.error("Need a param like path or file name");
 
@@ -52,6 +55,8 @@ export default new class Commit implements GluegunCommand {
       timeout: 300000,
       headers,
     });
+
+    new RateLimit(apiRes.headers);
 
     filesystem.remove(parameters.first);
 

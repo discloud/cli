@@ -1,6 +1,6 @@
 import { RESTPutApiAppAllStopResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config, makeTable } from "../util";
+import { apidiscloud, config, makeTable, RateLimit } from "../util";
 
 export default new class TeamStop implements GluegunCommand {
   name = "team:stop";
@@ -12,6 +12,9 @@ export default new class TeamStop implements GluegunCommand {
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
 
+    if (RateLimit.isLimited)
+      return print.error(`Rate limited until: ${RateLimit.limited}`);
+
     const id = parameters.first || "all";
 
     const spin = print.spin({
@@ -19,6 +22,8 @@ export default new class TeamStop implements GluegunCommand {
     });
 
     const apiRes = await apidiscloud.put<RESTPutApiAppAllStopResult>(Routes.teamStop(id), {});
+
+    new RateLimit(apiRes.headers);
 
     if (apiRes.status) {
       if (print.spinApiRes(apiRes, spin) > 399) return;

@@ -1,6 +1,6 @@
 import { RESTGetApiAppAllLogResult, RESTGetApiAppLogResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { apidiscloud, config } from "../util";
+import { apidiscloud, config, RateLimit } from "../util";
 import { logsPath } from "../util/constants";
 
 export default new class TeamLogs implements GluegunCommand {
@@ -13,6 +13,9 @@ export default new class TeamLogs implements GluegunCommand {
 
     if (!config.data.token) return print.error("Please use login command before using this command.");
 
+    if (RateLimit.isLimited)
+      return print.error(`Rate limited until: ${RateLimit.limited}`);
+
     const id = parameters.first || "all";
 
     const spin = print.spin({
@@ -23,6 +26,8 @@ export default new class TeamLogs implements GluegunCommand {
       | RESTGetApiAppLogResult
       | RESTGetApiAppAllLogResult
     >(Routes.teamLogs(id));
+
+    new RateLimit(apiRes.headers);
 
     if (apiRes.status) {
       if (print.spinApiRes(apiRes, spin) > 399) return;
