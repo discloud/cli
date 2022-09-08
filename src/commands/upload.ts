@@ -18,7 +18,8 @@ export default new class Upload implements GluegunCommand {
     if (RateLimit.isLimited)
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
-    if (!parameters.first) return print.error("Need a param like path or file name");
+    if (!parameters.first) parameters.first = ".";
+    parameters.first = parameters.first.replace(/\/$/, "");
 
     const formData = new FormData();
 

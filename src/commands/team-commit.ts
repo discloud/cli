@@ -1,4 +1,4 @@
-import { RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
+import { RESTGetApiTeamResult, RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { apidiscloud, config, configToObj, getNotIngnoredFiles, makeZipFromFileList, RateLimit } from "../util";
@@ -9,7 +9,7 @@ export default new class TeamCommit implements GluegunCommand {
   description = "Commit one app for your team.";
 
   async run(toolbox: GluegunToolbox) {
-    const { filesystem, parameters, print } = toolbox;
+    const { filesystem, parameters, print, prompt } = toolbox;
 
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
@@ -17,7 +17,45 @@ export default new class TeamCommit implements GluegunCommand {
     if (RateLimit.isLimited)
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
-    if (!parameters.first) return print.error("Need a param like path or file name.");
+    if (!parameters.first) parameters.first = ".";
+    parameters.first = parameters.first.replace(/\/$/, "");
+
+    const discloudConfigStr =
+      filesystem.read(`${parameters.first}/discloud.config`) ||
+      filesystem.read("discloud.config");
+
+    const dConfig = configToObj(discloudConfigStr!);
+
+    if (!parameters.second) parameters.second = dConfig.ID;
+    if (!parameters.second) return print.error("Need app id to commit.");
+
+    if (!parameters.second) {
+      const spin = print.spin({
+        text: print.colors.cyan("Fetching apps..."),
+      });
+
+      const apiRes = await apidiscloud.get<RESTGetApiTeamResult>(Routes.team());
+
+      spin.stop();
+
+      if (apiRes.data)
+        if ("apps" in apiRes.data) {
+          const { appId } = await prompt.ask({
+            name: "appId",
+            message: "Choose the app",
+            type: "select",
+            choices: apiRes.data.apps.map(app => ({
+              name: app.id,
+              value: app.id,
+            })),
+          });
+
+          parameters.second = appId;
+        }
+
+      if (!parameters.second)
+        return print.error("Need app id to commit.");
+    }
 
     const formData = new FormData();
 
@@ -25,22 +63,11 @@ export default new class TeamCommit implements GluegunCommand {
       if (!filesystem.exists(parameters.first))
         return print.error(`${parameters.first} file does not exists.`);
     } else {
-      const discloudConfigStr =
-        filesystem.read(`${parameters.first}/discloud.config`) ||
-        filesystem.read("discloud.config");
-
-      const dConfig = configToObj(discloudConfigStr!);
-
-      if (!parameters.second) parameters.second = dConfig.ID;
-      if (!parameters.second) return print.error("Need app id to commit.");
-
       const allFiles = getNotIngnoredFiles(parameters.first);
       if (!allFiles.length) return print.error(`No files found in path ${parameters.first}`);
 
       parameters.first = await makeZipFromFileList(allFiles);
     }
-
-    if (!parameters.second) return print.error("Need app id to commit.");
 
     formData.append("file", filesystem.createReadStream(parameters.first));
 
@@ -52,7 +79,9 @@ export default new class TeamCommit implements GluegunCommand {
       text: print.colors.cyan("Commiting..."),
     });
 
-    const apiRes = await apidiscloud.put<RESTPutApiAppCommitResult>(Routes.teamCommit(parameters.second), formData, {
+    const apiRes = await apidiscloud.put<
+      RESTPutApiAppCommitResult
+    >(Routes.teamCommit(parameters.second), formData, {
       timeout: 300000,
       headers,
     });
