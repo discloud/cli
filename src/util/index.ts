@@ -114,12 +114,16 @@ export function getMissingValues(obj: Record<any, any>, match: string[]) {
 
 export function getGitIgnore(path: string) {
   return [...new Set(Object.values(blocked_files).flat())]
-    .map(a => `${path}/${a.replace(/^\/|\/$/, "")}/**`);
+    .map(a => [`${a.replace(/^\/|\/$/, "")}/**`, `${path}/${a.replace(/^\/|\/$/, "")}/**`]).flat();
 }
 
 export function getNotIngnoredFiles(path: string) {
   const ignore = getGitIgnore(path);
-  path = (!["."].includes(path) && (filesystem.isFile(path) || /\W+/.test(path))) ? path : `${path}/**`;
+
+  path = (filesystem.isDirectory(path) || [".", "./"].includes(path) || !/\W+/.test(path)) ?
+    `${path.replace(/\/$/, "")}/**` :
+    path;
+
   return new GlobSync(path, { ignore, dot: true }).found.filter(a => !["."].includes(a));
 }
 
