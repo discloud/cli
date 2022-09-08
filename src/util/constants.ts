@@ -24,7 +24,7 @@ export const required_files = {
   ts: ["package.json"],
 };
 
-export const requiredDiscloudConfigProps = ["MAIN", "TYPE", "RAM", "VERSION"];
+export const requiredDiscloudConfigProps = ["MAIN", "NAME", "TYPE", "RAM", "VERSION"];
 
 export const ModPermissions = {
   backup_app: 1,

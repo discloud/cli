@@ -91,6 +91,7 @@ export default new class Init implements GluegunCommand {
         name: "app_name",
         message: "App name",
         type: "input",
+        required: true,
       });
       appName = app_name;
 
