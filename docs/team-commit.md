@@ -6,10 +6,10 @@ Commit one app for your team.
 
 ```sh-session
 USAGE
-  $ discloud team:commit PATH [APP_ID]
+  $ discloud team:commit [PATH] [APP_ID]
 
 ALIAS
-  $ discloud team:c PATH [APP_ID]
+  $ discloud team:c [PATH] [APP_ID]
 
 ARGUMENTS
   APP_ID The id of your app on Discloud
