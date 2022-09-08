@@ -22,7 +22,7 @@ export class FsJson {
 
 export const config = new class Config extends FsJson {
   data: {
-    limited?: string,
+    limited?: string
     token?: string
   } = this.data;
 
@@ -37,11 +37,12 @@ export class RateLimit {
   }
 
   static get limited() {
-    return new Date(config.data.limited!);
+    return Intl.DateTimeFormat([], { dateStyle: "short", timeStyle: "medium" })
+      .format(new Date(config.data.limited!));
   }
 
   static get isLimited() {
-    return this.limited >= new Date();
+    return new Date(config.data.limited!) >= new Date();
   }
 
   limit(headers?: Record<string, string>) {
