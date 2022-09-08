@@ -35,6 +35,7 @@ export default new class TeamCommit implements GluegunCommand {
       if (!parameters.second) return print.error("Need app id to commit.");
 
       const allFiles = getNotIngnoredFiles(parameters.first);
+      if (!allFiles.length) return print.error(`No files found in path ${parameters.first}`);
 
       parameters.first = await makeZipFromFileList(allFiles);
     }
