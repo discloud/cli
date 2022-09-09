@@ -1,6 +1,7 @@
 import { RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
+import { exit } from "node:process";
 import { apidiscloud, config, configToObj, getFileExt, getMissingValues, getNotIngnoredFiles, makeTable, makeZipFromFileList, RateLimit, verifyRequiredFiles } from "../util";
 import { requiredDiscloudConfigProps } from "../util/constants";
 
@@ -67,9 +68,9 @@ export default new class Upload implements GluegunCommand {
     filesystem.remove(parameters.first);
 
     if (apiRes.status) {
-      if (print.spinApiRes(apiRes, spin) > 399) return;
+      if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
 
-      if (!apiRes.data) return;
+      if (!apiRes.data) return exit(0);
 
       if ("app" in apiRes.data)
         print.table(makeTable(apiRes.data.app), {
@@ -78,5 +79,7 @@ export default new class Upload implements GluegunCommand {
 
       if (apiRes.data?.logs) print.info(`[DISCLOUD API] ${apiRes.data.logs}`);
     }
+
+    exit(0);
   }
 };

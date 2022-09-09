@@ -1,4 +1,5 @@
 import { GluegunCommand, GluegunToolbox } from "gluegun";
+import { exit } from "node:process";
 import { Apt } from "../util/constants";
 
 export default new class Init implements GluegunCommand {
@@ -28,6 +29,7 @@ export default new class Init implements GluegunCommand {
         name: "appMain",
         message: "Input the path of main file",
         type: "input",
+        required: true,
       }, {
         name: "appVersion",
         message: "Choose the version for your app",
@@ -67,6 +69,7 @@ export default new class Init implements GluegunCommand {
         message: "Input the amount of RAM for your application",
         type: "numeral",
         initial: minRam,
+        required: true,
       });
 
       appRam = parseInt(app_ram);
@@ -114,5 +117,7 @@ export default new class Init implements GluegunCommand {
       target: "discloud.config",
       props: { appApt, appAvatar, appId, appMain, appName, appRam, appType, appAutoRestart, appVersion },
     });
+
+    exit(0);
   }
 };

@@ -1,5 +1,6 @@
 import { RESTGetApiAppAllLogResult, RESTGetApiAppLogResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
+import { exit } from "node:process";
 import { apidiscloud, config, RateLimit } from "../util";
 import { logsPath } from "../util/constants";
 
@@ -30,9 +31,9 @@ export default new class Logs implements GluegunCommand {
     new RateLimit(apiRes.headers);
 
     if (apiRes.status) {
-      if (print.spinApiRes(apiRes, spin) > 399) return;
+      if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
 
-      if (!apiRes.data) return;
+      if (!apiRes.data) return exit(0);
 
       if (Array.isArray(apiRes.data.apps)) {
         const terminal = [];
@@ -78,5 +79,7 @@ export default new class Logs implements GluegunCommand {
         print.table([[id, terminal.url]]);
       }
     }
+
+    exit(0);
   }
 };

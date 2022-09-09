@@ -1,5 +1,6 @@
 import { RESTPutApiAppAllStopResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
+import { exit } from "node:process";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
 
 export default new class TeamStop implements GluegunCommand {
@@ -26,14 +27,16 @@ export default new class TeamStop implements GluegunCommand {
     new RateLimit(apiRes.headers);
 
     if (apiRes.status) {
-      if (print.spinApiRes(apiRes, spin) > 399) return;
+      if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
 
-      if (!apiRes.data) return;
+      if (!apiRes.data) return exit(0);
 
       if ("apps" in apiRes.data)
         print.table(makeTable(apiRes.data.apps), {
           format: "lean",
         });
     }
+
+    exit(0);
   }
 };

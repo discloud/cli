@@ -1,5 +1,6 @@
 import { RESTGetApiUserResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
+import { exit } from "node:process";
 import { apidiscloud, config, RateLimit } from "../util";
 
 export default new class Login implements GluegunCommand {
@@ -27,10 +28,12 @@ export default new class Login implements GluegunCommand {
     new RateLimit(apiRes.headers);
 
     if (apiRes.status) {
-      if (print.printApiRes(apiRes) > 399) return;
+      if (print.printApiRes(apiRes) > 399) return exit(apiRes.status);
 
       if (apiRes.data?.status === "ok")
         config.write({ token });
     }
+
+    exit(0);
   }
 };
