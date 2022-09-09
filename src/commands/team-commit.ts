@@ -27,9 +27,6 @@ export default new class TeamCommit implements GluegunCommand {
 
     const dConfig = configToObj(discloudConfigStr!);
 
-    if (!parameters.second) parameters.second = dConfig.ID;
-    if (!parameters.second) return print.error("Need app id to commit.");
-
     if (!parameters.second) {
       const spin = print.spin({
         text: print.colors.cyan("Fetching apps..."),
@@ -47,6 +44,8 @@ export default new class TeamCommit implements GluegunCommand {
             type: "select",
             choices: apiRes.data.apps.map(app => ({
               name: app.id,
+              message: `${app.id} - [${app.perms.join()}] ${app.id === dConfig.ID ?
+                "[discloud.config]" : ""}`,
               value: app.id,
             })),
           });

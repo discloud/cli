@@ -27,8 +27,6 @@ export default new class Commit implements GluegunCommand {
 
     const dConfig = configToObj(discloudConfigStr!);
 
-    if (!parameters.second) parameters.second = dConfig.ID;
-
     if (!parameters.second) {
       const spin = print.spin({
         text: print.colors.cyan("Fetching apps..."),
@@ -46,6 +44,7 @@ export default new class Commit implements GluegunCommand {
             type: "select",
             choices: apiRes.data.apps.map(app => ({
               name: app.id,
+              message: `${app.name} - ${app.id} ${app.id === dConfig.ID ? "[discloud.config]" : ""}`,
               value: app.id,
             })),
           });
