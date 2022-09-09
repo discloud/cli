@@ -61,12 +61,7 @@ function getKeys(array: Record<string, any>[]) {
 }
 
 export function getMissingValues(obj: Record<any, any>, match: string[]) {
-  return Object.entries(obj).reduce<string[]>((acc, cur) =>
-    match.includes(cur[0]) ?
-      cur[1] ?
-        acc :
-        acc.concat(cur[0]) :
-      acc, []);
+  return match.filter(key => !obj[key]);
 }
 
 export function getNotIngnoredFiles(path: string) {
