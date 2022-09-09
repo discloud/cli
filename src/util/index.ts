@@ -46,6 +46,15 @@ export function getFileExt(path: string) {
   }
 }
 
+export function configUpdate(save: Record<string, string>, path = ".") {
+  path = path.replace(/\/$/, "");
+  path = filesystem.exists(`${path}/discloud.config`) ? path : ".";
+
+  const data = { ...configToObj(filesystem.read(`${path}/discloud.config`)!), ...save };
+
+  filesystem.write(`${path}/discloud.config`, objToString(data, "="));
+}
+
 export function getGitIgnore(path: string) {
   return [...new Set(Object.values(blocked_files).flat())]
     .map(a => [`${a.replace(/^\/|\/$/, "")}/**`, `${path}/${a.replace(/^\/|\/$/, "")}/**`]).flat();
@@ -116,7 +125,7 @@ export async function makeZipFromFileList(files: string[]) {
   return outFileName;
 }
 
-export function objToString(obj: any): string {
+export function objToString(obj: any, sep = ": "): string {
   if (!obj) return "";
 
   const result = [];
@@ -129,7 +138,7 @@ export function objToString(obj: any): string {
       const keys = Object.keys(obj);
 
       for (let i = 0; i < keys.length; i++)
-        result.push(`${keys[i]}: ${objToString(obj[keys[i]])}`);
+        result.push(`${keys[i]}${sep}${objToString(obj[keys[i]])}`);
     }
   } else {
     result.push(obj);
