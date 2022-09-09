@@ -115,9 +115,17 @@ export async function makeZipFromFileList(files: string[]) {
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
+    const fileName = file.replace(/^\.\//, "");
 
-    if (filesystem.isFile(file))
-      zipper.append(filesystem.createReadStream(file), { name: file.replace(/^\.\//, "") });
+    if (filesystem.isFile(file)) {
+      const spin = print.spin({
+        text: `Zipping file: ${fileName}`,
+      });
+
+      zipper.append(filesystem.createReadStream(file), { name: fileName });
+
+      spin.succeed();
+    }
   }
 
   await zipper.finalize();
