@@ -15,14 +15,15 @@ ARGUMENTS
   APP_ID The id of your app on Discloud
 
 OPTIONS
-  -c, --create [perms | all] Add a mod to your application
-  -d, --delete               Delete a mod from your application
-  -e, --edit   [perms | all] Edit mod perms for your application
+  -c, --create [MOD_ID]      Add a mod to your application
+  -d, --delete [MOD_ID]      Delete a mod from your application
+  -e, --edit   [MOD_ID]      Edit mod perms for your application
   -p, --perms  [perms | all] Mod permissions
 
 EXAMPLE
-  $ discloud app:team -c=MOD_ID -p=backup_app-commit_app-edit_ram
-  $ discloud app:team -d=MOD_ID
+  $ discloud app:team APP_ID -c=MOD_ID -p=backup_app-commit_app-edit_ram
+  $ discloud app:team APP_ID -e=MOD_ID -p=all
+  $ discloud app:team APP_ID -d=MOD_ID
 
 PERMS
   - backup_app
