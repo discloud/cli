@@ -4,7 +4,7 @@ description: Caso tenha algum problema // If you have any problems
 body:
 
   - type: markdown
-  attributes:
+    attributes:
       value: |
         Caso tenha encontrado algum bug ou algum problema
         If you have found any bugs or problems
