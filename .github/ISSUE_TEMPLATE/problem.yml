@@ -1,0 +1,42 @@
+name: Problemas // Problems
+description: Caso tenha algum problema // If you have any problems
+
+body:
+
+  - type: markdown
+  attributes:
+      value: |
+        Caso tenha encontrado algum bug ou algum problema
+        If you have found any bugs or problems
+
+  - type: input
+    id: cli-version
+    attributes:
+      label: CLI version
+      placeholder: 1.x.x
+    validations:
+      required: true
+
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js version
+      placeholder: 16.x
+    validations:
+      required: true
+
+  - type: input
+    id: node-version
+    attributes:
+      label: Sistema usado // Used system
+      placeholder: Windows 10
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição // Description
+      description: Explique qual é o seu problema // Explain what your problem is
+    validations:
+      required: true
