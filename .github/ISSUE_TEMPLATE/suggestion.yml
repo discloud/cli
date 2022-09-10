@@ -1,0 +1,26 @@
+name: Sugestão // Suggestion
+description: Envie uma proposta para um novo recurso // Submit a proposal for a new feature
+
+body:
+
+  - type: markdown
+    attributes:
+      value: |
+        Envie uma proposta para um novo recurso 
+        Submit a proposal for a new feature
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Sugestão // Suggestion
+      description: |
+        Uma descrição clara e concisa do que é o recurso.
+        A clear and concise description of what the feature is.
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivação // Motivation
+      description: A motivação da sugestão. The motivation of the suggestion.
