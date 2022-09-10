@@ -26,7 +26,7 @@ body:
       required: true
 
   - type: input
-    id: node-version
+    id: os-version
     attributes:
       label: Sistema usado // Used system
       placeholder: Windows 10
