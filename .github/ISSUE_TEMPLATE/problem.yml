@@ -1,8 +1,8 @@
-name: Problemas // Problems
+name: Problemas // Bugs
 description: Caso tenha algum problema // If you have any problems
+labels: [bug]
 
 body:
-
   - type: markdown
     attributes:
       value: |
@@ -20,6 +20,8 @@ body:
   - type: input
     id: node-version
     attributes:
+      description: |
+        Which version of Node.js are you using? Run `node --version` in your project directory and paste the output.
       label: Node.js version
       placeholder: 16.x
     validations:
@@ -30,6 +32,14 @@ body:
     attributes:
       label: Sistema usado // Used system
       placeholder: Windows 10
+    validations:
+      required: true
+
+  - type: input
+    id: command
+    attributes:
+      label: Commando usado // Used Command
+      placeholder: discloud start
     validations:
       required: true
 

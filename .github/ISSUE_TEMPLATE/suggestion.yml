@@ -1,8 +1,8 @@
-name: Sugestão // Suggestion
+name: Sugestão de recurso // Feature request
 description: Envie uma proposta para um novo recurso // Submit a proposal for a new feature
+labels: [enhancement]
 
 body:
-
   - type: markdown
     attributes:
       value: |
