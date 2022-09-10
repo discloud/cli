@@ -35,7 +35,7 @@ discloud init
 Do you want to send an app to discloud? Use:
 
 ```sh
-discloud upload .
+discloud up
 ```
 
 [![discloud-upload](./assets/discloud-upload.gif)](./docs/upload.md)
