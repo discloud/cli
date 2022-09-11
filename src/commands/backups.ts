@@ -46,11 +46,21 @@ export default new class Backups implements GluegunCommand {
               if (backup.status === "ok") {
                 const outFileName = `${backupsPath}/${backup.id}.zip`;
 
-                const result = await axios.get(backup.url, { responseType: "arraybuffer" });
+                const spin = print.spin({
+                  text: `Saving: ${outFileName}`,
+                });
 
-                filesystem.write(outFileName, result.data);
+                try {
+                  const result = await axios.get(backup.url, { responseType: "arraybuffer" });
 
-                apiRes.data.backups[i].url = outFileName;
+                  filesystem.write(outFileName, result.data);
+
+                  spin.succeed();
+
+                  apiRes.data.backups[i].url = outFileName;
+                } catch {
+                  spin.fail();
+                }
               }
             }
           } else {
@@ -58,11 +68,21 @@ export default new class Backups implements GluegunCommand {
 
             const outFileName = `${backupsPath}/${backup.id}.zip`;
 
-            const result = await axios.get(backup.url, { responseType: "arraybuffer" });
+            const spin = print.spin({
+              text: `Saving: ${outFileName}`,
+            });
 
-            filesystem.write(outFileName, result.data);
+            try {
+              const result = await axios.get(backup.url, { responseType: "arraybuffer" });
 
-            apiRes.data.backups.url = outFileName;
+              filesystem.write(outFileName, result.data);
+
+              spin.succeed();
+
+              apiRes.data.backups.url = outFileName;
+            } catch {
+              spin.fail();
+            }
           }
 
         print.table(makeTable(apiRes.data.backups), {
