@@ -13,7 +13,7 @@ See more of the [docs](https://discloud.github.io/cli/).
 ## Installation
 
 ```sh
-npm i --location=global discloud-cli
+npm i -g discloud-cli
 ```
 
 To get started using this CLI, first use:
