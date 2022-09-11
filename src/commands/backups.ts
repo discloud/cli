@@ -1,7 +1,9 @@
 import { RESTGetApiAppAllBackupResult, RESTGetApiAppBackupResult, Routes } from "@discloudapp/api-types/v2";
+import axios from "axios";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
+import { backupsPath } from "../util/constants";
 
 export default new class Backups implements GluegunCommand {
   name = "backups";
@@ -9,7 +11,7 @@ export default new class Backups implements GluegunCommand {
   description = "Make backup from your applications in Discloud.";
 
   async run(toolbox: GluegunToolbox) {
-    const { print, parameters } = toolbox;
+    const { filesystem, print, parameters } = toolbox;
 
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
@@ -35,10 +37,38 @@ export default new class Backups implements GluegunCommand {
 
       if (!apiRes.data) return exit(0);
 
-      if ("backups" in apiRes.data)
+      if ("backups" in apiRes.data) {
+        if (parameters.options.save || parameters.options.s)
+          if (Array.isArray(apiRes.data.backups)) {
+            for (let i = 0; i < apiRes.data.backups.length; i++) {
+              const backup = apiRes.data.backups[i];
+
+              if (backup.status === "ok") {
+                const outFileName = `${backupsPath}/${backup.id}.zip`;
+
+                const result = await axios.get(backup.url, { responseType: "arraybuffer" });
+
+                filesystem.write(outFileName, result.data);
+
+                apiRes.data.backups[i].url = outFileName;
+              }
+            }
+          } else {
+            const backup = apiRes.data.backups;
+
+            const outFileName = `${backupsPath}/${backup.id}.zip`;
+
+            const result = await axios.get(backup.url, { responseType: "arraybuffer" });
+
+            filesystem.write(outFileName, result.data);
+
+            apiRes.data.backups.url = outFileName;
+          }
+
         print.table(makeTable(apiRes.data.backups), {
           format: "lean",
         });
+      }
     }
 
     exit(0);

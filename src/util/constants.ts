@@ -1,5 +1,6 @@
 import { filesystem } from "gluegun";
 
+export const backupsPath = "discloud/backups";
 export const logsPath = "discloud/logs";
 
 export const configPath = `${filesystem.homedir()}/.discloud`;
