@@ -1,4 +1,4 @@
-import { RESTDeleteApiAppAllDeleteResult, Routes } from "@discloudapp/api-types/v2";
+import { RESTDeleteApiAppAllDeleteResult, RESTGetApiAppAllResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
@@ -17,22 +17,55 @@ export default new class Delete implements GluegunCommand {
     if (RateLimit.isLimited)
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
+    if (!parameters.first) {
+      const spin = print.spin({
+        text: print.colors.cyan("Fetching apps..."),
+      });
+
+      const apiRes = await apidiscloud.get<RESTGetApiAppAllResult>(Routes.app("all"));
+
+      spin.stop();
+
+      if (apiRes.data)
+        if ("apps" in apiRes.data) {
+          const { appId } = await prompt.ask({
+            name: "appId",
+            message: "Choose the app",
+            type: "select",
+            choices: [{
+              name: "all",
+              message: "All apps",
+              value: "all",
+            }].concat(apiRes.data.apps.map(app => ({
+              name: app.id,
+              message: `${app.name} - ${app.id} - ${app.online ?
+                print.colors.green("online") :
+                print.colors.red("offline")}`,
+              value: app.id,
+            }))),
+          });
+
+          parameters.first = appId;
+        }
+
+      if (!parameters.first)
+        return print.error("Need app id.");
+    }
+
     const { confirmDelete } = await prompt.ask({
       name: "confirmDelete",
-      message: `You are ${print.colors.red("DELETING")} your Discloud app. This action is irreversible! Are sure about it?`,
+      message: `You are ${print.colors.red("DELETING")} ${parameters.first}. This action is irreversible! Are sure about it?`,
       type: "select",
       choices: ["Yes", "No"],
     });
 
     if (confirmDelete === "No") return;
 
-    const id = parameters.first || "all";
-
     const spin = print.spin({
       text: print.colors.cyan("Deleting..."),
     });
 
-    const apiRes = await apidiscloud.delete<RESTDeleteApiAppAllDeleteResult>(Routes.appDelete(id));
+    const apiRes = await apidiscloud.delete<RESTDeleteApiAppAllDeleteResult>(Routes.appDelete(parameters.first));
 
     new RateLimit(apiRes.headers);
 

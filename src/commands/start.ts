@@ -1,4 +1,4 @@
-import { RESTPutApiAppAllStartResult, Routes } from "@discloudapp/api-types/v2";
+import { RESTGetApiAppAllResult, RESTPutApiAppAllStartResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
@@ -9,7 +9,7 @@ export default new class Start implements GluegunCommand {
   description = "Start one or all of your apps on Discloud.";
 
   async run(toolbox: GluegunToolbox) {
-    const { parameters, print } = toolbox;
+    const { parameters, print, prompt } = toolbox;
 
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
@@ -17,13 +17,46 @@ export default new class Start implements GluegunCommand {
     if (RateLimit.isLimited)
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
-    const id = parameters.first || "all";
+    if (!parameters.first) {
+      const spin = print.spin({
+        text: print.colors.cyan("Fetching apps..."),
+      });
+
+      const apiRes = await apidiscloud.get<RESTGetApiAppAllResult>(Routes.app("all"));
+
+      spin.stop();
+
+      if (apiRes.data)
+        if ("apps" in apiRes.data) {
+          const { appId } = await prompt.ask({
+            name: "appId",
+            message: "Choose the app",
+            type: "select",
+            choices: [{
+              name: "all",
+              message: "All apps",
+              value: "all",
+            }].concat(apiRes.data.apps.map(app => ({
+              name: app.id,
+              message: `${app.name} - ${app.id} - ${app.online ?
+                print.colors.green("online") :
+                print.colors.red("offline")}`,
+              value: app.id,
+            }))),
+          });
+
+          parameters.first = appId;
+        }
+
+      if (!parameters.first)
+        return print.error("Need app id.");
+    }
 
     const spin = print.spin({
       text: print.colors.cyan("Starting..."),
     });
 
-    const apiRes = await apidiscloud.put<RESTPutApiAppAllStartResult>(Routes.appStart(id), {});
+    const apiRes = await apidiscloud.put<RESTPutApiAppAllStartResult>(Routes.appStart(parameters.first), {});
 
     new RateLimit(apiRes.headers);
 
