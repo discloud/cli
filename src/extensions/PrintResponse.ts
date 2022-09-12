@@ -1,9 +1,14 @@
 import { GluegunToolbox } from "gluegun";
 
 export default function (toolbox: GluegunToolbox) {
-  return toolbox.print.printApiRes = function (apiRes) {
-    if (typeof apiRes.data === "string")
+  return toolbox.print.printApiRes = function (apiRes, spin) {
+    if (spin) return toolbox.print.spinApiRes(apiRes, spin);
+
+    if (typeof apiRes.data === "string") {
+      apiRes.data = apiRes.data.match(/<title>(.*)<\/title>/)?.[1] ?? apiRes.data;
+
       toolbox.print.info(`[DISCLOUD API] ${apiRes.data}`);
+    }
 
     if (apiRes.status > 399) {
       toolbox.print.error(`[DISCLOUD API] ${apiRes.data?.message ?? "fail!"}`);

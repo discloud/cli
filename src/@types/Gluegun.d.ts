@@ -1,8 +1,8 @@
-import "gluegun";
+import { ApiResponse } from "gluegun";
 
 declare module "gluegun" {
   interface GluegunPrint {
-    printApiRes(apiRes: any): number
-    spinApiRes(apiRes: any, spin: any): number
+    printApiRes<T = any>(apiRes: ApiResponse<T>, spin?: any): number
+    spinApiRes<T = any>(apiRes: ApiResponse<T>, spin: any): number
   }
 }
