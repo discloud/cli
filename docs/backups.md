@@ -13,6 +13,9 @@ ALIAS
   $ discloud bkp [APP_ID]
   $ discloud b [APP_ID]
 
+OPTIONS
+  -s, --save Save the backup locally
+
 ARGUMENTS
   APP_ID The id of your app on Discloud
 ```
