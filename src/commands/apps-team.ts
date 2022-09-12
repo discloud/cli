@@ -10,7 +10,7 @@ export default new class AppsTeam implements GluegunCommand {
   description = "Get team information of your applications.";
 
   async run(toolbox: GluegunToolbox) {
-    const { print, parameters } = toolbox;
+    const { parameters, print, prompt } = toolbox;
 
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
@@ -25,27 +25,61 @@ export default new class AppsTeam implements GluegunCommand {
 
     if (Object.keys(parameters.options).length) 
       method =
-        (parameters.options.d || parameters.options.delete) ? "delete" :
-          (parameters.options.c || parameters.options.create) ? "post" :
-            (parameters.options.e || parameters.options.edit) ? "put" :
+        (parameters.options.d ?? parameters.options.delete) ? "delete" :
+          (parameters.options.c ?? parameters.options.create) ? "post" :
+            (parameters.options.e ?? parameters.options.edit) ? "put" :
               method;
 
-    const perms = (parameters.options.p ?? parameters.options.perms) === "all" ?
-      Object.keys(ModPermissions)
-      : (parameters.options.p ?? parameters.options.perms ?? "").split(/\W+/);
+    let perms = parameters.options.p ?? parameters.options.perms;
+    if (["post", "put"].includes(method))
+      if (!perms) {
+        const { permissions } = await prompt.ask({
+          name: "permissions",
+          message: "Choose the permissions",
+          type: "multiselect",
+          choices: Object.keys(ModPermissions),
+        });
+
+        perms = permissions;
+      }
+
+    if (typeof perms === "string")
+      perms = perms === "all" ?
+        Object.keys(ModPermissions) :
+        (parameters.options.p ?? parameters.options.perms ?? "").split(/\W+/);
+
+    let modID;
+    let action;
+    switch (method) {
+      case "delete":
+        action = `Deleting ${modID} MOD from ${parameters.first} app...`;
+        break;
+      case "post":
+        modID = parameters.options.c ?? parameters.options.create;
+        action = `Creating ${modID} MOD with ${perms.length} permissions for ${parameters.first} app...` +
+          `${perms.length ? `\nPermissions: ${perms.join(", ")}` : ""}`;
+        break;
+      case "put":
+        modID = parameters.options.e ?? parameters.options.edit;
+        action = `Updating ${modID} MOD with ${perms.length} permissions for ${parameters.first} app...` +
+          `${perms.length ? `\nPermissions: ${perms.join(", ")}` : ""}`;
+        break;
+      default:
+        action = "Fetching apps...";
+        break;
+    }
 
     const spin = print.spin({
-      text: print.colors.cyan("Fetching apps..."),
+      text: print.colors.cyan(action),
     });
 
     const apiRes = await apidiscloud[method]<
       RESTGetApiAppTeamResult & RESTPostApiAppTeamResult
-    >(Routes.appTeam(parameters.first, parameters.options.d ?? parameters.options.delete),
-      ["post", "put"].includes(method) ? {
-        modID: parameters.options.c ?? parameters.options.create ??
-          parameters.options.e ?? parameters.options.edit,
-        perms,
-      } : undefined);
+      >(Routes.appTeam(parameters.first, parameters.options.d ?? parameters.options.delete),
+        ["post", "put"].includes(method) ? {
+          modID,
+          perms,
+        } : undefined);
 
     new RateLimit(apiRes.headers);
 
