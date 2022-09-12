@@ -35,3 +35,5 @@ PERMS
   - status_app
   - stop_app
 ```
+
+* You can choose `permissions` by menu if you don't use the `-p` option
