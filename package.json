@@ -8,7 +8,9 @@
   "scripts": {
     "build": "tsc && npm run copy-templates",
     "copy-templates": "copyfiles -f ./src/templates/* ./build/templates",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "test": "npm run test:ts",
+    "test:ts": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
