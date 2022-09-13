@@ -2,7 +2,7 @@ import { RESTGetApiTeamResult, RESTPutApiAppCommitResult, Routes } from "@disclo
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
-import { apidiscloud, config, configToObj, getNotIngnoredFiles, makeZipFromFileList, RateLimit } from "../util";
+import { apidiscloud, config, configToObj, getNotIngnoredFiles, makeZipFromFileList, RateLimit, readDiscloudConfig } from "../util";
 
 export default new class TeamCommit implements GluegunCommand {
   name = "team:commit";
@@ -19,13 +19,9 @@ export default new class TeamCommit implements GluegunCommand {
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
     if (!parameters.first) parameters.first = ".";
-    parameters.first = parameters.first.replace(/\/$/, "");
+    parameters.first = parameters.first.replace(/(\\|\/)$/, "");
 
-    const discloudConfigStr =
-      filesystem.read(`${parameters.first}/discloud.config`) ||
-      filesystem.read("discloud.config");
-
-    const dConfig = configToObj(discloudConfigStr!);
+    const dConfig = configToObj(readDiscloudConfig(parameters.first)!);
 
     if (!parameters.second) {
       const spin = print.spin({
@@ -59,7 +55,7 @@ export default new class TeamCommit implements GluegunCommand {
 
     const formData = new FormData();
 
-    if (/\/?\w+\.(zip)/.test(parameters.first)) {
+    if (/\.(zip)$/.test(parameters.first)) {
       if (!filesystem.exists(parameters.first))
         return print.error(`${parameters.first} file does not exists.`);
     } else {

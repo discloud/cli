@@ -2,8 +2,8 @@ import { RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
-import { apidiscloud, config, configToObj, configUpdate, getFileExt, getMissingValues, getNotIngnoredFiles, makeZipFromFileList, RateLimit, verifyRequiredFiles } from "../util";
-import { requiredDiscloudConfigProps } from "../util/constants";
+import { apidiscloud, config, configToObj, configUpdate, getMissingValues, getNotIngnoredFiles, makeZipFromFileList, RateLimit, readDiscloudConfig, verifyRequiredFiles } from "../util";
+import { requiredDiscloudConfigProps, required_files } from "../util/constants";
 
 export default new class Upload implements GluegunCommand {
   name = "upload";
@@ -20,28 +20,23 @@ export default new class Upload implements GluegunCommand {
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
     if (!parameters.first) parameters.first = ".";
-    parameters.first = parameters.first.replace(/\/$/, "");
+    parameters.first = parameters.first.replace(/(\\|\/)$/, "");
 
     const formData = new FormData();
 
-    if (/\/?\w+\.(zip)/.test(parameters.first)) {
+    if (/\.(zip)$/.test(parameters.first)) {
       if (!filesystem.exists(parameters.first))
         return print.error(`${parameters.first} file does not exists.`);
     } else {
-      const fileExt = getFileExt(parameters.first);
-      if (fileExt)
-        if (!verifyRequiredFiles(parameters.first, fileExt)) return;
-
-      const discloudConfigStr =
-        filesystem.read(`${parameters.first}/discloud.config`) ||
-        filesystem.read("discloud.config");
-
-      const dConfig = configToObj(discloudConfigStr!);
+      const dConfig = configToObj<string | undefined>(readDiscloudConfig(parameters.first)!);
 
       const missing = getMissingValues(dConfig, requiredDiscloudConfigProps);
 
       if (missing.length)
         return print.error(`${missing[0]} param is missing from discloud.config`);
+
+      const fileExt = <keyof typeof required_files | undefined>dConfig.MAIN?.split(".").pop();
+      if (!verifyRequiredFiles(parameters.first, fileExt!, dConfig.MAIN!)) return;
 
       const allFiles = getNotIngnoredFiles(parameters.first);
 
