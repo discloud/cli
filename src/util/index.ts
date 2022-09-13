@@ -26,29 +26,15 @@ export const apidiscloud = http.create({
   },
 });
 
-export function configToObj(s: string): Record<any, any> {
+export function configToObj<T = number | string>(s: string): Record<string, T> {
   if (typeof s !== "string") return {};
   return Object.fromEntries(s.split(/\r?\n/).map(a => a.split("=")));
 }
 
-export function getFileExt(path: string) {
-  const requiredFiles = Object.entries(required_files);
-
-  for (let i = 0; i < requiredFiles.length; i++) {
-    const fileEntries = requiredFiles[i];
-
-    for (let j = 0; j < fileEntries[1].length; j++) {
-      const file = fileEntries[1][j];
-
-      if (filesystem.exists(`${path}/${file}`))
-        return <keyof typeof required_files>fileEntries[0];
-    }
-  }
-}
-
 export function configUpdate(save: Record<string, string>, path = ".") {
-  path = path.replace(/\/$/, "");
+  path = path.replace(/(\\|\/)$/, "");
   path = filesystem.exists(`${path}/discloud.config`) ? path : ".";
+  if (!filesystem.exists(`${path}/discloud.config`)) return;
 
   const data = { ...configToObj(filesystem.read(`${path}/discloud.config`)!), ...save };
 
@@ -77,7 +63,7 @@ export function getNotIngnoredFiles(path: string) {
   const ignore = getGitIgnore(path);
 
   path = (filesystem.isDirectory(path) || [".", "./"].includes(path) || !/\W+/.test(path)) ?
-    `${path.replace(/\/$/, "")}/**` :
+    `${path.replace(/(\\|\/)$/, "")}/**` :
     path;
 
   return new GlobSync(path, { ignore, dot: true }).found.filter(a => !["."].includes(a));
@@ -155,6 +141,12 @@ export function objToString(obj: any, sep = ": "): string {
   return result.join("\n");
 }
 
+export function readDiscloudConfig(path = ".") {
+  path = path.replace(/(\\|\/)$/, "");
+  return filesystem.read(`${path}/discloud.config`) ||
+    filesystem.read("discloud.config");
+}
+
 export function resolveArgs(args: string[], options: ResolveArgsOptions[]) {
   const resolved = <Record<string, string | undefined>>{};
 
@@ -179,8 +171,12 @@ export function resolveArgs(args: string[], options: ResolveArgsOptions[]) {
   return resolved;
 }
 
-export function verifyRequiredFiles(path: string, ext: keyof typeof required_files) {
-  const requiredFiles = Object.values(required_files[ext]).concat("discloud.config");
+export function verifyRequiredFiles(
+  path: string,
+  ext: keyof typeof required_files,
+  files: string | string[] = [],
+) {
+  const requiredFiles = Object.values(required_files[ext]).concat("discloud.config", files);
 
   for (let i = 0; i < requiredFiles.length; i++) {
     const file = requiredFiles[i];
