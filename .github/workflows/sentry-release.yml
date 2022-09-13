@@ -15,6 +15,7 @@ jobs:
           node-version: 16
       - run: yarn
       - run: npm run build
+      - run: npm run test
 
   release-sentry:
     needs: build
