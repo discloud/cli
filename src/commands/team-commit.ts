@@ -40,7 +40,7 @@ export default new class TeamCommit implements GluegunCommand {
             type: "select",
             choices: apiRes.data.apps.map(app => ({
               name: app.id,
-              message: `${app.id} - [${app.perms.join()}] ${app.id === dConfig.ID ?
+              message: `${app.name} - ${app.id} - [${app.perms.join()}] ${app.id === dConfig.ID ?
                 "[discloud.config]" : ""}`,
               value: app.id,
             })),
