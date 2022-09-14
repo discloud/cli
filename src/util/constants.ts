@@ -26,6 +26,7 @@ export const file_ext = {
   mts: "ts",
   py: "py",
   rb: "rb",
+  rlib: "rs",
   rs: "rs",
   ts: "ts",
   tsx: "ts",
