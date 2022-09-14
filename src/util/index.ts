@@ -3,7 +3,7 @@ import archiver from "archiver";
 import { GlobSync } from "glob";
 import { filesystem, http, print } from "gluegun";
 import type { ResolveArgsOptions } from "../@types";
-import { blocked_files, configPath, required_files } from "./constants";
+import { blocked_files, configPath, file_ext, required_files } from "./constants";
 import FsJson from "./FsJson";
 
 export const config = new class Config extends FsJson {
@@ -41,9 +41,13 @@ export function configUpdate(save: Record<string, string>, path = ".") {
   filesystem.write(`${path}/discloud.config`, objToString(data, "="));
 }
 
-export function getGitIgnore(path: string) {
+export function getDiscloudIgnore(path: string) {
   return [...new Set(Object.values(blocked_files).flat())]
     .map(a => [`${a.replace(/^\/|\/$/, "")}/**`, `${path}/${a.replace(/^\/|\/$/, "")}/**`]).flat();
+}
+
+export function getFileExt(ext: string) {
+  return file_ext[<keyof typeof file_ext>ext] ?? ext;
 }
 
 function getKeys(array: Record<string, any>[]) {
@@ -55,12 +59,12 @@ function getKeys(array: Record<string, any>[]) {
   return [...new Set(keys)];
 }
 
-export function getMissingValues(obj: Record<any, any>, match: string[]) {
-  return match.filter(key => !obj[key]);
+export function getMissingValues(obj: Record<any, any>, values: string[]) {
+  return values.filter(key => !obj[key]);
 }
 
 export function getNotIngnoredFiles(path: string) {
-  const ignore = getGitIgnore(path);
+  const ignore = getDiscloudIgnore(path);
 
   path = (filesystem.isDirectory(path) || [".", "./"].includes(path) || !/\W+/.test(path)) ?
     `${path.replace(/(\\|\/)$/, "")}/**` :
@@ -176,7 +180,8 @@ export function verifyRequiredFiles(
   ext: keyof typeof required_files,
   files: string | string[] = [],
 ) {
-  const requiredFiles = Object.values(required_files[ext]).concat("discloud.config", files);
+  const fileExt = getFileExt(ext);
+  const requiredFiles = Object.values(required_files[fileExt]).concat(required_files.common, files);
 
   for (let i = 0; i < requiredFiles.length; i++) {
     const file = requiredFiles[i];

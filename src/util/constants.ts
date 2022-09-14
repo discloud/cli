@@ -8,15 +8,31 @@ export const configPath = `${filesystem.homedir()}/.discloud`;
 export const locales = ["en-US", "pt-BR"];
 
 export const blocked_files = {
-  go: [".git", ".vscode"],
-  js: [".git", ".vscode", "node_modules", "package-lock.json", "yarn.lock"],
-  py: [".git", ".vscode"],
-  rb: [".git", ".vscode", "Gemfile.lock"],
-  rs: [".git", ".vscode", "Cargo.lock", "target"],
-  ts: [".git", ".vscode", "node_modules", "package-lock.json", "yarn.lock"],
+  common: [".git", ".vscode", "discloud"],
+  go: [],
+  js: ["node_modules", "package-lock.json", "yarn.lock"],
+  py: [],
+  rb: ["Gemfile.lock"],
+  rs: ["Cargo.lock", "target"],
 };
 
+export const file_ext = {
+  cjs: "js",
+  cts: "ts",
+  go: "go",
+  js: "js",
+  jsx: "js",
+  mjs: "js",
+  mts: "ts",
+  py: "py",
+  rb: "rb",
+  rs: "rs",
+  ts: "ts",
+  tsx: "ts",
+} as const;
+
 export const required_files = {
+  common: ["discloud.config"],
   go: ["go.mod", "go.sum"],
   js: ["package.json"],
   py: ["requirements.txt"],
