@@ -124,7 +124,7 @@ export async function makeZipFromFileList(files: string[]) {
 }
 
 export function objToString(obj: any, sep = ": "): string {
-  if (!obj) return "";
+  if (!obj) return obj;
 
   const result = [];
 
