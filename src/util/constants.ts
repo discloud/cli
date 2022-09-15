@@ -14,23 +14,24 @@ export const blocked_files = {
   py: [],
   rb: ["Gemfile.lock"],
   rs: ["Cargo.lock", "target"],
+  ts: ["node_modules", "package-lock.json", "yarn.lock"],
 };
 
-export const file_ext = {
-  cjs: "js",
-  cts: "ts",
-  go: "go",
-  js: "js",
-  jsx: "js",
-  mjs: "js",
-  mts: "ts",
-  py: "py",
-  rb: "rb",
-  rlib: "rs",
-  rs: "rs",
-  ts: "ts",
-  tsx: "ts",
-} as const;
+export enum FileExt {
+  cjs = "js",
+  cts = "ts",
+  go = "go",
+  js = "js",
+  jsx = "js",
+  mjs = "js",
+  mts = "ts",
+  py = "py",
+  rb = "rb",
+  rlib = "rs",
+  rs = "rs",
+  ts = "ts",
+  tsx = "ts",
+}
 
 export const required_files = {
   common: ["discloud.config"],

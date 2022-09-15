@@ -3,7 +3,7 @@ import archiver from "archiver";
 import { GlobSync } from "glob";
 import { filesystem, http, print } from "gluegun";
 import type { ResolveArgsOptions } from "../@types";
-import { blocked_files, configPath, file_ext, required_files } from "./constants";
+import { blocked_files, configPath, FileExt, required_files } from "./constants";
 import FsJson from "./FsJson";
 
 export const config = new class Config extends FsJson {
@@ -46,8 +46,8 @@ export function getDiscloudIgnore(path: string) {
     .map(a => [`${a.replace(/^\/|\/$/, "")}/**`, `${path}/${a.replace(/^\/|\/$/, "")}/**`]).flat();
 }
 
-export function getFileExt(ext: string) {
-  return file_ext[<keyof typeof file_ext>ext] ?? ext;
+export function getFileExt(ext: `${FileExt}`) {
+  return FileExt[ext] ?? ext;
 }
 
 function getKeys(array: Record<string, any>[]) {
@@ -177,7 +177,7 @@ export function resolveArgs(args: string[], options: ResolveArgsOptions[]) {
 
 export function verifyRequiredFiles(
   path: string,
-  ext: keyof typeof required_files,
+  ext: `${FileExt}`,
   files: string | string[] = [],
 ) {
   const fileExt = getFileExt(ext);

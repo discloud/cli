@@ -3,7 +3,7 @@ import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
 import { apidiscloud, config, configToObj, configUpdate, getMissingValues, getNotIngnoredFiles, makeZipFromFileList, RateLimit, readDiscloudConfig, verifyRequiredFiles } from "../util";
-import { requiredDiscloudConfigProps, required_files } from "../util/constants";
+import { FileExt, requiredDiscloudConfigProps } from "../util/constants";
 
 export default new class Upload implements GluegunCommand {
   name = "upload";
@@ -28,15 +28,15 @@ export default new class Upload implements GluegunCommand {
       if (!filesystem.exists(parameters.first))
         return print.error(`${parameters.first} file does not exists.`);
     } else {
-      const dConfig = configToObj<string | undefined>(readDiscloudConfig(parameters.first)!);
+      const dConfig = configToObj<string>(readDiscloudConfig(parameters.first)!);
 
       const missing = getMissingValues(dConfig, requiredDiscloudConfigProps);
 
       if (missing.length)
         return print.error(`${missing[0]} param is missing from discloud.config`);
 
-      const fileExt = <keyof typeof required_files | undefined>dConfig.MAIN?.split(".").pop();
-      if (!verifyRequiredFiles(parameters.first, fileExt!, dConfig.MAIN!)) return;
+      const fileExt = <`${FileExt}`>dConfig.MAIN.split(".").pop();
+      if (!verifyRequiredFiles(parameters.first, fileExt, dConfig.MAIN)) return;
 
       const allFiles = getNotIngnoredFiles(parameters.first);
 
