@@ -1,10 +1,13 @@
 import { RouteBases } from "@discloudapp/api-types/v2";
 import archiver from "archiver";
-import { GlobSync } from "glob";
 import { filesystem, http, print } from "gluegun";
 import type { ResolveArgsOptions } from "../@types";
 import { blocked_files, configPath, FileExt, required_files } from "./constants";
 import FsJson from "./FsJson";
+import { RecursivelyReadDirSync } from "./RecursivelyReadDirSync";
+
+export * from "./RateLimit";
+export * from "./RecursivelyReadDirSync";
 
 export const config = new class Config extends FsJson {
   data: {
@@ -16,8 +19,6 @@ export const config = new class Config extends FsJson {
     super(`${configPath}/.cli`);
   }
 };
-
-export * from "./RateLimit";
 
 export const apidiscloud = http.create({
   baseURL: RouteBases.api,
@@ -67,10 +68,11 @@ export function getNotIngnoredFiles(path: string) {
   const ignore = getDiscloudIgnore(path);
 
   path = (filesystem.isDirectory(path) || [".", "./"].includes(path) || !/\W+/.test(path)) ?
-    `${path.replace(/(\\|\/)$/, "")}/**` :
+    `${path.replace(/(\\|\/)$/, "")}` :
     path;
 
-  return new GlobSync(path, { ignore, dot: true }).found.filter(a => !["."].includes(a));
+  return new RecursivelyReadDirSync(path, { ignore, ignoreFile: ".discloudignore" })
+    .found.filter(a => !["."].includes(a));
 }
 
 function getValues(array: Record<string, any>[]) {
