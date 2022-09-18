@@ -96,10 +96,14 @@ export function makeTable(apps: Record<string, any> | Record<string, any>[]): an
   return [keys, ...values];
 }
 
-export async function makeZipFromFileList(files: string[]) {
+export async function makeZipFromFileList(files: string[], fileName?: string) {
   const zipper = archiver("zip");
 
-  const outFileName = `${process.cwd().split(/\/|\\/).pop()}.zip`;
+  const outFileName = fileName ?? `${process.cwd().split(/\/|\\/).pop()}.zip`;
+
+  if (filesystem.exists(outFileName))
+    filesystem.remove(outFileName);
+
   const output = filesystem.createWriteStream(outFileName);
   zipper.pipe(output);
 
