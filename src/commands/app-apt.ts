@@ -32,17 +32,13 @@ export default new class AppApt implements GluegunCommand {
             name: "appId",
             message: "Choose the app",
             type: "select",
-            choices: [{
-              name: "all",
-              message: "All apps",
-              value: "all",
-            }].concat(apiRes.data.apps.map(app => ({
+            choices: apiRes.data.apps.map(app => ({
               name: app.id,
               message: `${app.name} - ${app.id} - ${app.online ?
                 print.colors.green("online") :
                 print.colors.red("offline")}`,
               value: app.id,
-            }))),
+            })),
           });
 
           parameters.first = appId;
