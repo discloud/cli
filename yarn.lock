@@ -30,10 +30,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@discloudapp/api-types@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.2.1.tgz#45e94f82b5f114b20c2650bd65fe5e71b7deb50a"
-  integrity sha512-qQLHX2q3e+zksa/8TiHuB+fmdjurGXpCvNnmd6Dtm45kBcNX5iP5KN0RcAJKaIdTeyxUGAyszx4AzIfy4Sbglw==
+"@discloudapp/api-types@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.2.2.tgz#e1aa79a8647eacb5d4968b39dd27f7b60f3dd1da"
+  integrity sha512-VezFeyHsWrn+aRWuApRUXVGs0ugxMTRvR/raWwr0lBiLftTWolYRj+Ly4iV2ixtuZODuD8ZuJ2UX0bMaEBU9RQ==
 
 "@eslint/eslintrc@^1.3.2":
   version "1.3.2"
