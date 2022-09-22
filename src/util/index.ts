@@ -185,7 +185,7 @@ export function verifyRequiredFiles(
   files: string | string[] = [],
 ) {
   const fileExt = getFileExt(ext);
-  const requiredFiles = Object.values(required_files[fileExt]).concat(required_files.common, files);
+  const requiredFiles = Object.values(required_files[fileExt] ?? {}).concat(required_files.common, files);
 
   for (let i = 0; i < requiredFiles.length; i++) {
     const file = requiredFiles[i];
