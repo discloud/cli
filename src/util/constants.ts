@@ -1,3 +1,4 @@
+import { AppLanguages, AppVersion } from "@discloudapp/api-types/v2";
 import { filesystem } from "gluegun";
 
 export const backupsPath = "discloud/backups";
@@ -90,4 +91,14 @@ export const Apt = {
     "libx11-xcb-dev",
   ],
   tools: ["git", "wget", "make", "curl"],
+};
+
+export const app_version: Record<AppLanguages, AppVersion[]> = {
+  go: ["latest"],
+  java: ["latest"],
+  js: ["latest", "current", "suja"],
+  php: ["latest"],
+  py: ["latest", "suja"],
+  rb: ["latest"],
+  rs: ["latest", "suja"],
 };
