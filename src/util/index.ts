@@ -26,7 +26,7 @@ export const apidiscloud = http.create({
   },
 });
 
-export function configToObj<T = number | string>(s: string): Record<string, T> {
+export function configToObj<T = boolean | number | string>(s: string): Record<string, T> {
   if (typeof s !== "string") return {};
   return Object.fromEntries(s.split(/\r?\n/).map(a => a.split("=")));
 }

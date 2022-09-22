@@ -43,7 +43,16 @@ export const required_files = {
   ts: ["package.json"],
 };
 
-export const requiredDiscloudConfigProps = ["MAIN", "NAME", "TYPE", "RAM", "VERSION"];
+export const mapDiscloudConfigProps = <Record<string, Record<string, string>>>{
+  site: {
+    ID: "subdomain",
+  },
+};
+
+export const requiredDiscloudConfigProps = {
+  bot: ["MAIN", "NAME", "TYPE", "RAM", "VERSION"],
+  site: ["ID", "MAIN", "TYPE", "RAM", "VERSION"],
+};
 
 export const ModPermissions = {
   backup_app: 1,
