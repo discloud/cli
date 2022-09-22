@@ -41,6 +41,18 @@ export function configUpdate(save: Record<string, string>, path = ".") {
   filesystem.write(`${path}/discloud.config`, objToString(data, "="));
 }
 
+export function findDiscloudConfig(path = ".") {
+  path = path.replace(/(\\|\/)$/, "");
+  const discloudConfigPaths = [`${path}`, "."];
+
+  for (let i = 0; i < discloudConfigPaths.length; i++) {
+    const discloudConfigPath = discloudConfigPaths[i];
+
+    if (filesystem.exists(`${discloudConfigPath}/discloud.config`))
+      return discloudConfigPath;
+  }
+}
+
 export function getDiscloudIgnore(path: string) {
   return [...new Set(Object.values(blocked_files).flat())]
     .map(a => [`${a.replace(/^\/|\/$/, "")}/**`, `${path}/${a.replace(/^\/|\/$/, "")}/**`]).flat();
@@ -151,8 +163,7 @@ export function objToString(obj: any, sep = ": "): string {
 
 export function readDiscloudConfig(path = ".") {
   path = path.replace(/(\\|\/)$/, "");
-  return filesystem.read(`${path}/discloud.config`) ||
-    filesystem.read("discloud.config");
+  return filesystem.read(`${path}/discloud.config`) ?? "";
 }
 
 export function resolveArgs(args: string[], options: ResolveArgsOptions[]) {

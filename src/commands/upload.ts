@@ -2,7 +2,7 @@ import { DiscloudConfig, RESTPostApiUploadResult, Routes } from "@discloudapp/ap
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
-import { apidiscloud, config, configToObj, configUpdate, getMissingValues, getNotIngnoredFiles, makeZipFromFileList, RateLimit, readDiscloudConfig, verifyRequiredFiles } from "../util";
+import { apidiscloud, config, configToObj, configUpdate, findDiscloudConfig, getMissingValues, getNotIngnoredFiles, makeZipFromFileList, RateLimit, readDiscloudConfig, verifyRequiredFiles } from "../util";
 import { FileExt, mapDiscloudConfigProps, requiredDiscloudConfigProps } from "../util/constants";
 
 export default new class Upload implements GluegunCommand {
@@ -28,9 +28,17 @@ export default new class Upload implements GluegunCommand {
       if (!filesystem.exists(parameters.first))
         return print.error(`${parameters.first} file does not exists.`);
     } else {
-      const dConfig = <DiscloudConfig>configToObj<any>(readDiscloudConfig(parameters.first)!);
+      const discloudConfigPath = findDiscloudConfig(parameters.first);
 
-      const missing = getMissingValues(dConfig, requiredDiscloudConfigProps[dConfig.TYPE]);
+      if (!discloudConfigPath)
+        return print.error("discloud.config file is missing.");
+
+      const dConfig = <DiscloudConfig>configToObj<any>(readDiscloudConfig(discloudConfigPath));
+
+      const requiredProps = requiredDiscloudConfigProps[dConfig.TYPE] ??
+        Object.values(requiredDiscloudConfigProps);
+
+      const missing = getMissingValues(dConfig, requiredProps);
 
       if (missing.length) {
         const missingProp = mapDiscloudConfigProps[dConfig.TYPE]?.[missing[0]] ?? missing[0];
