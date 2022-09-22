@@ -72,14 +72,12 @@ export default new class Delete implements GluegunCommand {
     if (apiRes.status) {
       if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
 
-      if (!apiRes.data) return exit(0);
+      if (!apiRes.data) return;
 
       if ("apps" in apiRes.data)
         print.table(makeTable(apiRes.data.apps), {
           format: "lean",
         });
     }
-
-    exit(0);
   }
 };

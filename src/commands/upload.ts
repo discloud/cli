@@ -68,7 +68,7 @@ export default new class Upload implements GluegunCommand {
     if (apiRes.status) {
       if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
 
-      if (!apiRes.data) return exit(0);
+      if (!apiRes.data) return;
 
       if ("app" in apiRes.data) {
         const app = apiRes.data.app;
@@ -81,7 +81,5 @@ export default new class Upload implements GluegunCommand {
 
       if (apiRes.data?.logs) print.info(`[DISCLOUD API] ${apiRes.data.logs}`);
     }
-
-    exit(0);
   }
 };

@@ -33,7 +33,7 @@ export default new class TeamLogs implements GluegunCommand {
     if (apiRes.status) {
       if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
 
-      if (!apiRes.data) return exit(0);
+      if (!apiRes.data) return;
 
       if (Array.isArray(apiRes.data.apps)) {
         const terminal = [];
@@ -79,7 +79,5 @@ export default new class TeamLogs implements GluegunCommand {
         print.table([[id, terminal.url]]);
       }
     }
-
-    exit(0);
   }
 };

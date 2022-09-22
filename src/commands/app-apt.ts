@@ -95,7 +95,5 @@ export default new class AppApt implements GluegunCommand {
 
     if (apiRes.status)
       if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
-
-    exit(0);
   }
 };

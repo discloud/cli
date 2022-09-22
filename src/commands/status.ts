@@ -39,7 +39,5 @@ export default new class Status implements GluegunCommand {
           format: "lean",
         });
     }
-
-    exit(0);
   }
 };

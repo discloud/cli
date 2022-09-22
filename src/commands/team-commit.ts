@@ -91,7 +91,5 @@ export default new class TeamCommit implements GluegunCommand {
 
       if (apiRes.data?.logs) print.info(`[DISCLOUD API] ${apiRes.data.logs}`);
     }
-
-    exit(0);
   }
 };

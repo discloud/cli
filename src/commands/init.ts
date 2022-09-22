@@ -1,6 +1,5 @@
 import { AppLanguages } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { exit } from "node:process";
 import { app_version, Apt } from "../util/constants";
 
 export default new class Init implements GluegunCommand {
@@ -120,7 +119,5 @@ export default new class Init implements GluegunCommand {
       target: "discloud.config",
       props: { appApt, appAvatar, appId, appMain, appName, appRam, appType, appAutoRestart, appVersion },
     });
-
-    exit(0);
   }
 };
