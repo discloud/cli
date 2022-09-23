@@ -27,7 +27,7 @@ export const apidiscloud = http.create({
   },
 });
 
-export function configToObj<T = number | string>(s: string): Record<string, T> {
+export function configToObj<T = boolean | number | string>(s: string): Record<string, T> {
   if (typeof s !== "string") return {};
   return Object.fromEntries(s.split(/\r?\n/).map(a => a.split("=")));
 }
@@ -40,6 +40,18 @@ export function configUpdate(save: Record<string, string>, path = ".") {
   const data = { ...configToObj(filesystem.read(`${path}/discloud.config`)!), ...save };
 
   filesystem.write(`${path}/discloud.config`, objToString(data, "="));
+}
+
+export function findDiscloudConfig(path = ".") {
+  path = path.replace(/(\\|\/)$/, "");
+  const discloudConfigPaths = [`${path}`, "."];
+
+  for (let i = 0; i < discloudConfigPaths.length; i++) {
+    const discloudConfigPath = discloudConfigPaths[i];
+
+    if (filesystem.exists(`${discloudConfigPath}/discloud.config`))
+      return discloudConfigPath;
+  }
 }
 
 export function getDiscloudIgnore(path: string) {
@@ -98,10 +110,14 @@ export function makeTable(apps: Record<string, any> | Record<string, any>[]): an
   return [keys, ...values];
 }
 
-export async function makeZipFromFileList(files: string[]) {
+export async function makeZipFromFileList(files: string[], fileName?: string) {
   const zipper = archiver("zip");
 
-  const outFileName = `${process.cwd().split(/\/|\\/).pop()}.zip`;
+  const outFileName = fileName ?? `${process.cwd().split(/\/|\\/).pop()}.zip`;
+
+  if (filesystem.exists(outFileName))
+    filesystem.remove(outFileName);
+
   const output = filesystem.createWriteStream(outFileName);
   zipper.pipe(output);
 
@@ -149,8 +165,7 @@ export function objToString(obj: any, sep = ": "): string {
 
 export function readDiscloudConfig(path = ".") {
   path = path.replace(/(\\|\/)$/, "");
-  return filesystem.read(`${path}/discloud.config`) ||
-    filesystem.read("discloud.config");
+  return filesystem.read(`${path}/discloud.config`) ?? "";
 }
 
 export function resolveArgs(args: string[], options: ResolveArgsOptions[]) {
@@ -183,7 +198,7 @@ export function verifyRequiredFiles(
   files: string | string[] = [],
 ) {
   const fileExt = getFileExt(ext);
-  const requiredFiles = Object.values(required_files[fileExt]).concat(required_files.common, files);
+  const requiredFiles = Object.values(required_files[fileExt] ?? {}).concat(required_files.common, files);
 
   for (let i = 0; i < requiredFiles.length; i++) {
     const file = requiredFiles[i];

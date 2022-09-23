@@ -35,7 +35,7 @@ export default new class TeamBackup implements GluegunCommand {
     if (apiRes.status) {
       if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
 
-      if (!apiRes.data) return exit(0);
+      if (!apiRes.data) return;
 
       if ("backups" in apiRes.data) {
         if (parameters.options.save || parameters.options.s)
@@ -90,7 +90,5 @@ export default new class TeamBackup implements GluegunCommand {
         });
       }
     }
-
-    exit(0);
   }
 };

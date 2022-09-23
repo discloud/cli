@@ -90,7 +90,5 @@ export default new class Commit implements GluegunCommand {
 
       if (apiRes.data?.logs) print.info(`[DISCLOUD API] ${apiRes.data.logs}`);
     }
-
-    exit(0);
   }
 };

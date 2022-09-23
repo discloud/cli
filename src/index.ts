@@ -1,6 +1,7 @@
 import { build } from "gluegun";
+import { exit } from "node:process";
 
-export function run(argv: string[]) {
+export async function run(argv: string[]) {
   const cli = build("discloud")
     .src(__dirname)
     .plugins("./node_modules", { matching: "discloud-*", hidden: true })
@@ -9,5 +10,7 @@ export function run(argv: string[]) {
     .version()
     .create();
 
-  return cli.run(argv);
+  await cli.run(argv);
+
+  exit(0);
 }

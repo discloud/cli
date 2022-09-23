@@ -33,7 +33,5 @@ export default new class Login implements GluegunCommand {
       if (apiRes.data?.status === "ok")
         config.write({ token });
     }
-
-    exit(0);
   }
 };

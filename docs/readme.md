@@ -1,5 +1,6 @@
 <!-- markdownlint-disable MD041 -->
 
+* [app:apt](./app-apt.md) - Install or uninstall apt packages for you application.
 * [apps:team](./apps-team.md) - Get team information of your applications.
 * [apps](./apps.md) - Get information of your applications.
 * [backups](./backups.md) - Make backup from your applications in Discloud.

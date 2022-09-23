@@ -1,7 +1,7 @@
 {
   "name": "discloud-cli",
   "description": "A fast option to manage your apps on Discloud.",
-  "version": "1.6.0",
+  "version": "1.7.3",
   "bin": {
     "discloud": "bin/discloud"
   },
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/discloud/cli#readme",
   "dependencies": {
-    "@discloudapp/api-types": "^0.1.0",
+    "@discloudapp/api-types": "^0.2.2",
     "archiver": "^5.3.1",
     "form-data": "^4.0.0",
     "gluegun": "^5.1.2"
@@ -30,9 +30,9 @@
   "devDependencies": {
     "@types/archiver": "^5.3.1",
     "@types/eslint": "^8.4.6",
-    "@types/node": "^18.7.16",
-    "@typescript-eslint/eslint-plugin": "^5.36.2",
-    "@typescript-eslint/parser": "^5.36.2",
+    "@types/node": "^18.7.18",
+    "@typescript-eslint/eslint-plugin": "^5.38.0",
+    "@typescript-eslint/parser": "^5.38.0",
     "copyfiles": "^2.4.1",
     "eslint": "^8.23.1",
     "ts-node": "^10.9.1",
