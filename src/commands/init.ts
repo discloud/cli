@@ -56,7 +56,7 @@ export default new class Init implements GluegunCommand {
       name: "appVersion",
       message: "Choose the version for your app",
       type: "select",
-      choices: app_version[<AppLanguages>appMain.split(".").pop()],
+      choices: app_version[<AppLanguages>appMain.split(".").pop()] ?? ["latest"],
       initial: 0,
     });
 
