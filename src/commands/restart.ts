@@ -27,22 +27,7 @@ export default new class Restart implements GluegunCommand {
 
       if (apiRes.data)
         if ("apps" in apiRes.data) {
-          const { appId } = await prompt.ask({
-            name: "appId",
-            message: "Choose the app",
-            type: "select",
-            choices: [{
-              name: "all",
-              message: "All apps",
-              value: "all",
-            }].concat(apiRes.data.apps.map(app => ({
-              name: app.id,
-              message: `${app.name} - ${app.id} - ${app.online ?
-                print.colors.green("online") :
-                print.colors.red("offline")}`,
-              value: app.id,
-            }))),
-          });
+          const { appId } = await prompt.askForApps(apiRes.data.apps, { all: true });
 
           parameters.first = appId;
         }

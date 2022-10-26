@@ -2,7 +2,7 @@ import { RESTGetApiAppAllResult, RESTPutApiAppCommitResult, Routes } from "@disc
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
-import { apidiscloud, config, configToObj, getNotIngnoredFiles, makeZipFromFileList, RateLimit, readDiscloudConfig } from "../util";
+import { apidiscloud, config, getNotIngnoredFiles, makeZipFromFileList, RateLimit } from "../util";
 
 export default new class Commit implements GluegunCommand {
   name = "commit";
@@ -21,8 +21,6 @@ export default new class Commit implements GluegunCommand {
     if (!parameters.first) parameters.first = ".";
     parameters.first = parameters.first.replace(/(\\|\/)$/, "");
 
-    const dConfig = configToObj(readDiscloudConfig(parameters.first)!);
-
     if (!parameters.second) {
       const spin = print.spin({
         text: print.colors.cyan("Fetching apps..."),
@@ -34,15 +32,8 @@ export default new class Commit implements GluegunCommand {
 
       if (apiRes.data)
         if ("apps" in apiRes.data) {
-          const { appId } = await prompt.ask({
-            name: "appId",
-            message: "Choose the app",
-            type: "select",
-            choices: apiRes.data.apps.map(app => ({
-              name: app.id,
-              message: `${app.name} - ${app.id} ${app.id === dConfig.ID ? "[discloud.config]" : ""}`,
-              value: app.id,
-            })),
+          const { appId } = await prompt.askForApps(apiRes.data.apps, {
+            discloudConfigPath: parameters.first,
           });
 
           parameters.second = appId;

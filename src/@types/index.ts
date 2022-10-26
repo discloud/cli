@@ -25,3 +25,18 @@ export interface ResolveArgsOptions {
   name: string
   pattern: RegExp
 }
+
+export interface AskForAppsOptions {
+  /**
+   * @default false
+   */
+  all?: boolean
+  /**
+   * @default "."
+   */
+  discloudConfigPath?: string
+  /**
+   * @default true
+   */
+  showStatus?: boolean
+}

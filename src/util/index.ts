@@ -190,6 +190,10 @@ export function resolveArgs(args: string[], options: ResolveArgsOptions[]) {
   return resolved;
 }
 
+export function sortAppsBySameId<T extends { id: string }>(apps: T[], id: string) {
+  return apps.sort(a => a.id === id ? -1 : 1);
+}
+
 export function verifyRequiredFiles(
   path: string,
   ext: `${FileExt}`,
