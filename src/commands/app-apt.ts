@@ -28,18 +28,7 @@ export default new class AppApt implements GluegunCommand {
 
       if (apiRes.data)
         if ("apps" in apiRes.data) {
-          const { appId } = await prompt.ask({
-            name: "appId",
-            message: "Choose the app",
-            type: "select",
-            choices: apiRes.data.apps.map(app => ({
-              name: app.id,
-              message: `${app.name} - ${app.id} - ${app.online ?
-                print.colors.green("online") :
-                print.colors.red("offline")}`,
-              value: app.id,
-            })),
-          });
+          const { appId } = await prompt.askForApps(apiRes.data.apps);
 
           parameters.first = appId;
         }
