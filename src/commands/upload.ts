@@ -13,6 +13,8 @@ export default new class Upload implements GluegunCommand {
   async run(toolbox: GluegunToolbox) {
     const { filesystem, parameters, print } = toolbox;
 
+    const debug = parameters.options.d || parameters.options.debug;
+
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
 
@@ -51,7 +53,7 @@ export default new class Upload implements GluegunCommand {
 
       const allFiles = getNotIngnoredFiles(parameters.first);
 
-      parameters.first = await makeZipFromFileList(allFiles);
+      parameters.first = await makeZipFromFileList(allFiles, null, debug);
     }
 
     formData.append("file", filesystem.createReadStream(parameters.first), parameters.first);

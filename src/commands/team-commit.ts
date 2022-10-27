@@ -12,6 +12,8 @@ export default new class TeamCommit implements GluegunCommand {
   async run(toolbox: GluegunToolbox) {
     const { filesystem, parameters, print, prompt } = toolbox;
 
+    const debug = parameters.options.d || parameters.options.debug;
+
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
 
@@ -53,7 +55,7 @@ export default new class TeamCommit implements GluegunCommand {
       const allFiles = getNotIngnoredFiles(parameters.first);
       if (!allFiles.length) return print.error(`No files found in path ${parameters.first}`);
 
-      parameters.first = await makeZipFromFileList(allFiles);
+      parameters.first = await makeZipFromFileList(allFiles, null, debug);
     }
 
     formData.append("file", filesystem.createReadStream(parameters.first));
