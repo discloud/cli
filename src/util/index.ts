@@ -108,7 +108,7 @@ export function makeTable(apps: Record<string, any> | Record<string, any>[]): an
   return [keys, ...values];
 }
 
-export async function makeZipFromFileList(files: string[], fileName?: string) {
+export async function makeZipFromFileList(files: string[], fileName?: string | null, debug?: boolean) {
   const zipper = archiver("zip");
 
   const outFileName = fileName ?? `${process.cwd().split(/\/|\\/).pop()}.zip`;
@@ -119,20 +119,31 @@ export async function makeZipFromFileList(files: string[], fileName?: string) {
   const output = filesystem.createWriteStream(outFileName);
   zipper.pipe(output);
 
+  let amountZippedFiles = 0;
+
+  const spin = print.spin({
+    text: "Zipping files",
+  });
+
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
     const fileName = file.replace(/^\.\//, "");
 
     if (filesystem.isFile(file)) {
-      const spin = print.spin({
-        text: `Zipping file: ${fileName}`,
-      });
+      if (debug)
+        spin.info(`[${i + 1}/${files.length}] Zipping: ${fileName}`);
+
+      spin.text = `[${i + 1}/${files.length}] Zipping: ${fileName}`;
 
       zipper.append(filesystem.createReadStream(file), { name: fileName });
-
-      spin.succeed();
     }
+
+    amountZippedFiles++;
   }
+
+  spin.text = `[${amountZippedFiles}/${files.length}] Successfully zipped files.`;
+
+  spin.succeed();
 
   await zipper.finalize();
 
