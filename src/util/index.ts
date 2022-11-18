@@ -1,8 +1,8 @@
 import { RouteBases } from "@discloudapp/api-types/v2";
 import archiver from "archiver";
-import { existsSync, readFileSync } from "fs";
 import { GlobSync } from "glob";
 import { filesystem, http, print } from "gluegun";
+import { existsSync, readFileSync } from "node:fs";
 import type { ResolveArgsOptions } from "../@types";
 import { blocked_files, configPath, FileExt, required_files } from "./constants";
 import FsJson from "./FsJson";
