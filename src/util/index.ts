@@ -2,6 +2,7 @@ import { RouteBases } from "@discloudapp/api-types/v2";
 import archiver from "archiver";
 import { GlobSync } from "glob";
 import { filesystem, http, print } from "gluegun";
+import { existsSync, readFileSync } from "node:fs";
 import type { ResolveArgsOptions } from "../@types";
 import { blocked_files, configPath, FileExt, required_files } from "./constants";
 import FsJson from "./FsJson";
@@ -54,7 +55,10 @@ export function findDiscloudConfig(path = ".") {
 }
 
 export function getDiscloudIgnore(path: string) {
-  return [...new Set(Object.values(blocked_files).flat())]
+  return [
+    ...new Set(Object.values(blocked_files).flat()),
+    ...resolveIgnoreFile(".discloudignore"),
+  ]
     .map(a => [`${a.replace(/^\/|\/$/, "")}/**`, `${path}/${a.replace(/^\/|\/$/, "")}/**`]).flat();
 }
 
@@ -199,6 +203,25 @@ export function resolveArgs(args: string[], options: ResolveArgsOptions[]) {
   }
 
   return resolved;
+}
+
+export function resolveIgnoreFile(ignoreFile: string | string[]) {
+  if (Array.isArray(ignoreFile)) {
+    const ignored = <string[]>[];
+
+    for (let i = 0; i < ignoreFile.length; i++)
+      ignored.push(...resolveIgnoreFile(ignoreFile[i]));
+
+    return ignored;
+  }
+
+  if (existsSync(ignoreFile))
+    return readFileSync(ignoreFile, "utf8")
+      .replace(/#[^\r?\n]+/g, "")
+      .split(/\r?\n/)
+      .filter(a => a);
+
+  return [];
 }
 
 export function sortAppsBySameId<T extends { id: string }>(apps: T[], id: string) {
