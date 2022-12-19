@@ -38,9 +38,7 @@ export async function makeZipFromFileList(files: string[], fileName?: string | n
     }
   }
 
-  spin.text = `[${amountZippedFiles}/${files.length}] Successfully zipped files.`;
-
-  spin.succeed();
+  spin.succeed(`[${amountZippedFiles}/${files.length}] Successfully zipped files.`);
 
   return zipper.finalize().then(() => outFileName);
 }
