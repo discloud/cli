@@ -19,22 +19,21 @@ export async function makeZipFromFileList(files: string[], fileName?: string | n
   });
 
   for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    const fileName = file.replace(/^[.\\/]+/, "");
+    const name = files[i];
 
     try {
-      if (filesystem.isFile(file)) {
+      if (filesystem.isFile(name)) {
         if (debug)
-          spin.info(`[${i + 1}/${files.length}] Zipping: ${fileName}`);
+          spin.info(`[${i + 1}/${files.length}] Zipping: ${name}`);
 
-        spin.text = `[${i + 1}/${files.length}] Zipping: ${fileName}`;
+        spin.text = `[${i + 1}/${files.length}] Zipping: ${name}`;
 
-        zipper.append(filesystem.createReadStream(file), { name: fileName });
+        zipper.append(filesystem.createReadStream(name), { name });
       }
 
       amountZippedFiles++;
     } catch (error) {
-      spin.fail(`Error on zipping ${file}.`);
+      spin.fail(`Error on zipping ${name}.`);
     }
   }
 
