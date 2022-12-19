@@ -2,7 +2,7 @@ import { DiscloudConfig, RESTPostApiUploadResult, Routes } from "@discloudapp/ap
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
-import { apidiscloud, config, configToObj, configUpdate, findDiscloudConfig, getMissingValues, getNotIngnoredFiles, makeZipFromFileList, RateLimit, readDiscloudConfig, verifyRequiredFiles } from "../util";
+import { apidiscloud, config, configToObj, configUpdate, findDiscloudConfig, getMissingValues, makeZipFromFileList, RateLimit, readDiscloudConfig, verifyRequiredFiles, GS } from "../util";
 import { FileExt, mapDiscloudConfigProps, requiredDiscloudConfigProps } from "../util/constants";
 
 export default new class Upload implements GluegunCommand {
@@ -51,7 +51,7 @@ export default new class Upload implements GluegunCommand {
       const fileExt = <`${FileExt}`>dConfig.MAIN.split(".").pop();
       if (!verifyRequiredFiles(parameters.first, fileExt, dConfig.MAIN)) return;
 
-      const allFiles = getNotIngnoredFiles(parameters.first);
+      const allFiles = new GS(parameters.first).found;
 
       parameters.first = await makeZipFromFileList(allFiles, null, debug);
     }
