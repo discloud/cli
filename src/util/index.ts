@@ -1,11 +1,12 @@
 import { RouteBases } from "@discloudapp/api-types/v2";
-import archiver from "archiver";
-import { GlobSync } from "glob";
 import { filesystem, http, print } from "gluegun";
-import { existsSync, readFileSync } from "node:fs";
 import type { ResolveArgsOptions } from "../@types";
-import { blocked_files, configPath, FileExt, required_files } from "./constants";
+import { configPath, FileExt, required_files } from "./constants";
 import FsJson from "./FsJson";
+
+export * from "./GS";
+export * from "./RateLimit";
+export * from "./Zip";
 
 export const config = new class Config extends FsJson {
   data: {
@@ -17,8 +18,6 @@ export const config = new class Config extends FsJson {
     super(`${configPath}/.cli`);
   }
 };
-
-export * from "./RateLimit";
 
 export const apidiscloud = http.create({
   baseURL: RouteBases.api,
@@ -54,14 +53,6 @@ export function findDiscloudConfig(path = ".") {
   }
 }
 
-export function getDiscloudIgnore(path: string) {
-  return [
-    ...new Set(Object.values(blocked_files).flat()),
-    ...resolveIgnoreFile(".discloudignore"),
-  ]
-    .map(a => [`${a.replace(/^\/|\/$/, "")}/**`, `${path}/${a.replace(/^\/|\/$/, "")}/**`]).flat();
-}
-
 export function getFileExt(ext: `${FileExt}`) {
   return FileExt[ext] ?? ext;
 }
@@ -77,16 +68,6 @@ function getKeys(array: Record<string, any>[]) {
 
 export function getMissingValues(obj: Record<any, any>, values: string[]) {
   return values.filter(key => !obj[key]);
-}
-
-export function getNotIngnoredFiles(path: string) {
-  const ignore = getDiscloudIgnore(path);
-
-  path = (filesystem.isDirectory(path) || [".", "./"].includes(path) || !/\W+/.test(path)) ?
-    `${path.replace(/(\\|\/)$/, "")}/**` :
-    path;
-
-  return new GlobSync(path, { ignore, dot: true }).found.filter(a => !["."].includes(a));
 }
 
 function getValues(array: Record<string, any>[]) {
@@ -110,48 +91,6 @@ export function makeTable(apps: Record<string, any> | Record<string, any>[]): an
   if (!Array.isArray(apps)) return makeTable([apps]);
   const { keys, values } = getValues(apps);
   return [keys, ...values];
-}
-
-export async function makeZipFromFileList(files: string[], fileName?: string | null, debug?: boolean) {
-  const zipper = archiver("zip");
-
-  const outFileName = fileName ?? `${process.cwd().split(/\/|\\/).pop()}.zip`;
-
-  if (filesystem.exists(outFileName))
-    filesystem.remove(outFileName);
-
-  const output = filesystem.createWriteStream(outFileName);
-  zipper.pipe(output);
-
-  let amountZippedFiles = 0;
-
-  const spin = print.spin({
-    text: "Zipping files",
-  });
-
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    const fileName = file.replace(/^\.\//, "");
-
-    if (filesystem.isFile(file)) {
-      if (debug)
-        spin.info(`[${i + 1}/${files.length}] Zipping: ${fileName}`);
-
-      spin.text = `[${i + 1}/${files.length}] Zipping: ${fileName}`;
-
-      zipper.append(filesystem.createReadStream(file), { name: fileName });
-    }
-
-    amountZippedFiles++;
-  }
-
-  spin.text = `[${amountZippedFiles}/${files.length}] Successfully zipped files.`;
-
-  spin.succeed();
-
-  await zipper.finalize();
-
-  return outFileName;
 }
 
 export function objToString(obj: any, sep = ": "): string {
@@ -203,25 +142,6 @@ export function resolveArgs(args: string[], options: ResolveArgsOptions[]) {
   }
 
   return resolved;
-}
-
-export function resolveIgnoreFile(ignoreFile: string | string[]) {
-  if (Array.isArray(ignoreFile)) {
-    const ignored = <string[]>[];
-
-    for (let i = 0; i < ignoreFile.length; i++)
-      ignored.push(...resolveIgnoreFile(ignoreFile[i]));
-
-    return ignored;
-  }
-
-  if (existsSync(ignoreFile))
-    return readFileSync(ignoreFile, "utf8")
-      .replace(/#[^\r?\n]+/g, "")
-      .split(/\r?\n/)
-      .filter(a => a);
-
-  return [];
 }
 
 export function sortAppsBySameId<T extends { id: string }>(apps: T[], id: string) {
