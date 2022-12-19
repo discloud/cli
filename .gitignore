@@ -2,6 +2,7 @@
 **/.ignore.*
 /test*.js
 /test*.ts
+.discloudignore
 build
 discloud
 discloud.config
