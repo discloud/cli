@@ -42,7 +42,5 @@ export async function makeZipFromFileList(files: string[], fileName?: string | n
 
   spin.succeed();
 
-  await zipper.finalize();
-
-  return outFileName;
+  return zipper.finalize().then(() => outFileName);
 }
