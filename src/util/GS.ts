@@ -4,14 +4,14 @@ import { existsSync, readFileSync } from "node:fs";
 import { blocked_files } from "./constants";
 
 export class GS {
-  found: string[] = [];
-  ignore: string[] = [];
+  found: string[];
+  ignore: string[];
 
   constructor(path = "**") {
     path = path.replace(/^\.?\/|^\.$/, "");
 
     path = filesystem.isDirectory(path) ?
-      path.replace(/^[.\\/~]+|[\\/~]+$/, "") + "/**" :
+      path.replace(/^\.?\/|^\.$|[\\/]+$/, "") + "/**" :
       path;
 
     this.ignore = this.getDiscloudIgnore(path);
