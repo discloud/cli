@@ -6,11 +6,12 @@ import { blocked_files } from "./constants";
 export class GS {
   found: string[];
   ignore: string[];
+  path: string;
 
   constructor(path = "**") {
     path = path.replace(/^\.?\/|^\.$/, "") || "**";
 
-    path = filesystem.isDirectory(path) ?
+    this.path = path = filesystem.isDirectory(path) ?
       path.replace(/^\.?\/|^\.$|[\\/]+$/, "") + "/**" :
       path;
 
