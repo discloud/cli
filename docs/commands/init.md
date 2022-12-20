@@ -1,8 +1,10 @@
-# Init
+# Commands
+
+## Init
 
 Init discloud.config file.
 
-* [init](#init)
+- [init](#init)
 
 ```sh-session
 USAGE
