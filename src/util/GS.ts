@@ -8,7 +8,7 @@ export class GS {
   ignore: string[];
 
   constructor(path = "**") {
-    path = path.replace(/^\.?\/|^\.$/, "");
+    path = path.replace(/^\.?\/|^\.$/, "") || "**";
 
     path = filesystem.isDirectory(path) ?
       path.replace(/^\.?\/|^\.$|[\\/]+$/, "") + "/**" :
