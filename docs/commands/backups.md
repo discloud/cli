@@ -1,8 +1,10 @@
-# Backups
+# Commands
+
+## Backups
 
 Make backup from your applications in Discloud.
 
-* [backups](#backups)
+- [backups](#backups)
 
 ```sh-session
 USAGE
@@ -20,4 +22,4 @@ ARGUMENTS
   APP_ID The id of your app on Discloud
 ```
 
-* If does not contains `APP_ID`, this get all of your apps.
+- If does not contains `APP_ID`, this get all of your apps.

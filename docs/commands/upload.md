@@ -1,8 +1,10 @@
-# Upload
+# Commands
+
+## Upload
 
 Upload one app or site to Discloud.
 
-* [upload](#upload)
+- [upload](#upload)
 
 ```sh-session
 USAGE

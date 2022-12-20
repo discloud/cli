@@ -1,8 +1,10 @@
-# Team
+# Commands
+
+## Team
 
 View team information.
 
-* [team](#team)
+- [team](#team)
 
 ```sh-session
 USAGE

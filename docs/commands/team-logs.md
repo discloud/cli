@@ -1,8 +1,10 @@
-# Team:Logs
+# Commands
+
+## Team:Logs
 
 View the logs from team application in Discloud.
 
-* [team:logs](#teamlogs)
+- [team:logs](#teamlogs)
 
 ```sh-session
 USAGE
@@ -18,4 +20,4 @@ ARGUMENTS
   APP_ID The id of your app on Discloud
 ```
 
-* If does not contains `APP_ID`, this get all of your apps.
+- If does not contains `APP_ID`, this get all of your apps.
