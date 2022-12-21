@@ -1,8 +1,10 @@
-# Login
+# Commands
+
+## Login
 
 Login to Discloud API.
 
-* [login](#login)
+- [login](#login)
 
 ```sh-session
 USAGE

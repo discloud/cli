@@ -1,8 +1,10 @@
-# Apps:Team
+# Commands
+
+## Apps:Team
 
 Get team information of your applications.
 
-* [apps:team](#appsteam)
+- [apps:team](#appsteam)
 
 ```sh-session
 USAGE
@@ -36,4 +38,4 @@ PERMS
   - stop_app
 ```
 
-* You can choose `permissions` by menu if you don't use the `-p` option
+- You can choose `permissions` by menu if you don't use the `-p` option

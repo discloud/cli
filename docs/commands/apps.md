@@ -1,8 +1,10 @@
-# Apps
+# Commands
+
+## Apps
 
 Get information of your applications.
 
-* [apps](#apps)
+- [apps](#apps)
 
 ```sh-session
 USAGE
@@ -15,4 +17,4 @@ ARGUMENTS
   APP_ID The id of your app on Discloud
 ```
 
-* If does not contains `APP_ID`, this get all of your apps.
+- If does not contains `APP_ID`, this get all of your apps.

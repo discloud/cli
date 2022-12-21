@@ -1,8 +1,10 @@
-# App:Apt
+# Commands
+
+## App:Apt
 
 Install or uninstall apt packages for you application.
 
-* [app:apt](#appapt)
+- [app:apt](#appapt)
 
 ```sh-session
 USAGE
@@ -29,4 +31,4 @@ PACKAGE
   - tools
 ```
 
-* If does not contains `APP_ID`, the CLI will show a list of your apps for you to select.
+- If does not contains `APP_ID`, the CLI will show a list of your apps for you to select.
