@@ -30,7 +30,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: yarn
       - if: ${{ github.event.release.prerelease }}
-        run: npm publish --tag=beta
+        run: npm publish --tag=beta -f
       - if: ${{ github.event.release.prerelease == false }}
         run: npm publish
         env:
