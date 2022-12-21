@@ -2,7 +2,7 @@ import { RESTGetApiAppAllResult, RESTPutApiAppCommitResult, Routes } from "@disc
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
-import { apidiscloud, config, getNotIngnoredFiles, makeZipFromFileList, RateLimit } from "../util";
+import { apidiscloud, config, GS, makeZipFromFileList, RateLimit } from "../util";
 
 export default new class Commit implements GluegunCommand {
   name = "commit";
@@ -21,7 +21,7 @@ export default new class Commit implements GluegunCommand {
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
     if (!parameters.first) parameters.first = ".";
-    parameters.first = parameters.first.replace(/(\\|\/)$/, "");
+    parameters.first = parameters.first.replace(/\\/g, "/").replace(/\/$/, "");
 
     if (!parameters.second) {
       const spin = print.spin({
@@ -51,7 +51,7 @@ export default new class Commit implements GluegunCommand {
       if (!filesystem.exists(parameters.first))
         return print.error(`${parameters.first} file does not exists.`);
     } else {
-      const allFiles = getNotIngnoredFiles(parameters.first);
+      const allFiles = new GS(parameters.first).found;
       if (!allFiles.length) return print.error(`No files found in path ${parameters.first}`);
 
       parameters.first = await makeZipFromFileList(allFiles, null, debug);

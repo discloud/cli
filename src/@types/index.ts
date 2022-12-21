@@ -40,3 +40,10 @@ export interface AskForAppsOptions {
    */
   showStatus?: boolean
 }
+
+export interface MakeZipArgs {
+  debug?: boolean
+  fileName?: string | null
+  ignore?: string[]
+  path?: string
+}
