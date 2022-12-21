@@ -6,13 +6,9 @@ import { blocked_files } from "./constants";
 export class GS {
   found: string[];
   ignore: string[];
-  path: string;
 
-  constructor(path = "**") {
-    path = path.replace(/^((\.|~)|(\.|~)?\/)$/, "") || "**";
-    path.replace(/^\.?\/|\/+$/, "");
-
-    this.path = path = filesystem.isDirectory(path) ? path + "/**" : path;
+  constructor(public path = "**") {
+    this.path = path = this.normalizePath(path);
 
     this.ignore = this.getDiscloudIgnore(path);
 
@@ -28,6 +24,13 @@ export class GS {
       ...this.resolveIgnoreFile(".discloudignore"),
     ]
       .map(a => [`${a}/**`, `**/${a}/**`, `${path}/${a}/**`]).flat();
+  }
+
+  normalizePath(path: string) {
+    path = path.replace(/^((\.|~)|(\.|~)?\/)$/, "") || "**";
+    path = path.replace(/^\.?\/|\/+$/, "");
+    path = filesystem.isDirectory(path) ? path + "/**" : path;
+    return path;
   }
 
   resolveIgnoreFile(ignoreFile: string | string[]) {
