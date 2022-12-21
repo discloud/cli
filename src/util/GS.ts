@@ -9,11 +9,10 @@ export class GS {
   path: string;
 
   constructor(path = "**") {
-    path = path.replace(/^(\.|\.?\/)$/, "") || "**";
+    path = path.replace(/^((\.|~)|(\.|~)?\/)$/, "") || "**";
+    path.replace(/^\.?\/|\/+$/, "");
 
-    this.path = path = filesystem.isDirectory(path) ?
-      path.replace(/^\.\/|[\\/]+$/, "") + "/**" :
-      path;
+    this.path = path = filesystem.isDirectory(path) ? path + "/**" : path;
 
     this.ignore = this.getDiscloudIgnore(path);
 

@@ -3,10 +3,11 @@ import { filesystem, print } from "gluegun";
 import { MakeZipArgs } from "../@types";
 
 export async function makeZip(args: MakeZipArgs = {}) {
-  const { debug, fileName, ignore, path = "**" } = args;
+  const { debug, fileName, ignore = [], path = "**" } = args;
   const zipper = archiver("zip");
 
   const outFileName = fileName ?? `${process.cwd().split(/(\\|\/)/).pop()}.zip`;
+  ignore.push(outFileName, `${path}/${outFileName}`);
 
   if (filesystem.exists(outFileName))
     filesystem.remove(outFileName);

@@ -22,7 +22,7 @@ export default new class Upload implements GluegunCommand {
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
     if (!parameters.first) parameters.first = ".";
-    parameters.first = parameters.first.replace(/(\\|\/)$/, "");
+    parameters.first = parameters.first.replace(/\\/g, "/").replace(/\/$/, "");
 
     const formData = new FormData();
 

@@ -21,7 +21,7 @@ export default new class Commit implements GluegunCommand {
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
     if (!parameters.first) parameters.first = ".";
-    parameters.first = parameters.first.replace(/(\\|\/)$/, "");
+    parameters.first = parameters.first.replace(/\\/g, "/").replace(/\/$/, "");
 
     if (!parameters.second) {
       const spin = print.spin({
