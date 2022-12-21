@@ -3,6 +3,7 @@ node_modules
 assets
 discloud
 discloud.config
+.discloudignore
 /test*.js
 /test*.ts
 *.zip
