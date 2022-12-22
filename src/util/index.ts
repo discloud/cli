@@ -42,7 +42,7 @@ export function configUpdate(save: Record<string, string>, path = ".") {
 }
 
 export function findDiscloudConfig(path = "") {
-  path = path.replace(/\\/, "/").replace(/\/$/, "") + "/";
+  path = path.replace(/\\/g, "/").replace(/\/$/, "") + "/";
   const discloudConfigPaths = [`${path}`, ""];
 
   for (let i = 0; i < discloudConfigPaths.length; i++) {
