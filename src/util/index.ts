@@ -116,7 +116,7 @@ export function objToString(obj: any, sep = ": "): string {
 }
 
 export function readDiscloudConfig(path = "") {
-  path = path.replace(/\\/, "/").replace(/\/$/, "") + "/";
+  path = path.replace(/\\/g, "/").replace(/\/$/, "") + "/";
   return filesystem.read(`${path}discloud.config`) ?? filesystem.read("discloud.config") ?? "";
 }
 
