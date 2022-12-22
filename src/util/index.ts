@@ -41,14 +41,14 @@ export function configUpdate(save: Record<string, string>, path = ".") {
   filesystem.write(`${path}/discloud.config`, objToString(data, "="));
 }
 
-export function findDiscloudConfig(path = ".") {
-  path = path.replace(/(\\|\/)$/, "");
-  const discloudConfigPaths = [`${path}`, "."];
+export function findDiscloudConfig(path = "") {
+  path = path.replace(/\\/, "/").replace(/\/$/, "") + "/";
+  const discloudConfigPaths = [`${path}`, ""];
 
   for (let i = 0; i < discloudConfigPaths.length; i++) {
     const discloudConfigPath = discloudConfigPaths[i];
 
-    if (filesystem.exists(`${discloudConfigPath}/discloud.config`))
+    if (filesystem.exists(`${discloudConfigPath}discloud.config`))
       return discloudConfigPath;
   }
 }
@@ -115,9 +115,9 @@ export function objToString(obj: any, sep = ": "): string {
   return result.join("\n");
 }
 
-export function readDiscloudConfig(path = ".") {
-  path = path.replace(/(\\|\/)$/, "");
-  return filesystem.read(`${path}/discloud.config`) ?? "";
+export function readDiscloudConfig(path = "") {
+  path = path.replace(/\\/, "/").replace(/\/$/, "") + "/";
+  return filesystem.read(`${path}discloud.config`) ?? filesystem.read("discloud.config") ?? "";
 }
 
 export function resolveArgs(args: string[], options: ResolveArgsOptions[]) {

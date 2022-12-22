@@ -2,8 +2,9 @@ import { DiscloudConfig, RESTPostApiUploadResult, Routes } from "@discloudapp/ap
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
-import { apidiscloud, config, configToObj, configUpdate, findDiscloudConfig, getMissingValues, makeZipFromFileList, RateLimit, readDiscloudConfig, verifyRequiredFiles, GS } from "../util";
+import { apidiscloud, config, configToObj, configUpdate, findDiscloudConfig, getMissingValues, GS, makeZipFromFileList, RateLimit, readDiscloudConfig, verifyRequiredFiles } from "../util";
 import { FileExt, mapDiscloudConfigProps, requiredDiscloudConfigProps } from "../util/constants";
+import { setTimeout } from "node:timers/promises";
 
 export default new class Upload implements GluegunCommand {
   name = "upload";
@@ -23,6 +24,9 @@ export default new class Upload implements GluegunCommand {
 
     if (!parameters.first) parameters.first = ".";
     parameters.first = parameters.first.replace(/\\/g, "/").replace(/\/$/, "");
+    const filePath = filesystem.isFile(parameters.first) ?
+      parameters.first.split("/").slice(0, -1).join("/") :
+      parameters.first;
 
     const formData = new FormData();
 
@@ -30,9 +34,9 @@ export default new class Upload implements GluegunCommand {
       if (!filesystem.exists(parameters.first))
         return print.error(`${parameters.first} file does not exists.`);
     } else {
-      const discloudConfigPath = findDiscloudConfig(parameters.first);
+      const discloudConfigPath = findDiscloudConfig(filePath);
 
-      if (!discloudConfigPath)
+      if (typeof discloudConfigPath !== "string")
         return print.error("discloud.config file is missing.");
 
       const dConfig = <DiscloudConfig>configToObj<any>(readDiscloudConfig(discloudConfigPath));
@@ -49,11 +53,13 @@ export default new class Upload implements GluegunCommand {
       }
 
       const fileExt = <`${FileExt}`>dConfig.MAIN.split(".").pop();
-      if (!verifyRequiredFiles(parameters.first, fileExt, dConfig.MAIN)) return;
+      if (!verifyRequiredFiles(filePath, fileExt, dConfig.MAIN)) return;
 
-      const allFiles = new GS(parameters.first).found;
+      const allFiles = new GS(parameters.first).found.concat(discloudConfigPath + "discloud.config");
 
       parameters.first = await makeZipFromFileList(allFiles, null, debug);
+
+      await setTimeout(1000);
     }
 
     formData.append("file", filesystem.createReadStream(parameters.first), parameters.first);
