@@ -4,7 +4,6 @@ import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
 import { apidiscloud, config, configToObj, configUpdate, findDiscloudConfig, getMissingValues, GS, makeZipFromFileList, RateLimit, readDiscloudConfig, verifyRequiredFiles } from "../util";
 import { FileExt, mapDiscloudConfigProps, requiredDiscloudConfigProps } from "../util/constants";
-import { setTimeout } from "node:timers/promises";
 
 export default new class Upload implements GluegunCommand {
   name = "upload";
@@ -58,8 +57,6 @@ export default new class Upload implements GluegunCommand {
       const allFiles = new GS(parameters.first).found.concat(discloudConfigPath + "discloud.config");
 
       parameters.first = await makeZipFromFileList(allFiles, null, debug);
-
-      await setTimeout(1000);
     }
 
     formData.append("file", filesystem.createReadStream(parameters.first), parameters.first);
