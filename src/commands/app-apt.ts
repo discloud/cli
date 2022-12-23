@@ -40,16 +40,14 @@ export default new class AppApt implements GluegunCommand {
     let method: "delete" | "put" | undefined;
     let apt: keyof typeof Apt | undefined;
 
-    if (Object.keys(parameters.options).length) {
-      if (parameters.options.i ?? parameters.options.install) {
-        method = "put";
-        apt = parameters.options.i ?? parameters.options.install;
-      }
+    if (parameters.options.i ?? parameters.options.install) {
+      method = "put";
+      apt = parameters.options.i ?? parameters.options.install;
+    }
 
-      if (parameters.options.u ?? parameters.options.uninstall) {
-        method = "delete";
-        apt = parameters.options.u ?? parameters.options.uninstall;
-      }
+    if (parameters.options.u ?? parameters.options.uninstall) {
+      method = "delete";
+      apt = parameters.options.u ?? parameters.options.uninstall;
     }
 
     if (!method || !Object.keys(Apt).includes(apt!))
