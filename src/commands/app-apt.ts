@@ -38,23 +38,26 @@ export default new class AppApt implements GluegunCommand {
     }
 
     let method: "delete" | "put" | undefined;
+    let apt: keyof typeof Apt | undefined;
 
-    if (Object.keys(parameters.options).length)
-      method =
-        (parameters.options.u ?? parameters.options.uninstall) ? "delete" :
-          (parameters.options.i ?? parameters.options.install) ? "put" :
-            method;
+    if (parameters.options.i ?? parameters.options.install) {
+      method = "put";
+      apt = parameters.options.i ?? parameters.options.install;
+    }
 
-    if (!method || !Object.keys(Apt).includes(parameters.options[method]))
+    if (parameters.options.u ?? parameters.options.uninstall) {
+      method = "delete";
+      apt = parameters.options.u ?? parameters.options.uninstall;
+    }
+
+    if (!method || !Object.keys(Apt).includes(apt!))
       return print.error(
         "You need to use one of the options below:" +
         "\n  -i, --install [PACKAGE]   Install a package." +
         "\n  -u, --uninstall [PACKAGE] Uninstall a package." + "\n" +
         "\nPACKAGES:" + "\n" +
-        Object.keys(Apt).map(pkg => `  - ${pkg} ${Apt[<"tools">pkg]}`).join("\n"),
+        Object.keys(Apt).map(pkg => `  - ${pkg}: ${Apt[<"tools">pkg]}`).join("\n"),
       );
-
-    const apt = parameters.options[method];
 
     let action;
     switch (method) {
