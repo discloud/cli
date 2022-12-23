@@ -25,3 +25,25 @@ export interface ResolveArgsOptions {
   name: string
   pattern: RegExp
 }
+
+export interface AskForAppsOptions {
+  /**
+   * @default false
+   */
+  all?: boolean
+  /**
+   * @default "."
+   */
+  discloudConfigPath?: string
+  /**
+   * @default true
+   */
+  showStatus?: boolean
+}
+
+export interface MakeZipArgs {
+  debug?: boolean
+  fileName?: string | null
+  ignore?: string[]
+  path?: string
+}

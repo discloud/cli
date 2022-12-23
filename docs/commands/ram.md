@@ -1,8 +1,10 @@
-# RAM
+# Commands
+
+## RAM
 
 Set amount of ram for your app.
 
-* [RAM](#ram)
+- [RAM](#ram)
 
 ```sh-session
 USAGE

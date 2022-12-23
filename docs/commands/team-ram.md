@@ -1,8 +1,10 @@
-# Team:RAM
+# Commands
+
+## Team:RAM
 
 Set amount of ram for an app of your team.
 
-* [team:ram](#teamram)
+- [team:ram](#teamram)
 
 ```sh-session
 USAGE

@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/node";
 import "@sentry/tracing";
 import { build } from "gluegun";
+import { exit } from "node:process";
 
 Sentry.init({
   dsn: "https://c7832919af874c068ce1ffe90177f470@sentry.discloudbot.com/4",
@@ -16,5 +17,7 @@ export function run(argv: string[]) {
     .version()
     .create();
 
-  return cli.run(argv);
+  await cli.run(argv);
+
+  exit(0);
 }

@@ -1,8 +1,10 @@
-# Locale
+# Commands
+
+## Locale
 
 Set your locale.
 
-* [locale](#locale)
+- [locale](#locale)
 
 ```sh-session
 USAGE

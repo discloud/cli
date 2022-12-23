@@ -2,7 +2,7 @@ import { RESTGetApiTeamResult, RESTPutApiAppCommitResult, Routes } from "@disclo
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
-import { apidiscloud, config, configToObj, getNotIngnoredFiles, makeZipFromFileList, RateLimit } from "../util";
+import { apidiscloud, config, GS, makeZipFromFileList, RateLimit } from "../util";
 
 export default new class TeamCommit implements GluegunCommand {
   name = "team:commit";
@@ -12,6 +12,8 @@ export default new class TeamCommit implements GluegunCommand {
   async run(toolbox: GluegunToolbox) {
     const { filesystem, parameters, print, prompt } = toolbox;
 
+    const debug = parameters.options.d || parameters.options.debug;
+
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
 
@@ -19,13 +21,7 @@ export default new class TeamCommit implements GluegunCommand {
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
     if (!parameters.first) parameters.first = ".";
-    parameters.first = parameters.first.replace(/\/$/, "");
-
-    const discloudConfigStr =
-      filesystem.read(`${parameters.first}/discloud.config`) ||
-      filesystem.read("discloud.config");
-
-    const dConfig = configToObj(discloudConfigStr!);
+    parameters.first = parameters.first.replace(/(\\|\/)$/, "");
 
     if (!parameters.second) {
       const spin = print.spin({
@@ -38,16 +34,9 @@ export default new class TeamCommit implements GluegunCommand {
 
       if (apiRes.data)
         if ("apps" in apiRes.data) {
-          const { appId } = await prompt.ask({
-            name: "appId",
-            message: "Choose the app",
-            type: "select",
-            choices: apiRes.data.apps.map(app => ({
-              name: app.id,
-              message: `${app.id} - [${app.perms.join()}] ${app.id === dConfig.ID ?
-                "[discloud.config]" : ""}`,
-              value: app.id,
-            })),
+          const { appId } = await prompt.askForApps(apiRes.data.apps, {
+            all: true,
+            discloudConfigPath: parameters.first,
           });
 
           parameters.second = appId;
@@ -59,14 +48,14 @@ export default new class TeamCommit implements GluegunCommand {
 
     const formData = new FormData();
 
-    if (/\/?\w+\.(zip)/.test(parameters.first)) {
+    if (/\.(zip)$/.test(parameters.first)) {
       if (!filesystem.exists(parameters.first))
         return print.error(`${parameters.first} file does not exists.`);
     } else {
-      const allFiles = getNotIngnoredFiles(parameters.first);
+      const allFiles = new GS(parameters.first).found;
       if (!allFiles.length) return print.error(`No files found in path ${parameters.first}`);
 
-      parameters.first = await makeZipFromFileList(allFiles);
+      parameters.first = await makeZipFromFileList(allFiles, null, debug);
     }
 
     formData.append("file", filesystem.createReadStream(parameters.first));
@@ -95,7 +84,5 @@ export default new class TeamCommit implements GluegunCommand {
 
       if (apiRes.data?.logs) print.info(`[DISCLOUD API] ${apiRes.data.logs}`);
     }
-
-    exit(0);
   }
 };

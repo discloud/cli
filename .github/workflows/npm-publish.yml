@@ -29,6 +29,11 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: yarn
-      - run: npm publish
+      - if: ${{ github.event.release.prerelease }}
+        run: npm publish --tag=beta
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - if: ${{ github.event.release.prerelease == false }}
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,8 +1,10 @@
-# Team:Backups
+# Commands
+
+## Team:Backups
 
 Make backup from your team applications in Discloud.
 
-* [team:backups](#teambackups)
+- [team:backups](#teambackups)
 
 ```sh-session
 USAGE
@@ -17,4 +19,4 @@ ARGUMENTS
   APP_ID The id of your app on Discloud
 ```
 
-* If does not contains `APP_ID`, this get all of your apps.
+- If does not contains `APP_ID`, this get all of your apps.

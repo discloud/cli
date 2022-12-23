@@ -28,22 +28,7 @@ export default new class Start implements GluegunCommand {
 
       if (apiRes.data)
         if ("apps" in apiRes.data) {
-          const { appId } = await prompt.ask({
-            name: "appId",
-            message: "Choose the app",
-            type: "select",
-            choices: [{
-              name: "all",
-              message: "All apps",
-              value: "all",
-            }].concat(apiRes.data.apps.map(app => ({
-              name: app.id,
-              message: `${app.name} - ${app.id} - ${app.online ?
-                print.colors.green("online") :
-                print.colors.red("offline")}`,
-              value: app.id,
-            }))),
-          });
+          const { appId } = await prompt.askForApps(apiRes.data.apps, { all: true });
 
           parameters.first = appId;
         }
@@ -63,14 +48,12 @@ export default new class Start implements GluegunCommand {
     if (apiRes.status) {
       if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
 
-      if (!apiRes.data) return exit(0);
+      if (!apiRes.data) return;
 
       if ("apps" in apiRes.data)
         print.table(makeTable(apiRes.data.apps), {
           format: "lean",
         });
     }
-
-    exit(0);
   }
 };
