@@ -1,7 +1,7 @@
 # Categorias
 
-- [Comandos](./commands.md)
-- [FAQ (Perguntas Frequentes)](./faq.md)
+- [Comandos](./pt/commands.md)
+- [FAQ (Perguntas Frequentes)](./pt/faq.md)
 
 ## Idiomas
 
