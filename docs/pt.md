@@ -6,4 +6,4 @@
 ## Idiomas
 
 - [Inglês](./readme.md)
-- [português](./pt.md)
+- [Português](./pt.md)
