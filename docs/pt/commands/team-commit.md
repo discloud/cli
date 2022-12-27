@@ -8,16 +8,19 @@ Atualize um aplicativo para sua equipe.
 
 ```sh-session
 USO
-  $ discloud team:commit [PATH] [APP_ID]
+  $ discloud team:commit [PATH]
 
 ALIAS
-  $ discloud team:c [PATH] [APP_ID]
+  $ discloud team:c [PATH]
+
+OPÇÕES
+  --app APP_ID O id do seu app no ​​Discloud.
 
 ARGUMENTOS
-  APP_ID O id do seu app no ​​Discloud.
   PATH   O caminho do nome do arquivo.
 ```
 
+- Você pode digitar vários argumentos de caminho de arquivo.
 - Se você colocar parâmetros, o primeiro parâmetro precisa ser `file or folder path` e o segundo precisa ser `application id`.
 - Se contém `ID` em `discloud.config`, `APP_ID` ​​é opcional.
 - Se não encontrar um ID de aplicativo, a CLI mostrará uma lista de seus aplicativos para você selecionar.
