@@ -1,0 +1,27 @@
+# Comandos
+
+- [app:apt](./commands/app-apt.md) - Instale ou desinstale pacotes apt para seu aplicativo.
+- [apps:team](./commands/apps-team.md) - Obtenha informações da equipe de seus aplicativos.
+- [apps](./commands/apps.md) - Obtenha informações de suas aplicações.
+- [backups](./commands/backups.md) - Faça backup de seus aplicativos no Discloud.
+- [commit](./commands/commit.md) - Atualize um aplicativo ou site no Discloud.
+- [delete](./commands/delete.md) - Exclua um ou todos os seus aplicativos no Discloud.
+- [init](./commands/init.md) - Inicie o arquivo dicloud.config.
+- [locale](./commands/locale.md) - Defina seu idioma.
+- [login](./commands/login.md) - Faça login na API do Discloud.
+- [logs](./commands/logs.md) - Visualize os logs do aplicativo no Discloud.
+- [ram](./commands/ram.md) - Defina a quantidade de RAM para o seu aplicativo.
+- [restart](./commands/restart.md) - Reinicie um ou todos os seus aplicativos no Discloud.
+- [start](./commands/start.md) - Inicie um ou todos os seus aplicativos no Discloud.
+- [status](./commands/status.md) - Visualize as informações de status de seus aplicativos.
+- [stop](./commands/stop.md) - Interrompa um ou todos os seus aplicativos no Discloud.
+- [team:backups](./commands/team-backups.md) - Faça backup dos aplicativos de sua equipe no Discloud.
+- [team:commit](./commands/team-commit.md) - Atualize um aplicativo da sua equipe.
+- [team:logs](./commands/team-logs.md) - Visualize os logs do aplicativo da equipe no Discloud.
+- [team:ram](./commands/team-ram.md) - Defina a quantidade de RAM para um aplicativo de sua equipe.
+- [team:restart](./commands/team-restart.md) - Reinicie um ou todos os seus aplicativos no Discloud.
+- [team:start](./commands/team-start.md) - Inicie um ou todos os seus aplicativos no Discloud.
+- [team:status](./commands/team-status.md) - Visualize as informações de status dos aplicativos de sua equipe.
+- [team:stop](./commands/team-stop.md) - Interrompa um ou todos os seus aplicativos no Discloud.
+- [team](./commands/team.md) - Ver informações da equipe.
+- [upload](./commands/upload.md) - Carregue um aplicativo ou site no Discloud.
