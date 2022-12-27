@@ -31,7 +31,7 @@ jobs:
       - run: yarn
       - if: ${{ github.event.release.prerelease }}
         run: |
-          npm version prerelease --preid=beta
+          npm version prerelease --preid=beta --no-git-tag-version
           npm publish --tag=beta
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
