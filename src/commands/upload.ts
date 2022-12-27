@@ -2,7 +2,7 @@ import { DiscloudConfig, RESTPostApiUploadResult, Routes } from "@discloudapp/ap
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
-import { apidiscloud, config, configToObj, configUpdate, findDiscloudConfig, getMissingValues, GS, makeZipFromFileList, RateLimit, readDiscloudConfig, verifyRequiredFiles } from "../util";
+import { apidiscloud, arrayOfPathlikeProcessor, config, configToObj, configUpdate, findDiscloudConfig, getMissingValues, makeZipFromFileList, RateLimit, readDiscloudConfig, verifyRequiredFiles } from "../util";
 import { FileExt, mapDiscloudConfigProps, requiredDiscloudConfigProps } from "../util/constants";
 
 export default new class Upload implements GluegunCommand {
@@ -21,19 +21,15 @@ export default new class Upload implements GluegunCommand {
     if (RateLimit.isLimited)
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
-    if (!parameters.first) parameters.first = ".";
-    parameters.first = parameters.first.replace(/\\/g, "/").replace(/\/$/, "");
-    const filePath = filesystem.isFile(parameters.first) ?
-      parameters.first.split("/").slice(0, -1).join("/") :
-      parameters.first;
+    if (!parameters.array) parameters.array = ["**"];
 
     const formData = new FormData();
 
-    if (/\.(zip)$/.test(parameters.first)) {
-      if (!filesystem.exists(parameters.first))
-        return print.error(`${parameters.first} file does not exists.`);
+    if (/\.(zip)$/.test(parameters.array[0])) {
+      if (!filesystem.exists(parameters.array[0]))
+        return print.error(`${parameters.array[0]} file does not exists.`);
     } else {
-      const discloudConfigPath = findDiscloudConfig(filePath);
+      const discloudConfigPath = findDiscloudConfig(parameters.array);
 
       if (typeof discloudConfigPath !== "string")
         return print.error("discloud.config file is missing.");
@@ -52,14 +48,15 @@ export default new class Upload implements GluegunCommand {
       }
 
       const fileExt = <`${FileExt}`>dConfig.MAIN.split(".").pop();
-      if (!verifyRequiredFiles(filePath, fileExt, dConfig.MAIN)) return;
+      if (!verifyRequiredFiles(parameters.array, fileExt, dConfig.MAIN)) return;
 
-      const allFiles = new GS(parameters.first).found.concat(discloudConfigPath + "discloud.config");
+      const allFiles = arrayOfPathlikeProcessor(parameters.array).concat(discloudConfigPath + "discloud.config");
+      if (!allFiles.length) return print.error("No files found!");
 
-      parameters.first = await makeZipFromFileList(allFiles, null, debug);
+      parameters.array[0] = await makeZipFromFileList(allFiles, null, debug);
     }
 
-    formData.append("file", filesystem.createReadStream(parameters.first), parameters.first);
+    formData.append("file", filesystem.createReadStream(parameters.array[0]), parameters.array[0]);
 
     const headers = formData.getHeaders({
       "api-token": config.data.token,
@@ -76,7 +73,7 @@ export default new class Upload implements GluegunCommand {
 
     new RateLimit(apiRes.headers);
 
-    filesystem.remove(parameters.first);
+    filesystem.remove(parameters.array[0]);
 
     if (apiRes.status) {
       if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
