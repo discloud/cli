@@ -21,7 +21,7 @@ export default new class Upload implements GluegunCommand {
     if (RateLimit.isLimited)
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
-    if (!parameters.array) parameters.array = ["**"];
+    if (!parameters.array?.length) parameters.array = ["**"];
 
     const formData = new FormData();
 

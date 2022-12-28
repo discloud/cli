@@ -175,10 +175,12 @@ export function verifyRequiredFiles(
     const file = requiredFiles[i];
 
     for (let j = 0; j < paths.length; j++) {
-      const path = paths[j];
+      const path = normalizePathlike(paths[j]);
 
-      if (filesystem.exists(`${path}/${file}`))
+      if (filesystem.exists(`${path}/${file}`) || filesystem.exists(file)) {
         requiredFiles.splice(i, 1);
+        i--;
+      }
     }
   }
 
