@@ -38,7 +38,7 @@
     // "declaration": true,
     // "declarationMap": true,
     // "emitDeclarationOnly": true,
-    // "sourceMap": true,
+    "sourceMap": true,
     // "outFile": "./",
     "outDir": "build",
     // "removeComments": true,

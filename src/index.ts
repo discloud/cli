@@ -1,7 +1,14 @@
+import * as Sentry from "@sentry/node";
+import "@sentry/tracing";
 import { build } from "gluegun";
 import { exit } from "node:process";
 
-export async function run(argv: string[]) {
+Sentry.init({
+  dsn: "https://c7832919af874c068ce1ffe90177f470@sentry.discloudbot.com/4",
+  tracesSampleRate: 1.0,
+});
+
+export function run(argv: string[]) {
   const cli = build("discloud")
     .src(__dirname)
     .plugins("./node_modules", { matching: "discloud-*", hidden: true })
