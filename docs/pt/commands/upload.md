@@ -8,11 +8,13 @@ Carregue um aplicativo ou site no Discloud.
 
 ```sh-session
 USO
-  $ discloud upload PATH
+  $ discloud upload [PATH]
 
 ALIAS
-  $ discloud up PATH
+  $ discloud up [PATH]
 
 ARGUMENTOS
   PATH O caminho do nome do arquivo.
 ```
+
+- Você pode digitar vários argumentos de caminho de arquivo.
