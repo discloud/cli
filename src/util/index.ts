@@ -3,6 +3,7 @@ import { filesystem, http, print } from "gluegun";
 import type { ResolveArgsOptions } from "../@types";
 import { configPath, FileExt, required_files } from "./constants";
 import FsJson from "./FsJson";
+import GS from "./GS";
 
 export * from "./GS";
 export * from "./RateLimit";
@@ -41,16 +42,19 @@ export function configUpdate(save: Record<string, string>, path = ".") {
   filesystem.write(`${path}/discloud.config`, objToString(data, "="));
 }
 
-export function findDiscloudConfig(path = "") {
-  path = path.replace(/\\/g, "/").replace(/\/$/, "") + "/";
-  const discloudConfigPaths = [`${path}`, ""];
+export function findDiscloudConfig(paths = [""]) {
+  for (let i = 0; i < paths.length; i++) {
+    let path = paths[i].replace(/\\/g, "/").replace(/\/$/, "");
 
-  for (let i = 0; i < discloudConfigPaths.length; i++) {
-    const discloudConfigPath = discloudConfigPaths[i];
+    if (filesystem.isFile(path))
+      path = path.split("/").slice(0, -1).join("/");
 
-    if (filesystem.exists(`${discloudConfigPath}discloud.config`))
-      return discloudConfigPath;
+    if (filesystem.exists(`${path}/discloud.config`))
+      return path;
   }
+
+  if (filesystem.exists("discloud.config"))
+    return "";
 }
 
 export function getFileExt(ext: `${FileExt}`) {
@@ -93,6 +97,10 @@ export function makeTable(apps: Record<string, any> | Record<string, any>[]): an
   return [keys, ...values];
 }
 
+export function normalizePathlike(path = "**") {
+  return path.replace(/\\/g, "/").replace(/\/$/, "");
+}
+
 export function objToString(obj: any, sep = ": "): string {
   if (!obj) return obj;
 
@@ -113,6 +121,13 @@ export function objToString(obj: any, sep = ": "): string {
   }
 
   return result.join("\n");
+}
+
+export function arrayOfPathlikeProcessor(paths: string[], files: string[] = []) {
+  if (!paths?.length) paths = ["**"];
+  for (let i = 0; i < paths.length; i++)
+    files.push(...new GS(normalizePathlike(paths[i])).found);
+  return files;
 }
 
 export function readDiscloudConfig(path = "") {
@@ -149,7 +164,7 @@ export function sortAppsBySameId<T extends { id: string }>(apps: T[], id: string
 }
 
 export function verifyRequiredFiles(
-  path: string,
+  paths: string[],
   ext: `${FileExt}`,
   files: string | string[] = [],
 ) {
@@ -159,9 +174,18 @@ export function verifyRequiredFiles(
   for (let i = 0; i < requiredFiles.length; i++) {
     const file = requiredFiles[i];
 
-    if (!filesystem.exists(`${path}/${file}`))
-      return print.error(`${file} is missing.`);
+    for (let j = 0; j < paths.length; j++) {
+      const path = normalizePathlike(paths[j]);
+
+      if (filesystem.exists(`${path}/${file}`) || filesystem.exists(file)) {
+        requiredFiles.splice(i, 1);
+        i--;
+      }
+    }
   }
+
+  if (requiredFiles.length)
+    return print.error(`Missing: ${requiredFiles.join(", ")}`);
 
   return true;
 }

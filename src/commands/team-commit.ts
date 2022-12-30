@@ -2,7 +2,7 @@ import { RESTGetApiTeamResult, RESTPutApiAppCommitResult, Routes } from "@disclo
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
-import { apidiscloud, config, GS, makeZipFromFileList, RateLimit } from "../util";
+import { apidiscloud, arrayOfPathlikeProcessor, config, findDiscloudConfig, makeZipFromFileList, RateLimit } from "../util";
 
 export default new class TeamCommit implements GluegunCommand {
   name = "team:commit";
@@ -20,10 +20,11 @@ export default new class TeamCommit implements GluegunCommand {
     if (RateLimit.isLimited)
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
-    if (!parameters.first) parameters.first = ".";
-    parameters.first = parameters.first.replace(/(\\|\/)$/, "");
+    if (!parameters.array?.length) parameters.array = ["**"];
 
-    if (!parameters.second) {
+    const discloudConfigPath = findDiscloudConfig(parameters.array);
+
+    if (!parameters.options.app || typeof parameters.options.app !== "string") {
       const spin = print.spin({
         text: print.colors.cyan("Fetching apps..."),
       });
@@ -36,29 +37,29 @@ export default new class TeamCommit implements GluegunCommand {
         if ("apps" in apiRes.data) {
           const { appId } = await prompt.askForApps(apiRes.data.apps, {
             all: true,
-            discloudConfigPath: parameters.first,
+            discloudConfigPath,
           });
 
-          parameters.second = appId;
+          parameters.options.app = appId;
         }
 
-      if (!parameters.second)
+      if (!parameters.options.app)
         return print.error("Need app id to commit.");
     }
 
     const formData = new FormData();
 
-    if (/\.(zip)$/.test(parameters.first)) {
-      if (!filesystem.exists(parameters.first))
-        return print.error(`${parameters.first} file does not exists.`);
+    if (/\.(zip)$/.test(parameters.array[0])) {
+      if (!filesystem.exists(parameters.array[0]))
+        return print.error(`${parameters.array[0]} file does not exists.`);
     } else {
-      const allFiles = new GS(parameters.first).found;
-      if (!allFiles.length) return print.error(`No files found in path ${parameters.first}`);
+      const allFiles = arrayOfPathlikeProcessor(parameters.array);
+      if (!allFiles.length) return print.error("No files found!");
 
-      parameters.first = await makeZipFromFileList(allFiles, null, debug);
+      parameters.array[0] = await makeZipFromFileList(allFiles, null, debug);
     }
 
-    formData.append("file", filesystem.createReadStream(parameters.first));
+    formData.append("file", filesystem.createReadStream(parameters.array[0]));
 
     const headers = formData.getHeaders({
       "api-token": config.data.token,
@@ -70,14 +71,14 @@ export default new class TeamCommit implements GluegunCommand {
 
     const apiRes = await apidiscloud.put<
       RESTPutApiAppCommitResult
-    >(Routes.teamCommit(parameters.second), formData, {
-      timeout: 300000,
-      headers,
-    });
+      >(Routes.teamCommit(parameters.options.app), formData, {
+        timeout: 300000,
+        headers,
+      });
 
     new RateLimit(apiRes.headers);
 
-    filesystem.remove(parameters.first);
+    filesystem.remove(parameters.array[0]);
 
     if (apiRes.status) {
       if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
