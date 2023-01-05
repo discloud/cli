@@ -28,12 +28,15 @@ export class DiscloudConfig<T, V> {
   }
 
   get fileExt() {
-    return this.#data.MAIN.split(".").pop() as `${FileExt}`;
+    return this.#data.MAIN?.split(".").pop() as `${keyof typeof FileExt}`;
   }
 
   get missingProps() {
-    return (requiredDiscloudConfigProps[this.data.TYPE] ?? Object.values(requiredDiscloudConfigProps))
-      .filter(key => !this.#data[<keyof DiscloudConfigType>key]);
+    return this.#requiredProps.filter(key => !this.#data[<keyof DiscloudConfigType>key]);
+  }
+
+  get #requiredProps() {
+    return requiredDiscloudConfigProps[this.data.TYPE] ?? Object.values(requiredDiscloudConfigProps);
   }
 
   #stringToObj(s: string) {

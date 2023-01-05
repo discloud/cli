@@ -29,7 +29,7 @@ export const apidiscloud = http.create({
   },
 });
 
-export function getFileExt(ext: `${FileExt}`) {
+export function getFileExt(ext: `${keyof typeof FileExt}`) {
   return FileExt[ext] ?? ext;
 }
 
@@ -128,7 +128,7 @@ export function sortAppsBySameId<T extends { id: string }>(apps: T[], id: string
 
 export function verifyRequiredFiles(
   paths: string[],
-  ext: `${FileExt}`,
+  ext: `${keyof typeof FileExt}`,
   files: string | string[] = [],
 ) {
   const fileExt = getFileExt(ext);
