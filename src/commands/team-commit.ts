@@ -2,7 +2,7 @@ import { RESTGetApiTeamResult, RESTPutApiAppCommitResult, Routes } from "@disclo
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
-import { apidiscloud, arrayOfPathlikeProcessor, config, findDiscloudConfig, makeZipFromFileList, RateLimit } from "../util";
+import { apidiscloud, arrayOfPathlikeProcessor, config, DiscloudConfig, makeZipFromFileList, RateLimit } from "../util";
 
 export default new class TeamCommit implements GluegunCommand {
   name = "team:commit";
@@ -22,7 +22,7 @@ export default new class TeamCommit implements GluegunCommand {
 
     if (!parameters.array?.length) parameters.array = ["**"];
 
-    const discloudConfigPath = findDiscloudConfig(parameters.array);
+    const discloudConfigPath = DiscloudConfig.findDiscloudConfig(parameters.array);
 
     if (!parameters.options.app || typeof parameters.options.app !== "string") {
       const spin = print.spin({
