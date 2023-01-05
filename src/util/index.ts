@@ -5,6 +5,8 @@ import { configPath, FileExt, required_files } from "./constants";
 import FsJson from "./FsJson";
 import GS from "./GS";
 
+export * from "./DiscloudConfig";
+export * from "./FsJson";
 export * from "./GS";
 export * from "./RateLimit";
 export * from "./Zip";
@@ -27,37 +29,7 @@ export const apidiscloud = http.create({
   },
 });
 
-export function configToObj<T = boolean | number | string>(s: string): Record<string, T> {
-  if (typeof s !== "string") return {};
-  return Object.fromEntries(s.split(/\r?\n/).map(a => a.split("=")));
-}
-
-export function configUpdate(save: Record<string, string>, path = ".") {
-  path = path.replace(/(\\|\/)$/, "");
-  path = filesystem.exists(`${path}/discloud.config`) ? path : ".";
-  if (!filesystem.exists(`${path}/discloud.config`)) return;
-
-  const data = { ...configToObj(filesystem.read(`${path}/discloud.config`)!), ...save };
-
-  filesystem.write(`${path}/discloud.config`, objToString(data, "="));
-}
-
-export function findDiscloudConfig(paths = [""]) {
-  for (let i = 0; i < paths.length; i++) {
-    let path = paths[i].replace(/\\/g, "/").replace(/\/$/, "");
-
-    if (filesystem.isFile(path))
-      path = path.split("/").slice(0, -1).join("/");
-
-    if (filesystem.exists(`${path}/discloud.config`))
-      return path;
-  }
-
-  if (filesystem.exists("discloud.config"))
-    return "";
-}
-
-export function getFileExt(ext: `${FileExt}`) {
+export function getFileExt(ext: `${keyof typeof FileExt}`) {
   return FileExt[ext] ?? ext;
 }
 
@@ -68,10 +40,6 @@ function getKeys(array: Record<string, any>[]) {
     keys.push(...Object.keys(element));
   }
   return [...new Set(keys)];
-}
-
-export function getMissingValues(obj: Record<any, any>, values: string[]) {
-  return values.filter(key => !obj[key]);
 }
 
 function getValues(array: Record<string, any>[]) {
@@ -130,11 +98,6 @@ export function arrayOfPathlikeProcessor(paths: string[], files: string[] = []) 
   return files;
 }
 
-export function readDiscloudConfig(path = "") {
-  path = path.replace(/\\/g, "/").replace(/\/$/, "") + "/";
-  return filesystem.read(`${path}discloud.config`) ?? filesystem.read("discloud.config") ?? "";
-}
-
 export function resolveArgs(args: string[], options: ResolveArgsOptions[]) {
   const resolved = <Record<string, string | undefined>>{};
 
@@ -165,7 +128,7 @@ export function sortAppsBySameId<T extends { id: string }>(apps: T[], id: string
 
 export function verifyRequiredFiles(
   paths: string[],
-  ext: `${FileExt}`,
+  ext: `${keyof typeof FileExt}`,
   files: string | string[] = [],
 ) {
   const fileExt = getFileExt(ext);

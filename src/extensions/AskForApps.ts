@@ -1,5 +1,5 @@
 import { GluegunToolbox, print, prompt } from "gluegun";
-import { configToObj, readDiscloudConfig, sortAppsBySameId } from "../util";
+import { DiscloudConfig, sortAppsBySameId } from "../util";
 
 export default function (toolbox: GluegunToolbox) {
   return toolbox.prompt.askForApps = function (apps, options = {}) {
@@ -10,7 +10,7 @@ export default function (toolbox: GluegunToolbox) {
       ...options,
     };
 
-    const dConfig = configToObj<string>(readDiscloudConfig(options.discloudConfigPath)!);
+    const dConfig = new DiscloudConfig(options.discloudConfigPath);
 
     return prompt.ask({
       name: "appId",
@@ -20,7 +20,7 @@ export default function (toolbox: GluegunToolbox) {
         name: "all",
         message: "All apps",
         value: "all",
-      }] : []).concat(sortAppsBySameId(apps, dConfig.ID).map(app => ({
+      }] : []).concat(sortAppsBySameId(apps, dConfig.data.ID!).map(app => ({
         name: app.id,
         message: [
           app.name,
@@ -33,7 +33,7 @@ export default function (toolbox: GluegunToolbox) {
         ].join(""),
         value: app.id,
       }))),
-      initial: options.all ? dConfig.ID ? apps.length ? 1 : 0 : 0 : 0,
+      initial: options.all ? dConfig.data.ID ? apps.length ? 1 : 0 : 0 : 0,
     });
   };
 }
