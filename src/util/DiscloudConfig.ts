@@ -17,7 +17,7 @@ export class DiscloudConfig<T, V> {
 
   constructor(path: string | string[] = ["."], data?: DiscloudConfigType<T, V>) {
     path = this.constructor.findDiscloudConfig(path)!;
-    if (path) this.path = path;
+    if (typeof path === "string") this.path = path;
 
     this.#data = this.#read();
     if (data) this.update(data);
