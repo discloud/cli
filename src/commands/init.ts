@@ -85,8 +85,7 @@ export default new class Init implements GluegunCommand {
         type: "input",
       });
 
-      if (appType === "site")
-        appId = app_id.match(appType === "site" ? /(\w+)(?:\.discloud\..*)?/ : /(.+)/)?.[1];
+      appId = app_id.match(appType === "site" ? /(\w+)(?:\.discloud.*)?/ : /(.+)/)?.[1];
     }
 
     let appName;
