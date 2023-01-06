@@ -1,8 +1,8 @@
 import { RESTGetApiAppAllResult, RESTPutApiAppAptResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
-import { apidiscloud, config, RateLimit } from "../util";
-import { Apt } from "../util/constants";
+import { apidiscloud, aptValidator, config, RateLimit } from "../util";
+import { Apt, aptKeys } from "../util/constants";
 
 export default new class AppApt implements GluegunCommand {
   name = "app:apt";
@@ -37,20 +37,16 @@ export default new class AppApt implements GluegunCommand {
         return print.error("Need app id.");
     }
 
-    let method: "delete" | "put" | undefined;
-    let apt: keyof typeof Apt | undefined;
+    const methods = <Partial<Record<"delete" | "put", typeof aptKeys>>>{};
 
     if (parameters.options.i ?? parameters.options.install) {
-      method = "put";
-      apt = parameters.options.i ?? parameters.options.install;
+      methods.put = aptValidator(parameters.options.i ?? parameters.options.install);
     }
 
-    if (parameters.options.u ?? parameters.options.uninstall) {
-      method = "delete";
-      apt = parameters.options.u ?? parameters.options.uninstall;
-    }
+    if (parameters.options.u ?? parameters.options.uninstall)
+      methods.delete = aptValidator(parameters.options.u ?? parameters.options.uninstall);
 
-    if (!method || !Object.keys(Apt).includes(apt!))
+    if (methods.put?.length || methods.delete?.length)
       return print.error(
         "You need to use one of the options below:" +
         "\n  -i, --install [PACKAGE]   Install a package." +
@@ -59,33 +55,41 @@ export default new class AppApt implements GluegunCommand {
         Object.keys(Apt).map(pkg => `  - ${pkg}: ${Apt[<"tools">pkg]}`).join("\n"),
       );
 
-    let action;
-    switch (method) {
-      case "delete":
-        action = `Uninstalling ${apt} from ${parameters.first} app...`;
-        break;
-      case "put":
-        action = `Installing ${apt} for ${parameters.first} app...`;
-        break;
-      default:
-        action = "";
-        break;
+    const keys = <("delete" | "put")[]>Object.keys(methods);
+
+    for (let i = 0; i < keys.length; i++) {
+      const method = keys[i];
+
+      const apt = methods[method];
+
+      let action;
+      switch (method) {
+        case "delete":
+          action = `Uninstalling ${apt} from ${parameters.first} app...`;
+          break;
+        case "put":
+          action = `Installing ${apt} for ${parameters.first} app...`;
+          break;
+        default:
+          action = "";
+          break;
+      }
+
+      const spin = print.spin({
+        text: print.colors.cyan(action),
+      });
+
+      const apiRes = await apidiscloud[method]<
+        RESTPutApiAppAptResult
+      >(Routes.appApt(parameters.first),
+        ["delete", "put"].includes(method) ? {
+          apt,
+        } : undefined);
+
+      new RateLimit(apiRes.headers);
+
+      if (apiRes.status)
+        if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
     }
-
-    const spin = print.spin({
-      text: print.colors.cyan(action),
-    });
-
-    const apiRes = await apidiscloud[method]<
-      RESTPutApiAppAptResult
-    >(Routes.appApt(parameters.first),
-      ["delete", "put"].includes(method) ? {
-        apt,
-      } : undefined);
-
-    new RateLimit(apiRes.headers);
-
-    if (apiRes.status)
-      if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
   }
 };

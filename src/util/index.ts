@@ -1,7 +1,7 @@
 import { RouteBases } from "@discloudapp/api-types/v2";
 import { filesystem, http, print } from "gluegun";
 import type { ResolveArgsOptions } from "../@types";
-import { configPath, FileExt, required_files } from "./constants";
+import { Apt, aptKeys, configPath, FileExt, required_files } from "./constants";
 import FsJson from "./FsJson";
 import GS from "./GS";
 
@@ -28,6 +28,13 @@ export const apidiscloud = http.create({
     "api-token": config.data.token,
   },
 });
+
+export function aptValidator(apts: keyof typeof Apt | typeof aptKeys) {
+  if (typeof apts === "string")
+    apts = <typeof aptKeys>apts.split(/\W/g);
+
+  return apts.map(apt => <keyof typeof Apt>apt.toLowerCase()).filter(apt => aptKeys.includes(apt));
+}
 
 export function getFileExt(ext: `${keyof typeof FileExt}`) {
   return FileExt[ext] ?? ext;
