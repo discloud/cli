@@ -2,7 +2,7 @@ import { RESTGetApiAppAllResult, RESTPutApiAppAptResult, Routes } from "@disclou
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
 import { apidiscloud, aptValidator, config, RateLimit } from "../util";
-import { Apt, aptKeys } from "../util/constants";
+import { Apt, aptPackages } from "../util/constants";
 
 export default new class AppApt implements GluegunCommand {
   name = "app:apt";
@@ -37,7 +37,7 @@ export default new class AppApt implements GluegunCommand {
         return print.error("Need app id.");
     }
 
-    const methods = <Partial<Record<"delete" | "put", typeof aptKeys>>>{};
+    const methods = <Partial<Record<"delete" | "put", typeof aptPackages>>>{};
 
     if (parameters.options.i ?? parameters.options.install) {
       methods.put = aptValidator(parameters.options.i ?? parameters.options.install);
@@ -52,7 +52,7 @@ export default new class AppApt implements GluegunCommand {
         "\n  -i, --install [PACKAGE]   Install a package." +
         "\n  -u, --uninstall [PACKAGE] Uninstall a package." + "\n" +
         "\nPACKAGES:" + "\n" +
-        Object.keys(Apt).map(pkg => `  - ${pkg}: ${Apt[<"tools">pkg]}`).join("\n"),
+        aptPackages.map(pkg => `  - ${pkg}: ${Apt[pkg]}`).join("\n"),
       );
 
     const keys = <("delete" | "put")[]>Object.keys(methods);

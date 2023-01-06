@@ -93,7 +93,7 @@ export const Apt = {
   tools: ["git", "wget", "make", "curl"],
 };
 
-export const aptKeys = <(keyof typeof Apt)[]>Object.keys(Apt);
+export const aptPackages = <(keyof typeof Apt)[]>Object.keys(Apt);
 
 export const app_version: Record<AppLanguages, AppVersion[]> = {
   go: ["latest"],
