@@ -60,7 +60,7 @@ export default new class AppApt implements GluegunCommand {
     for (let i = 0; i < keys.length; i++) {
       const method = keys[i];
 
-      const apt = methods[method];
+      const apt = methods[method]?.join();
 
       let action;
       switch (method) {
