@@ -17,6 +17,23 @@ export default new class AppApt implements GluegunCommand {
     if (RateLimit.isLimited)
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
+    const methods = <Partial<Record<"delete" | "put", typeof aptPackages>>>{};
+
+    if (parameters.options.i ?? parameters.options.install)
+      methods.put = aptValidator(parameters.options.i ?? parameters.options.install);
+
+    if (parameters.options.u ?? parameters.options.uninstall)
+      methods.delete = aptValidator(parameters.options.u ?? parameters.options.uninstall);
+
+    if (methods.put?.length || methods.delete?.length)
+      return print.error(
+        "You need to use one of the options below:" +
+        "\n  -i, --install [PACKAGE]   Install a package." +
+        "\n  -u, --uninstall [PACKAGE] Uninstall a package." + "\n" +
+        "\nPACKAGES:" + "\n" +
+        aptPackages.map(pkg => `  - ${pkg}: ${Apt[pkg]}`).join("\n"),
+      );
+
     if (!parameters.first) {
       const spin = print.spin({
         text: print.colors.cyan("Fetching apps..."),
@@ -36,24 +53,6 @@ export default new class AppApt implements GluegunCommand {
       if (!parameters.first)
         return print.error("Need app id.");
     }
-
-    const methods = <Partial<Record<"delete" | "put", typeof aptPackages>>>{};
-
-    if (parameters.options.i ?? parameters.options.install) {
-      methods.put = aptValidator(parameters.options.i ?? parameters.options.install);
-    }
-
-    if (parameters.options.u ?? parameters.options.uninstall)
-      methods.delete = aptValidator(parameters.options.u ?? parameters.options.uninstall);
-
-    if (methods.put?.length || methods.delete?.length)
-      return print.error(
-        "You need to use one of the options below:" +
-        "\n  -i, --install [PACKAGE]   Install a package." +
-        "\n  -u, --uninstall [PACKAGE] Uninstall a package." + "\n" +
-        "\nPACKAGES:" + "\n" +
-        aptPackages.map(pkg => `  - ${pkg}: ${Apt[pkg]}`).join("\n"),
-      );
 
     const keys = <("delete" | "put")[]>Object.keys(methods);
 
