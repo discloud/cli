@@ -43,3 +43,5 @@ export class FsJson<D extends Partial<Record<any, any>>> {
     return this.#data;
   }
 }
+
+export default FsJson;
