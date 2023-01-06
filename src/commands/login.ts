@@ -31,7 +31,7 @@ export default new class Login implements GluegunCommand {
       if (print.printApiRes(apiRes) > 399) return exit(apiRes.status);
 
       if (apiRes.data?.status === "ok")
-        config.write({ token });
+        config.update({ token });
     }
   }
 };

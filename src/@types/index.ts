@@ -1,31 +1,3 @@
-import { BinaryLike } from "crypto";
-
-export interface RawFile {
-  /**
-   * The name of the file
-   */
-  name: string
-  /**
-   * An explicit key to use for key of the formdata field for this file.
-   * When not provided, the index of the file in the files array is used in the form `files[${index}]`.
-   * If you wish to alter the placeholder snowflake, you must provide this property in the same form (`files[${placeholder}]`)
-   */
-  key?: string
-  /**
-   * The actual data for the file
-   */
-  data: Blob | BinaryLike | Buffer
-  /**
-   * Content-Type of the file
-   */
-  contentType?: string
-}
-
-export interface ResolveArgsOptions {
-  name: string
-  pattern: RegExp
-}
-
 export interface AskForAppsOptions {
   /**
    * @default false
@@ -41,9 +13,25 @@ export interface AskForAppsOptions {
   showStatus?: boolean
 }
 
+export interface ConfigData {
+  limited?: number
+  token?: string
+}
+
+export interface FsJsonOptions {
+  encoding?: FsJsonEncoding
+}
+
+export type FsJsonEncoding = Extract<BufferEncoding, "base64" | "utf8">
+
 export interface MakeZipArgs {
   debug?: boolean
   fileName?: string | null
   ignore?: string[]
   path?: string
+}
+
+export interface ResolveArgsOptions {
+  name: string
+  pattern: RegExp
 }
