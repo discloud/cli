@@ -1,15 +1,45 @@
 import { filesystem } from "gluegun";
+import { FsJsonOptions } from "../@types";
 
-export default class FsJson {
-  data: Record<string, any> = {};
+export class FsJson<D extends Partial<Record<any, any>>> {
+  #data = <D>{};
 
-  constructor(public path: string) {
-    this.data = filesystem.read(path, "json") ?? {};
+  constructor(public path: string, public options: FsJsonOptions = {}) {
+    this.options = {
+      encoding: "utf8",
+      ...this.options,
+    };
+
+    this.#data = this.#read();
   }
 
-  write(data: Record<string, any>, path = this.path) {
-    this.data = { ...this.data, ...data };
-    filesystem.write(path, this.data, { jsonIndent: 0 });
-    return this.data;
+  get data() {
+    return this.#data;
+  }
+
+  #encode(data = this.#data, encoding = this.options.encoding) {
+    return Buffer.from(JSON.stringify(data)).toString(encoding);
+  }
+
+  #decode(path = this.path, encoding = this.options.encoding): D {
+    try {
+      return JSON.parse(Buffer.from(filesystem.read(path)!, encoding).toString("utf8"));
+    } catch {
+      return <D>{};
+    }
+  }
+
+  #read(path = this.path) {
+    try {
+      return filesystem.read(path, "json");
+    } catch {
+      return this.#decode(filesystem.read(path));
+    }
+  }
+
+  update(data: Partial<D>, path = this.path) {
+    const encoded = this.#encode(this.#data = { ...this.#data, ...data });
+    filesystem.write(path, encoded);
+    return this.#data;
   }
 }
