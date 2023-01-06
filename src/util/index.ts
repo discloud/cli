@@ -2,7 +2,7 @@ import { RouteBases } from "@discloudapp/api-types/v2";
 import { filesystem, http, print } from "gluegun";
 import type { ConfigData, ResolveArgsOptions } from "../@types";
 import { Apt, aptPackages, configPath, FileExt, required_files } from "./constants";
-import { FsJson } from "./FsJson";
+import FsJson from "./FsJson";
 import GS from "./GS";
 
 export * from "./DiscloudConfig";
@@ -13,7 +13,7 @@ export * from "./Zip";
 
 export const config = new class Config extends FsJson<ConfigData> {
   constructor() {
-    super(`${configPath}/.cli`);
+    super(`${configPath}/.cli`, { encoding: "base64" });
   }
 };
 
