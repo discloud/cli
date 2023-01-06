@@ -37,7 +37,7 @@ export class FsJson<D extends Partial<Record<any, any>>> {
     }
   }
 
-  update(data: Partial<D>, path = this.path) {
+  update(data: D, path = this.path) {
     const encoded = this.#encode(this.#data = { ...this.#data, ...data });
     filesystem.write(path, encoded);
     return this.#data;
