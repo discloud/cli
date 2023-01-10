@@ -41,6 +41,8 @@ export default new class AppApt implements GluegunCommand {
 
       const apiRes = await apidiscloud.get<RESTGetApiAppAllResult>(Routes.app("all"));
 
+      new RateLimit(apiRes.headers);
+
       spin.stop();
 
       if (apiRes.data)

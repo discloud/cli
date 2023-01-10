@@ -31,6 +31,8 @@ export default new class TeamCommit implements GluegunCommand {
 
       const apiRes = await apidiscloud.get<RESTGetApiTeamResult>(Routes.team());
 
+      new RateLimit(apiRes.headers);
+
       spin.stop();
 
       if (apiRes.data)
