@@ -1,8 +1,7 @@
-import { RESTGetApiAppAllResult, RESTPutApiAppAptResult, Routes } from "@discloudapp/api-types/v2";
+import { RESTGetApiAppAllResult, RESTPutApiAppAptResult, Routes, APT, APTPackages } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
 import { apidiscloud, aptValidator, config, RateLimit } from "../util";
-import { Apt, aptPackages } from "../util/constants";
 
 export default new class AppApt implements GluegunCommand {
   name = "app:apt";
@@ -17,7 +16,7 @@ export default new class AppApt implements GluegunCommand {
     if (RateLimit.isLimited)
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
-    const methods = <Partial<Record<"delete" | "put", typeof aptPackages>>>{};
+    const methods = <Partial<Record<"delete" | "put", typeof APTPackages>>>{};
 
     if (parameters.options.i ?? parameters.options.install)
       methods.put = aptValidator(parameters.options.i ?? parameters.options.install);
@@ -31,7 +30,7 @@ export default new class AppApt implements GluegunCommand {
         "\n  -i, --install [PACKAGE]   Install a package." +
         "\n  -u, --uninstall [PACKAGE] Uninstall a package." + "\n" +
         "\nPACKAGES:" + "\n" +
-        aptPackages.map(pkg => `  - ${pkg}: ${Apt[pkg]}`).join("\n"),
+        APTPackages.map(pkg => `  - ${pkg}: ${APT[pkg]}`).join("\n"),
       );
 
     if (!parameters.first) {

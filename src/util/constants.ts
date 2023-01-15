@@ -70,35 +70,6 @@ export const ModPermissions = {
   stop_app: 128,
 };
 
-export const Apt = {
-  canvas: [
-    "libcairo2-dev",
-    "libpango1.0-dev",
-    "libjpeg-dev",
-    "libgif-dev",
-    "librsvg2-dev",
-    "libgbm-dev",
-  ],
-  ffmpeg: ["ffmpeg"],
-  java: ["default-jre"],
-  libgl: ["libsm6", "libxext6"],
-  openssl: ["pkg-config", "libssl-dev"],
-  puppeteer: [
-    "libnss3",
-    "libatk-bridge2.0-0",
-    "libgtk-3-0",
-    "libasound2",
-    "libxshmfence-dev",
-    "libdrm-dev",
-    "libgbm-dev",
-    "libglib2.0-dev",
-    "libx11-xcb-dev",
-  ],
-  tools: ["git", "wget", "make", "curl"],
-};
-
-export const aptPackages = <(keyof typeof Apt)[]>Object.keys(Apt);
-
 export const app_version: Record<AppLanguages, AppVersion[]> = {
   go: ["latest"],
   java: ["latest"],

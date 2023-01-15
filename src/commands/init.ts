@@ -1,6 +1,6 @@
-import { AppLanguages } from "@discloudapp/api-types/v2";
+import { AppLanguages, APT } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { app_version, Apt } from "../util/constants";
+import { app_version } from "../util/constants";
 
 export default new class Init implements GluegunCommand {
   name = "init";
@@ -34,7 +34,7 @@ export default new class Init implements GluegunCommand {
         name: "app_apt",
         message: "Choose apt (use space to select)",
         type: "multiselect",
-        choices: Object.entries(Apt).map(([name, value]) => ({
+        choices: Object.entries(APT).map(([name, value]) => ({
           name,
           hint: value.join(),
           value: name,
