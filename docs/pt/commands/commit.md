@@ -14,7 +14,8 @@ ALIAS
   $ discloud c [PATH]
 
 OPÇÕES
-  --app APP_ID O id do seu app no ​​Discloud.
+  --app APP_ID   O id do seu app no ​​Discloud.
+  --no-erase-zip Não apagar o zip criado no processo
 
 ARGUMENTOS
   PATH   O caminho do nome do arquivo.

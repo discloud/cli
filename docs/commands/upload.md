@@ -13,6 +13,9 @@ USAGE
 ALIAS
   $ discloud up [PATH]
 
+OPTIONS
+  --no-erase-zip Do not erase the zip created in the process
+
 ARGUMENTS
   PATH The path of file name
 ```
