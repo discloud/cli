@@ -10,6 +10,10 @@ Visualize as informações de status dos aplicativos de sua equipe.
 USO
   $ discloud team:status [APP_ID]
 
+ALIAS
+  $ discloud s [APP_ID]
+  $ discloud stats [APP_ID]
+
 ARGUMENTOS
   APP_ID O id do seu app no ​​Discloud.
 ```

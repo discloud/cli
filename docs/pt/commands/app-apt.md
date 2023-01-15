@@ -10,6 +10,9 @@ Instale ou desinstale pacotes apt para seu aplicativo.
 USO
   $ discloud apps:apt [APP_ID] -i=PACOTE
 
+ALIAS
+  $ discloud apt [APP_ID] -i=PACOTE
+
 ARGUMENTOS
   APP_ID O id do seu app no ​​Discloud.
 

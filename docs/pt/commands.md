@@ -25,3 +25,4 @@
 - [team:stop](./commands/team-stop.md) - Interrompa um ou todos os seus aplicativos no Discloud.
 - [team](./commands/team.md) - Ver informações da equipe.
 - [upload](./commands/upload.md) - Carregue um aplicativo ou site no Discloud.
+- [userinfo](./commands/userinfo.md) - Visualize suas informações de usuário do Discloud.

@@ -10,6 +10,9 @@ Install or uninstall apt packages for you application.
 USAGE
   $ discloud apps:apt [APP_ID] -i=PACKAGE
 
+ALIAS
+  $ discloud apt [APP_ID] -i=PACKAGE
+
 ARGUMENTS
   APP_ID The id of your app on Discloud
 

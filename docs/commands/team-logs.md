@@ -12,6 +12,10 @@ USAGE
 
 ALIAS
   $ discloud team:l [APP_ID]
+  $ discloud team:t [APP_ID]
+  $ discloud team:terminal [APP_ID]
+  $ discloud team:console [APP_ID]
+  $ discloud team:consola [APP_ID]
 
 OPTIONS
   -s, --save Write the log locally

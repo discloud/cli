@@ -13,6 +13,10 @@ USAGE
 ALIAS
   $ discloud del [APP_ID]
   $ discloud rb [APP_ID]
+  $ discloud ra [APP_ID]
+  $ discloud remover [APP_ID]
+  $ discloud remove [APP_ID]
+  $ discloud removerbot [APP_ID]
 
 ARGUMENTS
   APP_ID The id of your app on Discloud

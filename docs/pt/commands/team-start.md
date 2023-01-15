@@ -10,6 +10,9 @@ Inicie um ou todos os seus aplicativos no Discloud.
 USO
   $ discloud team:start [APP_ID]
 
+ALIAS
+  $ discloud i [APP_ID]
+
 ARGUMENTOS
   APP_ID O id do seu app no ​​Discloud.
 ```

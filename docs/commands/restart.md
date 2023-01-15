@@ -10,6 +10,11 @@ Restart one or all of your apps on Discloud.
 USAGE
   $ discloud restart [APP_ID]
 
+ALIAS
+  $ discloud r [APP_ID]
+  $ discloud reboot [APP_ID]
+  $ discloud reset [APP_ID]
+
 ARGUMENTS
   APP_ID The id of your app on Discloud
 ```

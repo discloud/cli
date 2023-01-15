@@ -10,6 +10,9 @@ Interrompa um ou todos os seus aplicativos no Discloud.
 USO
   $ discloud stop [APP_ID]
 
+ALIAS
+  $ discloud p [APP_ID]
+
 ARGUMENTOS
   APP_ID O id do seu app no ​​Discloud.
 ```

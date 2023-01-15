@@ -10,6 +10,9 @@ Stop one or all of your apps on Discloud.
 USAGE
   $ discloud stop [APP_ID]
 
+ALIAS
+  $ discloud p [APP_ID]
+
 ARGUMENTS
   APP_ID The id of your app on Discloud
 ```

@@ -25,3 +25,4 @@
 - [team:stop](./commands/team-stop.md) - Stop one or all of your apps on Discloud.
 - [team](./commands/team.md) - View team information.
 - [upload](./commands/upload.md) - Upload one app or site to Discloud.
+- [userinfo](./commands/userinfo.md) - View your Discloud user information.

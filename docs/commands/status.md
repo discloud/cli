@@ -10,6 +10,10 @@ View status information of your applications.
 USAGE
   $ discloud status [APP_ID]
 
+ALIAS
+  $ discloud s [APP_ID]
+  $ discloud stats [APP_ID]
+
 ARGUMENTS
   APP_ID The id of your app on Discloud
 ```

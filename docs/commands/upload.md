@@ -12,6 +12,7 @@ USAGE
 
 ALIAS
   $ discloud up [PATH]
+  $ discloud deploy [PATH]
 
 OPTIONS
   --no-erase-zip Do not erase the zip created in the process

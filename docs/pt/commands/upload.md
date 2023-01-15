@@ -12,6 +12,7 @@ USO
 
 ALIAS
   $ discloud up [PATH]
+  $ discloud deploy [PATH]
 
 OPTIONS
   --no-erase-zip Não apagar o zip criado no processo

@@ -13,6 +13,13 @@ USO
 ALIAS
   $ discloud l [APP_ID]
 
+ALIAS
+  $ discloud l [APP_ID]
+  $ discloud t [APP_ID]
+  $ discloud terminal [APP_ID]
+  $ discloud console [APP_ID]
+  $ discloud consola [APP_ID]
+
 OPÇÕES
   -s, --save Gravar o log localmente.
 

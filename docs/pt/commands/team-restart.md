@@ -10,6 +10,11 @@ Reinicie um ou todos os seus aplicativos no Discloud.
 USO
   $ discloud team:restart [APP_ID]
 
+ALIAS
+  $ discloud team:r [APP_ID]
+  $ discloud team:reboot [APP_ID]
+  $ discloud team:reset [APP_ID]
+
 ARGUMENTOS
   APP_ID O id do seu app no ​​Discloud.
 ```
