@@ -5,7 +5,7 @@ import { apidiscloud, config, makeTable, RateLimit } from "../util";
 
 export default new class UserInfo implements GluegunCommand {
   name = "userinfo";
-  description = "See your user info from Discloud";
+  description = "View your Discloud user information.";
   alias = ["ui", "uinfo"];
 
   async run(toolbox: GluegunToolbox) {

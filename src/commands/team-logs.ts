@@ -7,7 +7,7 @@ import { logsPath } from "../util/constants";
 export default new class TeamLogs implements GluegunCommand {
   name = "team:logs";
   description = "View the logs from team application in Discloud.";
-  alias = ["team:l"];
+  alias = ["team:l", "team:t", "team:terminal", "team:console", "team:consola"];
 
   async run(toolbox: GluegunToolbox) {
     const { filesystem, print, parameters } = toolbox;

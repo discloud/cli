@@ -6,6 +6,7 @@ import { apidiscloud, config, makeTable, RateLimit } from "../util";
 export default new class TeamStatus implements GluegunCommand {
   name = "team:status";
   description = "Get status information of your team applications.";
+  alias = ["team:s", "team:stats"];
 
   async run(toolbox: GluegunToolbox) {
     const { print, parameters } = toolbox;
