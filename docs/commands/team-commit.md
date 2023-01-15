@@ -14,7 +14,8 @@ ALIAS
   $ discloud team:c [PATH]
 
 OPTIONS
-  --app APP_ID The id of your app on Discloud
+  --app APP_ID   The id of your app on Discloud
+  --no-erase-zip Do not erase the zip created in the process
 
 ARGUMENTS
   PATH   The path of file name

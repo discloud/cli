@@ -13,6 +13,9 @@ USO
 ALIAS
   $ discloud up [PATH]
 
+OPTIONS
+  --no-erase-zip Não apagar o zip criado no processo
+
 ARGUMENTOS
   PATH O caminho do nome do arquivo.
 ```
