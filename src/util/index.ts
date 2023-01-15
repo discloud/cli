@@ -1,7 +1,7 @@
 import { RouteBases } from "@discloudapp/api-types/v2";
 import { filesystem, http, print } from "gluegun";
 import type { ConfigData, ResolveArgsOptions } from "../@types";
-import { Apt, aptPackages, configPath, FileExt, required_files } from "./constants";
+import { Apt, aptPackages, configPath, FileExt, required_files, version } from "./constants";
 import FsJson from "./FsJson";
 import GS from "./GS";
 
@@ -21,6 +21,7 @@ export const apidiscloud = http.create({
   baseURL: RouteBases.api,
   headers: {
     "api-token": config.data.token,
+    "User-Agent": `DiscloudCLI v${version}`,
   },
 });
 
