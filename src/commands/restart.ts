@@ -6,6 +6,7 @@ import { apidiscloud, config, makeTable, RateLimit } from "../util";
 export default new class Restart implements GluegunCommand {
   name = "restart";
   description = "Restart one or all of your apps on Discloud.";
+  alias = ["r", "reboot", "reset"];
 
   async run(toolbox: GluegunToolbox) {
     const { parameters, prompt, print } = toolbox;

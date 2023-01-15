@@ -5,8 +5,8 @@ import { apidiscloud, config, makeTable, RateLimit } from "../util";
 
 export default new class TeamStart implements GluegunCommand {
   name = "team:start";
-  alias = ["team:i"];
   description = "Start one or all of your apps on Discloud.";
+  alias = ["team:i"];
 
   async run(toolbox: GluegunToolbox) {
     const { parameters, print, prompt } = toolbox;

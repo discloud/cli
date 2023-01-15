@@ -6,8 +6,8 @@ import { ModPermissions } from "../util/constants";
 
 export default new class AppsTeam implements GluegunCommand {
   name = "apps:team";
-  alias = ["app:team"];
   description = "Get team information of your applications.";
+  alias = ["app:team"];
 
   async run(toolbox: GluegunToolbox) {
     const { parameters, print, prompt } = toolbox;

@@ -6,8 +6,8 @@ import { apidiscloud, arrayOfPathlikeProcessor, config, DiscloudConfig, makeZipF
 
 export default new class TeamCommit implements GluegunCommand {
   name = "team:commit";
-  alias = ["team:c"];
   description = "Commit one app for your team.";
+  alias = ["team:c"];
 
   async run(toolbox: GluegunToolbox) {
     const { filesystem, parameters, print, prompt } = toolbox;

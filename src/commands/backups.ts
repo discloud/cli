@@ -7,8 +7,8 @@ import { backupsPath } from "../util/constants";
 
 export default new class Backups implements GluegunCommand {
   name = "backups";
-  alias = ["backup", "bkp", "b"];
   description = "Make backup from your applications in Discloud.";
+  alias = ["backup", "bkp", "b"];
 
   async run(toolbox: GluegunToolbox) {
     const { filesystem, print, parameters } = toolbox;

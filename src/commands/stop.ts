@@ -6,6 +6,7 @@ import { apidiscloud, config, makeTable, RateLimit } from "../util";
 export default new class Stop implements GluegunCommand {
   name = "stop";
   description = "Stop one or all of your apps on Discloud.";
+  alias = ["p"];
 
   async run(toolbox: GluegunToolbox) {
     const { parameters, print, prompt } = toolbox;

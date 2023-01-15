@@ -6,8 +6,8 @@ import { apidiscloud, arrayOfPathlikeProcessor, config, DiscloudConfig, makeZipF
 
 export default new class Commit implements GluegunCommand {
   name = "commit";
-  alias = ["c"];
   description = "Commit one app or site to Discloud.";
+  alias = ["c"];
 
   async run(toolbox: GluegunToolbox) {
     const { filesystem, parameters, print, prompt } = toolbox;

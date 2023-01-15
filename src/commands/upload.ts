@@ -7,8 +7,8 @@ import { mapDiscloudConfigProps } from "../util/constants";
 
 export default new class Upload implements GluegunCommand {
   name = "upload";
-  alias = ["up"];
   description = "Upload one app or site to Discloud.";
+  alias = ["up", "deploy"];
 
   async run(toolbox: GluegunToolbox) {
     const { filesystem, parameters, print } = toolbox;

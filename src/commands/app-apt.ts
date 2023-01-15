@@ -1,4 +1,4 @@
-import { RESTGetApiAppAllResult, RESTPutApiAppAptResult, Routes, APT, APTPackages } from "@discloudapp/api-types/v2";
+import { APT, APTPackages, RESTGetApiAppAllResult, RESTPutApiAppAptResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
 import { apidiscloud, aptValidator, config, RateLimit } from "../util";
@@ -6,6 +6,7 @@ import { apidiscloud, aptValidator, config, RateLimit } from "../util";
 export default new class AppApt implements GluegunCommand {
   name = "app:apt";
   description = "Install or uninstall apt packages for you application.";
+  alias = ["apt"];
 
   async run(toolbox: GluegunToolbox) {
     const { parameters, print, prompt } = toolbox;

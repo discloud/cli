@@ -5,8 +5,8 @@ import { apidiscloud, config, makeTable, RateLimit } from "../util";
 
 export default new class Apps implements GluegunCommand {
   name = "apps";
-  alias = ["app"];
   description = "Get information of your applications.";
+  alias = ["app"];
 
   async run(toolbox: GluegunToolbox) {
     const { print, parameters } = toolbox;
