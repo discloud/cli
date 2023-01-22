@@ -58,7 +58,7 @@ export class DiscloudConfig<T, V> {
 
   update(save: Partial<DiscloudConfigType<T, V>>) {
     this.#data = { ...this.data, ...save };
-    filesystem.write(`${this.path}/discloud.config`, objToString(this.#data, "="));
+    filesystem.write(this.path, objToString(this.#data, "="));
     return this.#data;
   }
 
