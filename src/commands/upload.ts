@@ -44,7 +44,7 @@ export default new class Upload implements GluegunCommand {
 
       if (!verifyRequiredFiles(parameters.array, dConfig.fileExt, dConfig.data.MAIN)) return;
 
-      const allFiles = arrayOfPathlikeProcessor(parameters.array).concat(dConfig.path + "discloud.config");
+      const allFiles = dConfig.pushToFileList(arrayOfPathlikeProcessor(parameters.array));
       print.debug(allFiles);
       if (!allFiles.length) return print.error("No files found!");
 
@@ -68,7 +68,7 @@ export default new class Upload implements GluegunCommand {
 
     new RateLimit(apiRes.headers);
 
-    if (parameters.options.eraseZip === false)
+    if (parameters.options.eraseZip !== false)
       filesystem.remove(parameters.array[0]);
 
     if (apiRes.status) {

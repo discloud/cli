@@ -1,10 +1,13 @@
 import { GluegunToolbox } from "gluegun";
 
 export default function (toolbox: GluegunToolbox) {
-  const { parameters } = toolbox;
+  const { parameters, print } = toolbox;
 
-  if (parameters.options.d || parameters.options.debug)
-    return toolbox.print.debug = console.log;
+  if (parameters.options.d || parameters.options.debug) {
+    print.debug = console.debug;
+    print.debug(parameters);
+    return;
+  }
 
-  return toolbox.print.debug = () => null;
+  return print.debug = () => null;
 }

@@ -81,7 +81,7 @@ export default new class TeamCommit implements GluegunCommand {
 
     new RateLimit(apiRes.headers);
 
-    if (parameters.options.eraseZip === false)
+    if (parameters.options.eraseZip !== false)
       filesystem.remove(parameters.array[0]);
 
     if (apiRes.status) {
