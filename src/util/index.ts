@@ -69,7 +69,7 @@ export function makeTable(apps: Record<string, any> | Record<string, any>[]): an
 }
 
 export function normalizePathlike(path = "**") {
-  return path.replace(/\\/g, "/").replace(/^\.$|\.\/|^\//, "").replace(/\/$/, "");
+  return path.replace(/\\/g, "/").replace(/^\.$|^\.\/|^\//g, "").replace(/\/$/, "");
 }
 
 export function objToString(obj: any, sep = ": "): string {
