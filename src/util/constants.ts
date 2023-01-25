@@ -13,7 +13,7 @@ export const configPath = `${filesystem.homedir()}/.discloud`;
 export const locales = ["en-US", "pt-BR"];
 
 export const blocked_files = {
-  common: [".git", ".vscode", "discloud"],
+  common: [".git", ".vscode"],
   go: [],
   js: ["node_modules", "package-lock.json", "yarn.lock"],
   py: [],

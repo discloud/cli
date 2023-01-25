@@ -53,6 +53,7 @@ export default new class Commit implements GluegunCommand {
         return print.error(`${parameters.array[0]} file does not exists.`);
     } else {
       const allFiles = arrayOfPathlikeProcessor(parameters.array);
+      print.debug(allFiles);
       if (!allFiles.length) return print.error("No files found!");
 
       parameters.array[0] = await makeZipFromFileList(allFiles, null, debug);
@@ -77,7 +78,7 @@ export default new class Commit implements GluegunCommand {
 
     new RateLimit(apiRes.headers);
 
-    if (!parameters.options["no-erase-zip"])
+    if (parameters.options.eraseZip !== false)
       filesystem.remove(parameters.array[0]);
 
     if (apiRes.status) {

@@ -4,6 +4,7 @@ import { AskForAppsOptions } from ".";
 
 declare module "gluegun" {
   interface GluegunPrint {
+    debug: Console["debug"]
     printApiRes<T = any>(apiRes: ApiResponse<T>, spin?: any): number
     spinApiRes<T = any>(apiRes: ApiResponse<T>, spin: any): number
   }

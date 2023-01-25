@@ -15,7 +15,7 @@ export class DiscloudConfig<T, V> {
   path!: string;
   #data!: DiscloudConfigType<T, V>;
 
-  constructor(path: string | string[] = ["."], data?: DiscloudConfigType<T, V>) {
+  constructor(path: string | string[] = [""], data?: DiscloudConfigType<T, V>) {
     path = this.constructor.findDiscloudConfig(path)!;
     if (typeof path === "string") this.path = path;
 
@@ -49,16 +49,20 @@ export class DiscloudConfig<T, V> {
   }
 
   #read() {
-    return this.#stringToObj(filesystem.read(`${this.path}/discloud.config`) ?? filesystem.read("discloud.config") ?? "");
+    return this.#stringToObj(filesystem.read(this.path) ?? filesystem.read("discloud.config") ?? "");
+  }
+
+  pushToFileList(fileList: string[] = []) {
+    return fileList.filter(file => !/discloud\.config$/.test(file)).concat(this.path);
   }
 
   update(save: Partial<DiscloudConfigType<T, V>>) {
     this.#data = { ...this.data, ...save };
-    filesystem.write(`${this.path}/discloud.config`, objToString(this.#data, "="));
+    filesystem.write(this.path, objToString(this.#data, "="));
     return this.#data;
   }
 
-  static findDiscloudConfig(paths: string | string[] = ["."]) {
+  static findDiscloudConfig(paths: string | string[] = [""]) {
     if (!Array.isArray(paths)) paths = [paths];
 
     for (let i = 0; i < paths.length; i++) {
@@ -68,11 +72,11 @@ export class DiscloudConfig<T, V> {
         path = path.split("/").slice(0, -1).join("/");
 
       if (filesystem.exists(`${path}/discloud.config`))
-        return path;
+        return normalizePathlike(`${path}/discloud.config`);
     }
 
     if (filesystem.exists("discloud.config"))
-      return "";
+      return "discloud.config";
   }
 }
 
