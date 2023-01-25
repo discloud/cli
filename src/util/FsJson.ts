@@ -34,13 +34,14 @@ export class FsJson<D extends Partial<Record<any, any>>> {
       try {
         return filesystem.read(path, "json");
       } catch {
-        return this.#decode(filesystem.read(path));
+        return this.#decode(path);
       }
     return {};
   }
 
   update(data: D, path = this.path) {
-    const encoded = this.#encode(this.#data = { ...this.#data, ...data });
+    this.#data = { ...this.#data, ...data };
+    const encoded = this.#encode(this.#data);
     filesystem.write(path, encoded);
     return this.#data;
   }
