@@ -10,7 +10,7 @@ export class FsJson<D extends Partial<Record<any, any>>> {
       ...this.options,
     };
 
-    this.#data = this.#read();
+    this.#data = this.#read() ?? {};
   }
 
   get data() {
@@ -30,11 +30,13 @@ export class FsJson<D extends Partial<Record<any, any>>> {
   }
 
   #read(path = this.path) {
-    try {
-      return filesystem.read(path, "json");
-    } catch {
-      return this.#decode(filesystem.read(path));
-    }
+    if (filesystem.exists(path))
+      try {
+        return filesystem.read(path, "json");
+      } catch {
+        return this.#decode(filesystem.read(path));
+      }
+    return {};
   }
 
   update(data: D, path = this.path) {
