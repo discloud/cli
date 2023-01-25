@@ -49,7 +49,7 @@ export class DiscloudConfig<T, V> {
   }
 
   #read() {
-    return this.#stringToObj(filesystem.read(this.path) ?? filesystem.read("discloud.config") ?? "");
+    return this.#stringToObj(filesystem.read(this.path ?? "discloud.config") ?? filesystem.read("discloud.config") ?? "");
   }
 
   pushToFileList(fileList: string[] = []) {
