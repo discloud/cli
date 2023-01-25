@@ -2,7 +2,7 @@
 
 ## Política de Execução
 
-Mensagem de erro: "O arquivo ... não pode ser carregado porque a execução de script foi desabilitada neste sistema."  
+Mensagem de erro: "O arquivo ... não pode ser carregado porque a execução de scripts foi desabilitada neste sistema."  
 Fonte: <https://go.microsoft.com/fwlink/?LinkID=135170>
 
 ### Solução
