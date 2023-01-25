@@ -23,7 +23,7 @@ export class GS {
       ...new Set(Object.values(blocked_files).flat()),
       ...this.resolveIgnoreFile(".discloudignore"),
     ]
-      .map(a => [a, `${a}/**`, `**/${a}/**`, `${path}/${a}/**`]).flat();
+      .map(a => [a, `${a}/**`, `**/${a}`, `**/${a}/**`, `${path}/${a}`, `${path}/${a}/**`]).flat();
   }
 
   normalizePath(path: string) {
