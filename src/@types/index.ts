@@ -1,16 +1,20 @@
+import { DiscloudConfig } from "../util";
+
 export interface AskForAppsOptions {
   /**
    * @default false
    */
   all?: boolean
-  /**
-   * @default "."
-   */
   discloudConfigPath?: string
+  discloudConfig?: DiscloudConfig
   /**
    * @default true
    */
   showStatus?: boolean
+}
+
+export interface FetchAndAskForAppsOptions extends AskForAppsOptions {
+  route?: string
 }
 
 export interface ConfigData {

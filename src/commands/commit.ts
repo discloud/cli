@@ -1,4 +1,4 @@
-import { RESTGetApiAppAllResult, RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
+import { RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
@@ -25,25 +25,11 @@ export default new class Commit implements GluegunCommand {
     const discloudConfigPath = DiscloudConfig.findDiscloudConfig(parameters.array);
 
     if (!parameters.options.app || typeof parameters.options.app !== "string") {
-      const spin = print.spin({
-        text: print.colors.cyan("Fetching apps..."),
-      });
+      const { appId } = await prompt.fetchAndAskForApps({ discloudConfigPath });
 
-      const apiRes = await apidiscloud.get<RESTGetApiAppAllResult>(Routes.app("all"));
+      if (!appId) return print.error("Need app id to commit.");
 
-      new RateLimit(apiRes.headers);
-
-      spin.stop();
-
-      if (apiRes.data)
-        if ("apps" in apiRes.data) {
-          const { appId } = await prompt.askForApps(apiRes.data.apps, { discloudConfigPath });
-
-          parameters.options.app = appId;
-        }
-
-      if (!parameters.options.app)
-        return print.error("Need app id to commit.");
+      parameters.options.app = appId;
     }
 
     const formData = new FormData();

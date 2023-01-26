@@ -11,7 +11,7 @@ export interface DiscloudConfig<T extends AppTypes, V extends AppLanguages> {
   constructor: DiscloudConfigConstructor<T, V>;
 }
 
-export class DiscloudConfig<T, V> {
+export class DiscloudConfig<T = AppTypes, V = AppLanguages> {
   path!: string;
   #data!: DiscloudConfigType<T, V>;
 
