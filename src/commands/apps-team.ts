@@ -52,6 +52,7 @@ export default new class AppsTeam implements GluegunCommand {
     let action;
     switch (method) {
       case "delete":
+        modID = parameters.options.d ?? parameters.options.delete;
         action = `Deleting ${modID} MOD from ${parameters.first} app...`;
         break;
       case "post":
