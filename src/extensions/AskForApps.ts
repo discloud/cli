@@ -22,13 +22,19 @@ export default function (toolbox: GluegunToolbox) {
       }] : []).concat(sortAppsBySameId(apps, options.discloudConfig.data.ID!).map(app => ({
         name: app.id,
         message: [
-          app.name,
-          " - ", app.id,
-          options.showStatus ? " - " + (app.online ?
-            toolbox.print.colors.green("online") :
-            toolbox.print.colors.red("offline")) : undefined,
-          "perms" in app ? app.perms.length ?
-            ` - [${app.perms.join()}]` : undefined : undefined,
+          app.name, " - ", app.id,
+          options.showStatus ?
+            " - " + (
+              app.online ?
+                toolbox.print.colors.green("online") :
+                toolbox.print.colors.red("offline")
+            ) :
+            "",
+          "perms" in app ?
+            app.perms.length ?
+              ` - [${app.perms.join()}]` :
+              "" :
+            "",
         ].join(""),
         value: app.id,
       }))),
