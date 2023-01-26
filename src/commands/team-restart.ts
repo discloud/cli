@@ -20,7 +20,7 @@ export default new class TeamRestart implements GluegunCommand {
     if (!parameters.first) {
       const { appId } = await prompt.fetchAndAskForApps({
         all: true,
-        route: Routes.team(),
+        url: Routes.team(),
       });
 
       if (!appId) return print.error("Need app id.");

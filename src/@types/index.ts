@@ -14,7 +14,7 @@ export interface AskForAppsOptions {
 }
 
 export interface FetchAndAskForAppsOptions extends AskForAppsOptions {
-  route?: string
+  url?: string
 }
 
 export interface ConfigData {

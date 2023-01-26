@@ -28,7 +28,7 @@ export default new class TeamCommit implements GluegunCommand {
       const { appId } = await prompt.fetchAndAskForApps({
         all: true,
         discloudConfigPath,
-        route: Routes.team(),
+        url: Routes.team(),
       });
 
       if (!appId)

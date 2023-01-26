@@ -8,13 +8,13 @@ export default function (toolbox: GluegunToolbox) {
       text: toolbox.print.colors.cyan("Fetching apps..."),
     });
 
-    const apiRes = await apidiscloud.get<RESTGetApiAppAllResult | RESTGetApiTeamResult>(options?.route ?? Routes.app("all"));
+    const apiRes = await apidiscloud.get<RESTGetApiAppAllResult | RESTGetApiTeamResult>(options?.url ?? Routes.app("all"));
 
     new RateLimit(apiRes.headers);
 
     spin.stop();
 
-    if (apiRes.data)
+    if (apiRes.data?.apps)
       return toolbox.prompt.askForApps(apiRes.data.apps, {
         all: options?.all,
         discloudConfig: options?.discloudConfig,
