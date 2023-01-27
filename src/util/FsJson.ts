@@ -10,7 +10,7 @@ export class FsJson<D extends Partial<Record<any, any>>> {
       ...this.options,
     };
 
-    this.#data = this.#read() ?? {};
+    this.#data = this.#read() ?? this.#data;
   }
 
   get data() {
@@ -36,7 +36,6 @@ export class FsJson<D extends Partial<Record<any, any>>> {
       } catch {
         return this.#decode(path);
       }
-    return {};
   }
 
   update(data: D, path = this.path) {

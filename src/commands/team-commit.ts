@@ -1,7 +1,6 @@
 import { RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { exit } from "node:process";
 import { apidiscloud, arrayOfPathlikeProcessor, config, DiscloudConfig, makeZipFromFileList, RateLimit } from "../util";
 
 export default new class TeamCommit implements GluegunCommand {
@@ -72,10 +71,10 @@ export default new class TeamCommit implements GluegunCommand {
     if (parameters.options.eraseZip !== false)
       filesystem.remove(parameters.array[0]);
 
-    if (apiRes.status) {
-      if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
+    print.spinApiRes(apiRes, spin, { exitOnError: true });
 
-      if (apiRes.data?.logs) print.info(`[DISCLOUD API] ${apiRes.data.logs}`);
-    }
+    if (!apiRes.data) return;
+
+    if ("logs" in apiRes.data) print.info(`[DISCLOUD API] ${apiRes.data.logs}`);
   }
 };

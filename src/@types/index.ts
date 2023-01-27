@@ -1,5 +1,9 @@
 import { DiscloudConfig } from "../util";
 
+export interface ApiResPrinterOptions {
+  exitOnError?: boolean
+}
+
 export interface AskForAppsOptions {
   /**
    * @default false
