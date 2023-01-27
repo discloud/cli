@@ -1,11 +1,11 @@
-import { RESTGetApiAppAllResult, RESTPutApiAppAllStopResult, Routes } from "@discloudapp/api-types/v2";
+import { RESTPutApiAppAllStopResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { exit } from "node:process";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
 
 export default new class Stop implements GluegunCommand {
   name = "stop";
   description = "Stop one or all of your apps on Discloud.";
+  alias = ["p"];
 
   async run(toolbox: GluegunToolbox) {
     const { parameters, print, prompt } = toolbox;
@@ -17,38 +17,11 @@ export default new class Stop implements GluegunCommand {
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
     if (!parameters.first) {
-      const spin = print.spin({
-        text: print.colors.cyan("Fetching apps..."),
-      });
+      const { appId } = await prompt.fetchAndAskForApps({ all: true });
 
-      const apiRes = await apidiscloud.get<RESTGetApiAppAllResult>(Routes.app("all"));
+      if (!appId) return print.error("Need app id.");
 
-      spin.stop();
-
-      if (apiRes.data)
-        if ("apps" in apiRes.data) {
-          const { appId } = await prompt.ask({
-            name: "appId",
-            message: "Choose the app",
-            type: "select",
-            choices: [{
-              name: "all",
-              message: "All apps",
-              value: "all",
-            }].concat(apiRes.data.apps.map(app => ({
-              name: app.id,
-              message: `${app.name} - ${app.id} - ${app.online ?
-                print.colors.green("online") :
-                print.colors.red("offline")}`,
-              value: app.id,
-            }))),
-          });
-
-          parameters.first = appId;
-        }
-
-      if (!parameters.first)
-        return print.error("Need app id.");
+      parameters.first = appId;
     }
 
     const spin = print.spin({
@@ -59,17 +32,13 @@ export default new class Stop implements GluegunCommand {
 
     new RateLimit(apiRes.headers);
 
-    if (apiRes.status) {
-      if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
+    print.spinApiRes(apiRes, spin, { exitOnError: true });
 
-      if (!apiRes.data) return exit(0);
+    if (!apiRes.data) return;
 
-      if ("apps" in apiRes.data)
-        print.table(makeTable(apiRes.data.apps), {
-          format: "lean",
-        });
-    }
-
-    exit(0);
+    if ("apps" in apiRes.data)
+      print.table(makeTable(apiRes.data.apps), {
+        format: "lean",
+      });
   }
 };

@@ -1,6 +1,6 @@
+import { AppLanguages, APT } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { exit } from "node:process";
-import { Apt } from "../util/constants";
+import { app_version } from "../util/constants";
 
 export default new class Init implements GluegunCommand {
   name = "init";
@@ -19,7 +19,7 @@ export default new class Init implements GluegunCommand {
         props: { appType: "bot", appAutoRestart: "false", appRam: 100, appVersion: "latest" },
       });
 
-    const { app_apt, appMain, appType, appAutoRestart, appVersion } = await prompt.ask([
+    const { app_apt, appMain, appType, appAutoRestart } = await prompt.ask([
       {
         name: "appType",
         message: "Choose your app type",
@@ -31,21 +31,15 @@ export default new class Init implements GluegunCommand {
         type: "input",
         required: true,
       }, {
-        name: "appVersion",
-        message: "Choose the version for your app",
-        type: "select",
-        choices: ["latest", "current", "suja"],
-        initial: 0,
-      }, {
         name: "app_apt",
         message: "Choose apt (use space to select)",
         type: "multiselect",
-        choices: Object.entries(Apt).map(([name, value]) => ({
+        choices: Object.entries(APT).map(([name, value]) => ({
           name,
           hint: value.join(),
           value: name,
         })),
-        initial: 5,
+        initial: 6,
       }, {
         name: "appAutoRestart",
         message: "Auto restart?",
@@ -57,6 +51,14 @@ export default new class Init implements GluegunCommand {
      * Sorry, it is because app_apt is typed like string, not array
      */
     const appApt = [...app_apt].join();
+
+    const { appVersion } = await prompt.ask({
+      name: "appVersion",
+      message: "Choose the version for your app",
+      type: "select",
+      choices: app_version[<AppLanguages>appMain.split(".").pop()] ?? ["latest"],
+      initial: 0,
+    });
 
     const minRam = appType === "site" ? 512 : 100;
     let appRam;
@@ -83,8 +85,7 @@ export default new class Init implements GluegunCommand {
         type: "input",
       });
 
-      if (appType === "site")
-        appId = app_id.match(appType === "site" ? /(\w+)(?:\.discloud\..*)?/ : /(.+)/)?.[1];
+      appId = app_id.match(appType === "site" ? /(\w+)(?:\.discloud.*)?/ : /(.+)/)?.[1];
     }
 
     let appName;
@@ -117,7 +118,5 @@ export default new class Init implements GluegunCommand {
       target: "discloud.config",
       props: { appApt, appAvatar, appId, appMain, appName, appRam, appType, appAutoRestart, appVersion },
     });
-
-    exit(0);
   }
 };

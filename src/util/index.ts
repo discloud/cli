@@ -1,63 +1,39 @@
-import { RouteBases } from "@discloudapp/api-types/v2";
-import archiver from "archiver";
-import { GlobSync } from "glob";
+import { APT, APTPackages, RouteBases } from "@discloudapp/api-types/v2";
 import { filesystem, http, print } from "gluegun";
-import type { ResolveArgsOptions } from "../@types";
-import { blocked_files, configPath, required_files } from "./constants";
+import type { ConfigData, ResolveArgsOptions } from "../@types";
+import { configPath, FileExt, required_files, version } from "./constants";
 import FsJson from "./FsJson";
+import GS from "./GS";
 
-export const config = new class Config extends FsJson {
-  data: {
-    limited?: string
-    token?: string
-  } = this.data;
+export * from "./DiscloudConfig";
+export * from "./FsJson";
+export * from "./GS";
+export * from "./RateLimit";
+export * from "./Zip";
 
+export const config = new class Config extends FsJson<ConfigData> {
   constructor() {
-    super(`${configPath}/.cli`);
+    super(`${configPath}/.cli`, { encoding: "base64" });
   }
 };
-
-export * from "./RateLimit";
 
 export const apidiscloud = http.create({
   baseURL: RouteBases.api,
   headers: {
     "api-token": config.data.token,
+    "User-Agent": `DiscloudCLI v${version}`,
   },
 });
 
-export function configToObj(s: string): Record<any, any> {
-  if (typeof s !== "string") return {};
-  return Object.fromEntries(s.split(/\r?\n/).map(a => a.split("=")));
+export function aptValidator(apts: keyof typeof APT | typeof APTPackages) {
+  if (typeof apts === "string")
+    apts = <typeof APTPackages>apts.split(/\W/g);
+
+  return apts.map(apt => <keyof typeof APT>apt.toLowerCase()).filter(apt => APTPackages.includes(apt));
 }
 
-export function getFileExt(path: string) {
-  const requiredFiles = Object.entries(required_files);
-
-  for (let i = 0; i < requiredFiles.length; i++) {
-    const fileEntries = requiredFiles[i];
-
-    for (let j = 0; j < fileEntries[1].length; j++) {
-      const file = fileEntries[1][j];
-
-      if (filesystem.exists(`${path}/${file}`))
-        return <keyof typeof required_files>fileEntries[0];
-    }
-  }
-}
-
-export function configUpdate(save: Record<string, string>, path = ".") {
-  path = path.replace(/\/$/, "");
-  path = filesystem.exists(`${path}/discloud.config`) ? path : ".";
-
-  const data = { ...configToObj(filesystem.read(`${path}/discloud.config`)!), ...save };
-
-  filesystem.write(`${path}/discloud.config`, objToString(data, "="));
-}
-
-export function getGitIgnore(path: string) {
-  return [...new Set(Object.values(blocked_files).flat())]
-    .map(a => [`${a.replace(/^\/|\/$/, "")}/**`, `${path}/${a.replace(/^\/|\/$/, "")}/**`]).flat();
+export function getFileExt(ext: `${keyof typeof FileExt}`) {
+  return FileExt[ext] ?? ext;
 }
 
 function getKeys(array: Record<string, any>[]) {
@@ -67,20 +43,6 @@ function getKeys(array: Record<string, any>[]) {
     keys.push(...Object.keys(element));
   }
   return [...new Set(keys)];
-}
-
-export function getMissingValues(obj: Record<any, any>, match: string[]) {
-  return match.filter(key => !obj[key]);
-}
-
-export function getNotIngnoredFiles(path: string) {
-  const ignore = getGitIgnore(path);
-
-  path = (filesystem.isDirectory(path) || [".", "./"].includes(path) || !/\W+/.test(path)) ?
-    `${path.replace(/\/$/, "")}/**` :
-    path;
-
-  return new GlobSync(path, { ignore, dot: true }).found.filter(a => !["."].includes(a));
 }
 
 function getValues(array: Record<string, any>[]) {
@@ -106,35 +68,12 @@ export function makeTable(apps: Record<string, any> | Record<string, any>[]): an
   return [keys, ...values];
 }
 
-export async function makeZipFromFileList(files: string[]) {
-  const zipper = archiver("zip");
-
-  const outFileName = `${process.cwd().split(/\/|\\/).pop()}.zip`;
-  const output = filesystem.createWriteStream(outFileName);
-  zipper.pipe(output);
-
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    const fileName = file.replace(/^\.\//, "");
-
-    if (filesystem.isFile(file)) {
-      const spin = print.spin({
-        text: `Zipping file: ${fileName}`,
-      });
-
-      zipper.append(filesystem.createReadStream(file), { name: fileName });
-
-      spin.succeed();
-    }
-  }
-
-  await zipper.finalize();
-
-  return outFileName;
+export function normalizePathlike(path = "**") {
+  return path.replace(/\\/g, "/").replace(/^(\.|~)$|^(\.|~)\/|^\/|\/$/g, "");
 }
 
 export function objToString(obj: any, sep = ": "): string {
-  if (!obj) return "";
+  if (!obj) return obj;
 
   const result = [];
 
@@ -153,6 +92,13 @@ export function objToString(obj: any, sep = ": "): string {
   }
 
   return result.join("\n");
+}
+
+export function arrayOfPathlikeProcessor(paths: string[], files: string[] = []) {
+  if (!paths?.length) paths = ["**"];
+  for (let i = 0; i < paths.length; i++)
+    files.push(...new GS(normalizePathlike(paths[i])).found);
+  return files;
 }
 
 export function resolveArgs(args: string[], options: ResolveArgsOptions[]) {
@@ -179,15 +125,33 @@ export function resolveArgs(args: string[], options: ResolveArgsOptions[]) {
   return resolved;
 }
 
-export function verifyRequiredFiles(path: string, ext: keyof typeof required_files) {
-  const requiredFiles = Object.values(required_files[ext]).concat("discloud.config");
+export function sortAppsBySameId<T extends { id: string }>(apps: T[], id: string) {
+  return apps.sort(a => a.id === id ? -1 : 1);
+}
+
+export function verifyRequiredFiles(
+  paths: string[],
+  ext: `${keyof typeof FileExt}`,
+  files: string | string[] = [],
+) {
+  const fileExt = getFileExt(ext);
+  const requiredFiles = Object.values(required_files[fileExt] ?? {}).concat(required_files.common, files);
 
   for (let i = 0; i < requiredFiles.length; i++) {
     const file = requiredFiles[i];
 
-    if (!filesystem.exists(`${path}/${file}`))
-      return print.error(`${file} is missing.`);
+    for (let j = 0; j < paths.length; j++) {
+      const path = normalizePathlike(paths[j]);
+
+      if (filesystem.exists(`${path}/${file}`) || filesystem.exists(file)) {
+        requiredFiles.splice(i, 1);
+        i--;
+      }
+    }
   }
+
+  if (requiredFiles.length)
+    return print.error(`Missing: ${requiredFiles.join(", ")}`);
 
   return true;
 }

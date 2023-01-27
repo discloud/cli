@@ -1,16 +1,17 @@
-import { RESTGetApiTeamResult, RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
+import { RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { exit } from "node:process";
-import { apidiscloud, config, configToObj, getNotIngnoredFiles, makeZipFromFileList, RateLimit } from "../util";
+import { apidiscloud, arrayOfPathlikeProcessor, config, DiscloudConfig, makeZipFromFileList, RateLimit } from "../util";
 
 export default new class TeamCommit implements GluegunCommand {
   name = "team:commit";
-  alias = ["team:c"];
   description = "Commit one app for your team.";
+  alias = ["team:c"];
 
   async run(toolbox: GluegunToolbox) {
     const { filesystem, parameters, print, prompt } = toolbox;
+
+    const debug = parameters.options.d || parameters.options.debug;
 
     if (!config.data.token)
       return print.error("Please use login command before using this command.");
@@ -18,58 +19,37 @@ export default new class TeamCommit implements GluegunCommand {
     if (RateLimit.isLimited)
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
-    if (!parameters.first) parameters.first = ".";
-    parameters.first = parameters.first.replace(/\/$/, "");
+    if (!parameters.array?.length) parameters.array = ["**"];
 
-    const discloudConfigStr =
-      filesystem.read(`${parameters.first}/discloud.config`) ||
-      filesystem.read("discloud.config");
+    const discloudConfigPath = DiscloudConfig.findDiscloudConfig(parameters.array);
 
-    const dConfig = configToObj(discloudConfigStr!);
-
-    if (!parameters.second) {
-      const spin = print.spin({
-        text: print.colors.cyan("Fetching apps..."),
+    if (!parameters.options.app || typeof parameters.options.app !== "string") {
+      const { appId } = await prompt.fetchAndAskForApps({
+        all: true,
+        discloudConfigPath,
+        url: Routes.team(),
       });
 
-      const apiRes = await apidiscloud.get<RESTGetApiTeamResult>(Routes.team());
-
-      spin.stop();
-
-      if (apiRes.data)
-        if ("apps" in apiRes.data) {
-          const { appId } = await prompt.ask({
-            name: "appId",
-            message: "Choose the app",
-            type: "select",
-            choices: apiRes.data.apps.map(app => ({
-              name: app.id,
-              message: `${app.id} - [${app.perms.join()}] ${app.id === dConfig.ID ?
-                "[discloud.config]" : ""}`,
-              value: app.id,
-            })),
-          });
-
-          parameters.second = appId;
-        }
-
-      if (!parameters.second)
+      if (!appId)
         return print.error("Need app id to commit.");
+
+      parameters.options.app = appId;
     }
 
     const formData = new FormData();
 
-    if (/\/?\w+\.(zip)/.test(parameters.first)) {
-      if (!filesystem.exists(parameters.first))
-        return print.error(`${parameters.first} file does not exists.`);
+    if (/\.(zip)$/.test(parameters.array[0])) {
+      if (!filesystem.exists(parameters.array[0]))
+        return print.error(`${parameters.array[0]} file does not exists.`);
     } else {
-      const allFiles = getNotIngnoredFiles(parameters.first);
-      if (!allFiles.length) return print.error(`No files found in path ${parameters.first}`);
+      const allFiles = arrayOfPathlikeProcessor(parameters.array);
+      print.debug(allFiles);
+      if (!allFiles.length) return print.error("No files found!");
 
-      parameters.first = await makeZipFromFileList(allFiles);
+      parameters.array[0] = await makeZipFromFileList(allFiles, null, debug);
     }
 
-    formData.append("file", filesystem.createReadStream(parameters.first));
+    formData.append("file", filesystem.createReadStream(parameters.array[0]));
 
     const headers = formData.getHeaders({
       "api-token": config.data.token,
@@ -81,21 +61,20 @@ export default new class TeamCommit implements GluegunCommand {
 
     const apiRes = await apidiscloud.put<
       RESTPutApiAppCommitResult
-    >(Routes.teamCommit(parameters.second), formData, {
-      timeout: 300000,
-      headers,
-    });
+      >(Routes.teamCommit(parameters.options.app), formData, {
+        timeout: 300000,
+        headers,
+      });
 
     new RateLimit(apiRes.headers);
 
-    filesystem.remove(parameters.first);
+    if (parameters.options.eraseZip !== false)
+      filesystem.remove(parameters.array[0]);
 
-    if (apiRes.status) {
-      if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
+    print.spinApiRes(apiRes, spin, { exitOnError: true });
 
-      if (apiRes.data?.logs) print.info(`[DISCLOUD API] ${apiRes.data.logs}`);
-    }
+    if (!apiRes.data) return;
 
-    exit(0);
+    if ("logs" in apiRes.data) print.info(`[DISCLOUD API] ${apiRes.data.logs}`);
   }
 };

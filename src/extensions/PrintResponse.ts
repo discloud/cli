@@ -1,8 +1,9 @@
 import { GluegunToolbox } from "gluegun";
+import { exit } from "node:process";
 
 export default function (toolbox: GluegunToolbox) {
-  return toolbox.print.printApiRes = function (apiRes, spin) {
-    if (spin) return toolbox.print.spinApiRes(apiRes, spin);
+  toolbox.print.printApiRes = function (apiRes, options, spin) {
+    if (spin) return toolbox.print.spinApiRes(apiRes, spin, options);
 
     if (typeof apiRes.data === "string") {
       apiRes.data = apiRes.data.match(/<title>(.*)<\/title>/)?.[1] ?? apiRes.data;
@@ -11,15 +12,22 @@ export default function (toolbox: GluegunToolbox) {
     }
 
     if (apiRes.status > 399) {
-      toolbox.print.error(`[DISCLOUD API] ${apiRes.data?.message ?? "fail!"}`);
+      toolbox.print.error(`[DISCLOUD API: ${apiRes.status}] ${apiRes.data?.message ?? apiRes.originalError ?? "fail!"}`);
 
-      return apiRes.status;
+      return options?.exitOnError ? exit(apiRes.status) : apiRes.status;
     }
 
-    if (apiRes.data?.status === "ok") {
-      toolbox.print.success(`[DISCLOUD API] ${apiRes.data?.message ?? "success!"}`);
-    } else {
-      toolbox.print.warning(`[DISCLOUD API] ${apiRes.data?.message ?? "warn!"}`);
+    if (apiRes.data)
+      if (apiRes.data.status === "ok") {
+        toolbox.print.success(`[DISCLOUD API] ${apiRes.data.message ?? apiRes.originalError ?? "success!"}`);
+      } else {
+        toolbox.print.warning(`[DISCLOUD API] ${apiRes.data.message ?? apiRes.originalError ?? "warn!"}`);
+      }
+
+    if (apiRes.problem) {
+      toolbox.print.error(`[${apiRes.problem}: ${apiRes.originalError?.errno}] ${apiRes.originalError ?? "fail!"}`);
+
+      return options?.exitOnError ? exit(apiRes.originalError?.errno) : apiRes.originalError?.errno;
     }
 
     return apiRes.status;

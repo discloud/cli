@@ -1,24 +1,42 @@
-import { BinaryLike } from "crypto";
+import { DiscloudConfig } from "../util";
 
-export interface RawFile {
+export interface ApiResPrinterOptions {
+  exitOnError?: boolean
+}
+
+export interface AskForAppsOptions {
   /**
-   * The name of the file
+   * @default false
    */
-  name: string
+  all?: boolean
+  discloudConfigPath?: string
+  discloudConfig?: DiscloudConfig
   /**
-   * An explicit key to use for key of the formdata field for this file.
-   * When not provided, the index of the file in the files array is used in the form `files[${index}]`.
-   * If you wish to alter the placeholder snowflake, you must provide this property in the same form (`files[${placeholder}]`)
+   * @default true
    */
-  key?: string
-  /**
-   * The actual data for the file
-   */
-  data: Blob | BinaryLike | Buffer
-  /**
-   * Content-Type of the file
-   */
-  contentType?: string
+  showStatus?: boolean
+}
+
+export interface FetchAndAskForAppsOptions extends AskForAppsOptions {
+  url?: string
+}
+
+export interface ConfigData {
+  limited?: number
+  token?: string
+}
+
+export interface FsJsonOptions {
+  encoding?: FsJsonEncoding
+}
+
+export type FsJsonEncoding = Extract<BufferEncoding, "base64" | "utf8">
+
+export interface MakeZipArgs {
+  debug?: boolean
+  fileName?: string | null
+  ignore?: string[]
+  path?: string
 }
 
 export interface ResolveArgsOptions {

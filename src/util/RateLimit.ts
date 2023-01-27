@@ -21,6 +21,6 @@ export class RateLimit {
     if (isNaN(remaining)) return;
     if (remaining > 0) return;
 
-    config.write({ limited: Date.now() + (Number(headers["ratelimit-reset"]) * 1000) });
+    config.update({ limited: Date.now() + (Number(headers["ratelimit-reset"]) * 1000) });
   }
 }

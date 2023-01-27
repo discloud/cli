@@ -1,13 +1,12 @@
 import { RESTGetApiAppTeamResult, RESTPostApiAppTeamResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { exit } from "node:process";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
 import { ModPermissions } from "../util/constants";
 
 export default new class AppsTeam implements GluegunCommand {
   name = "apps:team";
-  alias = ["app:team"];
   description = "Get team information of your applications.";
+  alias = ["app:team"];
 
   async run(toolbox: GluegunToolbox) {
     const { parameters, print, prompt } = toolbox;
@@ -52,6 +51,7 @@ export default new class AppsTeam implements GluegunCommand {
     let action;
     switch (method) {
       case "delete":
+        modID = parameters.options.d ?? parameters.options.delete;
         action = `Deleting ${modID} MOD from ${parameters.first} app...`;
         break;
       case "post":
@@ -83,22 +83,18 @@ export default new class AppsTeam implements GluegunCommand {
 
     new RateLimit(apiRes.headers);
 
-    if (apiRes.status) {
-      if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
+    print.spinApiRes(apiRes, spin, { exitOnError: true });
 
-      if (!apiRes.data) return exit(0);
+    if (!apiRes.data) return;
 
-      if ("app" in apiRes.data)
-        print.table(makeTable(apiRes.data.app), {
-          format: "lean",
-        });
+    if ("app" in apiRes.data)
+      print.table(makeTable(apiRes.data.app), {
+        format: "lean",
+      });
 
-      if ("team" in apiRes.data)
-        print.table(makeTable(apiRes.data.team), {
-          format: "lean",
-        });
-    }
-
-    exit(0);
+    if ("team" in apiRes.data)
+      print.table(makeTable(apiRes.data.team), {
+        format: "lean",
+      });
   }
 };
