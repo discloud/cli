@@ -1,7 +1,6 @@
 import { RESTGetApiAppAllBackupResult, RESTGetApiAppBackupResult, Routes } from "@discloudapp/api-types/v2";
 import axios from "axios";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { exit } from "node:process";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
 import { backupsPath } from "../util/constants";
 
@@ -32,63 +31,61 @@ export default new class TeamBackup implements GluegunCommand {
 
     new RateLimit(apiRes.headers);
 
-    if (apiRes.status) {
-      if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
+    print.spinApiRes(apiRes, spin, { exitOnError: true });
 
-      if (!apiRes.data) return;
+    if (!apiRes.data) return;
 
-      if ("backups" in apiRes.data) {
-        if (parameters.options.save || parameters.options.s)
-          if (Array.isArray(apiRes.data.backups)) {
-            for (let i = 0; i < apiRes.data.backups.length; i++) {
-              const backup = apiRes.data.backups[i];
+    if ("backups" in apiRes.data) {
+      if (parameters.options.save || parameters.options.s)
+        if (Array.isArray(apiRes.data.backups)) {
+          for (let i = 0; i < apiRes.data.backups.length; i++) {
+            const backup = apiRes.data.backups[i];
 
-              if (backup.status === "ok") {
-                const outFileName = `${backupsPath}/${backup.id}.zip`;
+            if (backup.status === "ok") {
+              const outFileName = `${backupsPath}/${backup.id}.zip`;
 
-                const spin = print.spin({
-                  text: `Saving: ${outFileName}`,
-                });
+              const spin = print.spin({
+                text: `Saving: ${outFileName}`,
+              });
 
-                try {
-                  const result = await axios.get(backup.url, { responseType: "arraybuffer" });
+              try {
+                const result = await axios.get(backup.url, { responseType: "arraybuffer" });
 
-                  filesystem.write(outFileName, result.data);
+                filesystem.write(outFileName, result.data);
 
-                  spin.succeed();
+                spin.succeed();
 
-                  apiRes.data.backups[i].url = outFileName;
-                } catch {
-                  spin.fail();
-                }
+                apiRes.data.backups[i].url = outFileName;
+              } catch {
+                spin.fail();
               }
             }
-          } else {
-            const backup = apiRes.data.backups;
-
-            const outFileName = `${backupsPath}/${backup.id}.zip`;
-
-            const spin = print.spin({
-              text: `Saving: ${outFileName}`,
-            });
-
-            try {
-              const result = await axios.get(backup.url, { responseType: "arraybuffer" });
-
-              filesystem.write(outFileName, result.data);
-
-              spin.succeed();
-
-              apiRes.data.backups.url = outFileName;
-            } catch {
-              spin.fail();
-            }
           }
+        } else {
+          const backup = apiRes.data.backups;
 
-        print.table(makeTable(apiRes.data.backups), {
-          format: "lean",
-        });
-      }
+          const outFileName = `${backupsPath}/${backup.id}.zip`;
+
+          const spin = print.spin({
+            text: `Saving: ${outFileName}`,
+          });
+
+          try {
+            const result = await axios.get(backup.url, { responseType: "arraybuffer" });
+
+            filesystem.write(outFileName, result.data);
+
+            spin.succeed();
+
+            apiRes.data.backups.url = outFileName;
+          } catch {
+            spin.fail();
+          }
+        }
+
+      print.table(makeTable(apiRes.data.backups), {
+        format: "lean",
+      });
     }
   }
 };

@@ -1,12 +1,13 @@
 import { ApiApp, ApiTeamApps } from "@discloudapp/api-types/v2";
 import { ApiResponse } from "gluegun";
-import { AskForAppsOptions, FetchAndAskForAppsOptions } from ".";
+import { Ora } from "ora";
+import { ApiResPrinterOptions, AskForAppsOptions, FetchAndAskForAppsOptions } from ".";
 
 declare module "gluegun" {
   interface GluegunPrint {
     debug: Console["debug"]
-    printApiRes<T = any>(apiRes: ApiResponse<T>, spin?: any): number
-    spinApiRes<T = any>(apiRes: ApiResponse<T>, spin: any): number
+    printApiRes<T>(apiRes: ApiResponse<T>, options?: ApiResPrinterOptions, spin?: Ora): number
+    spinApiRes<T>(apiRes: ApiResponse<T>, spin: Ora, ApiResPrinterOptions?: ApiResPrinterOptions): number
   }
 
   interface GluegunPrompt {

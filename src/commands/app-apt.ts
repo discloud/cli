@@ -1,6 +1,5 @@
 import { APT, APTPackages, RESTPutApiAppAptResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { exit } from "node:process";
 import { apidiscloud, aptValidator, config, RateLimit } from "../util";
 
 export default new class AppApt implements GluegunCommand {
@@ -75,8 +74,7 @@ export default new class AppApt implements GluegunCommand {
 
       new RateLimit(apiRes.headers);
 
-      if (apiRes.status)
-        if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
+      print.spinApiRes(apiRes, spin, { exitOnError: true });
     }
   }
 };

@@ -1,6 +1,5 @@
 import { RESTGetApiAppTeamResult, RESTPostApiAppTeamResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { exit } from "node:process";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
 import { ModPermissions } from "../util/constants";
 
@@ -84,20 +83,18 @@ export default new class AppsTeam implements GluegunCommand {
 
     new RateLimit(apiRes.headers);
 
-    if (apiRes.status) {
-      if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
+    print.spinApiRes(apiRes, spin, { exitOnError: true });
 
-      if (!apiRes.data) return;
+    if (!apiRes.data) return;
 
-      if ("app" in apiRes.data)
-        print.table(makeTable(apiRes.data.app), {
-          format: "lean",
-        });
+    if ("app" in apiRes.data)
+      print.table(makeTable(apiRes.data.app), {
+        format: "lean",
+      });
 
-      if ("team" in apiRes.data)
-        print.table(makeTable(apiRes.data.team), {
-          format: "lean",
-        });
-    }
+    if ("team" in apiRes.data)
+      print.table(makeTable(apiRes.data.team), {
+        format: "lean",
+      });
   }
 };

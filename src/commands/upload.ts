@@ -1,7 +1,6 @@
 import { RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
-import { exit } from "node:process";
 import { apidiscloud, arrayOfPathlikeProcessor, config, DiscloudConfig, makeZipFromFileList, RateLimit, verifyRequiredFiles } from "../util";
 import { mapDiscloudConfigProps } from "../util/constants";
 
@@ -71,21 +70,19 @@ export default new class Upload implements GluegunCommand {
     if (parameters.options.eraseZip !== false)
       filesystem.remove(parameters.array[0]);
 
-    if (apiRes.status) {
-      if (print.spinApiRes(apiRes, spin) > 399) return exit(apiRes.status);
+    print.spinApiRes(apiRes, spin, { exitOnError: true });
 
-      if (!apiRes.data) return;
+    if (!apiRes.data) return;
 
-      if ("app" in apiRes.data) {
-        const app = apiRes.data.app;
-        dConfig.update({ ID: app.id, AVATAR: app.avatarURL });
+    if ("app" in apiRes.data) {
+      const app = apiRes.data.app;
+      dConfig.update({ ID: app.id, AVATAR: app.avatarURL });
 
-        print.table(Object.entries(app), {
-          format: "lean",
-        });
-      }
-
-      if (apiRes.data?.logs) print.info(`[DISCLOUD API] ${apiRes.data.logs}`);
+      print.table(Object.entries(app), {
+        format: "lean",
+      });
     }
+
+    if ("logs" in apiRes.data) print.info(`[DISCLOUD API] ${apiRes.data.logs}`);
   }
 };

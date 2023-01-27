@@ -27,7 +27,11 @@ export default new class Locale implements GluegunCommand {
 
     new RateLimit(apiRes.headers);
 
-    if (apiRes.status) 
-      print.printApiRes(apiRes);
+    print.printApiRes(apiRes);
+
+    if (!apiRes.data) return;
+
+    if ("localeList" in apiRes.data)
+      print.info("Supported locales: " + apiRes.data.localeList?.join(", "));
   }
 };
