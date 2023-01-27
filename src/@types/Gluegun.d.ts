@@ -1,6 +1,6 @@
 import { ApiApp, ApiTeamApps } from "@discloudapp/api-types/v2";
 import { ApiResponse } from "gluegun";
-import { AskForAppsOptions } from ".";
+import { AskForAppsOptions, FetchAndAskForAppsOptions } from ".";
 
 declare module "gluegun" {
   interface GluegunPrint {
@@ -14,5 +14,6 @@ declare module "gluegun" {
       apps: A,
       options?: AskForAppsOptions
     ): Promise<T>
+    fetchAndAskForApps(options?: FetchAndAskForAppsOptions): Promise<{ appId?: string }>
   }
 }

@@ -1,4 +1,4 @@
-import { RESTDeleteApiAppAllDeleteResult, RESTGetApiAppAllResult, Routes } from "@discloudapp/api-types/v2";
+import { RESTDeleteApiAppAllDeleteResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "gluegun";
 import { exit } from "node:process";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
@@ -18,25 +18,11 @@ export default new class Delete implements GluegunCommand {
       return print.error(`Rate limited until: ${RateLimit.limited}`);
 
     if (!parameters.first) {
-      const spin = print.spin({
-        text: print.colors.cyan("Fetching apps..."),
-      });
+      const { appId } = await prompt.fetchAndAskForApps({ all: true });
 
-      const apiRes = await apidiscloud.get<RESTGetApiAppAllResult>(Routes.app("all"));
+      if (!appId) return print.error("Need app id.");
 
-      new RateLimit(apiRes.headers);
-
-      spin.stop();
-
-      if (apiRes.data)
-        if ("apps" in apiRes.data) {
-          const { appId } = await prompt.askForApps(apiRes.data.apps, { all: true });
-
-          parameters.first = appId;
-        }
-
-      if (!parameters.first)
-        return print.error("Need app id.");
+      parameters.first = appId;
     }
 
     const { confirmDelete } = await prompt.ask({

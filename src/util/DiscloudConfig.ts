@@ -11,11 +11,11 @@ export interface DiscloudConfig<T extends AppTypes, V extends AppLanguages> {
   constructor: DiscloudConfigConstructor<T, V>;
 }
 
-export class DiscloudConfig<T, V> {
+export class DiscloudConfig<T = AppTypes, V = AppLanguages> {
   path!: string;
   #data!: DiscloudConfigType<T, V>;
 
-  constructor(path: string | string[] = [""], data?: DiscloudConfigType<T, V>) {
+  constructor(path: string | string[] = [], data?: DiscloudConfigType<T, V>) {
     path = this.constructor.findDiscloudConfig(path)!;
     if (typeof path === "string") this.path = path;
 
@@ -62,7 +62,7 @@ export class DiscloudConfig<T, V> {
     return this.#data;
   }
 
-  static findDiscloudConfig(paths: string | string[] = [""]) {
+  static findDiscloudConfig(paths: string | string[] = []) {
     if (!Array.isArray(paths)) paths = [paths];
 
     for (let i = 0; i < paths.length; i++) {

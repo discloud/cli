@@ -1,7 +1,7 @@
 import { GluegunToolbox } from "gluegun";
 
 export default function (toolbox: GluegunToolbox) {
-  return toolbox.print.spinApiRes = function (apiRes, spin) {
+  toolbox.print.spinApiRes = function (apiRes, spin) {
     if (!spin) return toolbox.print.printApiRes(apiRes);
 
     if (typeof apiRes.data === "string") {
