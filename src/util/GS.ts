@@ -1,27 +1,32 @@
-import { GlobSync } from "glob";
 import { filesystem } from "@discloudapp/gluegun";
+import { GlobSync } from "glob";
 import { existsSync, readFileSync } from "node:fs";
 import { blocked_files } from "./constants";
 
 export class GS {
-  found: string[];
-  ignore: string[];
+  found: string[] = [];
+  ignore: string[] = [];
+  ignoreFiles: string[] = [];
 
-  constructor(public path = "**") {
+  constructor(public path = "**", ignoreFileName?: string) {
     this.path = path = this.normalizePath(path);
+
+    if (ignoreFileName)
+      this.ignoreFiles = this.findIgnoreFiles(ignoreFileName, path);
 
     this.ignore = this.getDiscloudIgnore(path);
 
     this.found = new GlobSync(path, {
       dot: true,
       ignore: this.ignore,
+      windowsPathsNoEscape: true,
     }).found;
   }
 
   getDiscloudIgnore(path: string) {
     return [
       ...new Set(Object.values(blocked_files).flat()),
-      ...this.resolveIgnoreFile(".discloudignore"),
+      ...this.resolveIgnoreFile(this.ignoreFiles),
     ]
       .map(a => [a, `${a}/**`, `**/${a}`, `**/${a}/**`, `${path}/${a}`, `${path}/${a}/**`]).flat();
   }
@@ -30,6 +35,17 @@ export class GS {
     path = path.replace(/^(\.|~)$|^(\.|~)\/|^\/|\/$/g, "") || "**";
     path = filesystem.isDirectory(path) ? path + "/**" : path;
     return path;
+  }
+
+  findIgnoreFiles(fileName: string, path?: string) {
+    const regex = RegExp(`${fileName}$`);
+
+    const files = new GlobSync(path ?? "**", {
+      dot: true,
+      windowsPathsNoEscape: true,
+    });
+
+    return files.found.filter(f => regex.test(f));
   }
 
   resolveIgnoreFile(ignoreFile: string | string[]) {
@@ -42,11 +58,12 @@ export class GS {
       return ignored;
     }
 
-    if (existsSync(ignoreFile))
-      return readFileSync(ignoreFile, "utf8")
-        .replace(/#[^\r?\n]+/g, "")
-        .split(/\r?\n/)
-        .filter(a => a);
+    if (ignoreFile)
+      if (existsSync(ignoreFile))
+        return readFileSync(ignoreFile, "utf8")
+          .replace(/#[^\r?\n]+/g, "")
+          .split(/\r?\n/)
+          .filter(a => a);
 
     return [];
   }
