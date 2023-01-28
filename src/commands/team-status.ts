@@ -2,10 +2,10 @@ import { RESTGetApiAppAllStatusResult, RESTGetApiAppStatusResult, Routes } from 
 import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
 
-export default new class TeamStatus implements GluegunCommand {
-  name = "team:status";
-  description = "Get status information of your team applications.";
-  alias = ["team:s", "team:stats"];
+export default <GluegunCommand>{
+  name: "team:status",
+  description: "Get status information of your team applications.",
+  alias: ["team:s", "team:stats"],
 
   async run(toolbox: GluegunToolbox) {
     const { print, parameters } = toolbox;
@@ -37,5 +37,5 @@ export default new class TeamStatus implements GluegunCommand {
       print.table(makeTable(apiRes.data.apps), {
         format: "lean",
       });
-  }
+  },
 };

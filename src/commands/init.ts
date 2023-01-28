@@ -2,9 +2,9 @@ import { AppLanguages, APT } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { app_version } from "../util/constants";
 
-export default new class Init implements GluegunCommand {
-  name = "init";
-  description = "Init discloud.config file.";
+export default <GluegunCommand>{
+  name: "init",
+  description: "Init discloud.config file.",
 
   async run(toolbox: GluegunToolbox) {
     const { filesystem, parameters, print, prompt, template } = toolbox;
@@ -47,9 +47,8 @@ export default new class Init implements GluegunCommand {
         initial: false,
       },
     ]);
-    /**
-     * Sorry, it is because app_apt is typed like string, not array
-     */
+
+    /** Sorry, it is because app_apt is typed like string, not array */
     const appApt = [...app_apt].join();
 
     const { appVersion } = await prompt.ask({
@@ -118,5 +117,5 @@ export default new class Init implements GluegunCommand {
       target: "discloud.config",
       props: { appApt, appAvatar, appId, appMain, appName, appRam, appType, appAutoRestart, appVersion },
     });
-  }
+  },
 };

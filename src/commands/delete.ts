@@ -2,10 +2,10 @@ import { RESTDeleteApiAppAllDeleteResult, Routes } from "@discloudapp/api-types/
 import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
 
-export default new class Delete implements GluegunCommand {
-  name = "delete";
-  description = "Delete one or all of your apps on Discloud.";
-  alias = ["del", "rb", "ra", "remover", "remove", "removerbot"];
+export default <GluegunCommand>{
+  name: "delete",
+  description: "Delete one or all of your apps on Discloud.",
+  alias: ["del", "rb", "ra", "remover", "remove", "removerbot"],
 
   async run(toolbox: GluegunToolbox) {
     const { parameters, print, prompt } = toolbox;
@@ -49,6 +49,5 @@ export default new class Delete implements GluegunCommand {
       print.table(makeTable(apiRes.data.apps), {
         format: "lean",
       });
-
-  }
+  },
 };

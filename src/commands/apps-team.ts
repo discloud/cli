@@ -3,10 +3,10 @@ import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
 import { ModPermissions } from "../util/constants";
 
-export default new class AppsTeam implements GluegunCommand {
-  name = "apps:team";
-  description = "Get team information of your applications.";
-  alias = ["app:team"];
+export default <GluegunCommand>{
+  name: "apps:team",
+  description: "Get team information of your applications.",
+  alias: ["app:team"],
 
   async run(toolbox: GluegunToolbox) {
     const { parameters, print, prompt } = toolbox;
@@ -96,5 +96,5 @@ export default new class AppsTeam implements GluegunCommand {
       print.table(makeTable(apiRes.data.team), {
         format: "lean",
       });
-  }
+  },
 };

@@ -2,10 +2,10 @@ import { RESTPutApiAppAllStartResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
 
-export default new class Start implements GluegunCommand {
-  name = "start";
-  description = "Start one or all of your apps on Discloud.";
-  alias = ["i"];
+export default <GluegunCommand>{
+  name: "start",
+  description: "Start one or all of your apps on Discloud.",
+  alias: ["i"],
 
   async run(toolbox: GluegunToolbox) {
     const { parameters, print, prompt } = toolbox;
@@ -40,5 +40,5 @@ export default new class Start implements GluegunCommand {
       print.table(makeTable(apiRes.data.apps), {
         format: "lean",
       });
-  }
+  },
 };

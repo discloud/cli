@@ -1,13 +1,13 @@
 import { RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
-import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
+import FormData from "form-data";
 import { apidiscloud, arrayOfPathlikeProcessor, config, DiscloudConfig, makeZipFromFileList, RateLimit, verifyRequiredFiles } from "../util";
 import { mapDiscloudConfigProps } from "../util/constants";
 
-export default new class Upload implements GluegunCommand {
-  name = "upload";
-  description = "Upload one app or site to Discloud.";
-  alias = ["up", "deploy"];
+export default <GluegunCommand>{
+  name: "upload",
+  description: "Upload one app or site to Discloud.",
+  alias: ["up", "deploy"],
 
   async run(toolbox: GluegunToolbox) {
     const { filesystem, parameters, print } = toolbox;
@@ -84,5 +84,5 @@ export default new class Upload implements GluegunCommand {
     }
 
     if ("logs" in apiRes.data) print.info(`[DISCLOUD API] ${apiRes.data.logs}`);
-  }
+  },
 };

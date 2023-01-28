@@ -3,9 +3,9 @@ import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, config, RateLimit } from "../util";
 import { locales } from "../util/constants";
 
-export default new class Locale implements GluegunCommand {
-  name = "locale";
-  description = "Set your locale.";
+export default <GluegunCommand>{
+  name: "locale",
+  description: "Set your locale.",
 
   async run(toolbox: GluegunToolbox) {
     const { print, prompt } = toolbox;
@@ -33,5 +33,5 @@ export default new class Locale implements GluegunCommand {
 
     if ("localeList" in apiRes.data)
       print.info("Supported locales: " + apiRes.data.localeList?.join(", "));
-  }
+  },
 };
