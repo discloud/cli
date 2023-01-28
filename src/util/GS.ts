@@ -12,7 +12,7 @@ export class GS {
     this.path = path = this.normalizePath(path);
 
     if (ignoreFileName)
-      this.ignoreFiles = this.findIgnoreFiles(ignoreFileName, path);
+      this.ignoreFiles = this.findIgnoreFiles(ignoreFileName);
 
     this.ignore = this.getDiscloudIgnore(path);
 
@@ -37,10 +37,10 @@ export class GS {
     return path;
   }
 
-  findIgnoreFiles(fileName: string, path?: string) {
+  findIgnoreFiles(fileName: string, path = "**") {
     const regex = RegExp(`${fileName}$`);
 
-    const files = new GlobSync(path ?? "**", {
+    const files = new GlobSync(path, {
       dot: true,
       windowsPathsNoEscape: true,
     });
