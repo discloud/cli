@@ -1,5 +1,5 @@
 import { RESTPutApiAppRamResult, Routes } from "@discloudapp/api-types/v2";
-import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
+import type { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, config, RateLimit } from "../util";
 
 export default <GluegunCommand>{

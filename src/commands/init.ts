@@ -1,5 +1,5 @@
 import { AppLanguages, APT } from "@discloudapp/api-types/v2";
-import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
+import type { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { app_version } from "../util/constants";
 
 export default <GluegunCommand>{

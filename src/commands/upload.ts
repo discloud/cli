@@ -1,5 +1,5 @@
 import { RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
-import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
+import type { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import FormData from "form-data";
 import { apidiscloud, arrayOfPathlikeProcessor, config, DiscloudConfig, makeZipFromFileList, RateLimit, verifyRequiredFiles } from "../util";
 import { mapDiscloudConfigProps } from "../util/constants";

@@ -1,5 +1,5 @@
 import { APT, APTPackages, RESTPutApiAppAptResult, Routes } from "@discloudapp/api-types/v2";
-import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
+import type { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, aptValidator, config, RateLimit } from "../util";
 
 export default <GluegunCommand>{
