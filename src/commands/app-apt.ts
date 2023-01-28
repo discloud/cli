@@ -24,7 +24,7 @@ export default <GluegunCommand>{
     if (parameters.options.u ?? parameters.options.uninstall)
       methods.delete = aptValidator(parameters.options.u ?? parameters.options.uninstall);
 
-    if (methods.put?.length || methods.delete?.length)
+    if (!(methods.put?.length || methods.delete?.length))
       return print.error(
         "You need to use one of the options below:" +
         "\n  -i, --install [PACKAGE]   Install a package." +
