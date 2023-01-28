@@ -1,9 +1,14 @@
 import { AppLanguages, AppVersion } from "@discloudapp/api-types/v2";
 import { filesystem } from "@discloudapp/gluegun";
 import { readFileSync } from "node:fs";
+import { arch, platform, release, type } from "node:os";
 import { join } from "node:path";
 
 export const version: string = JSON.parse(readFileSync(join(__dirname, "..", "..", "package.json"), "utf8")).version;
+export const os_name = type();
+export const os_release = release().split?.(".").slice(0, 2).join(".") ?? release();
+export const os_platform = platform();
+export const cpu_arch = arch();
 
 export const backupsPath = "discloud/backups";
 export const logsPath = "discloud/logs";
