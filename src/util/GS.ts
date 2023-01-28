@@ -1,5 +1,5 @@
 import { GlobSync } from "glob";
-import { filesystem } from "gluegun";
+import { filesystem } from "@discloudapp/gluegun";
 import { existsSync, readFileSync } from "node:fs";
 import { blocked_files } from "./constants";
 

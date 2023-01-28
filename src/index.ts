@@ -1,4 +1,4 @@
-import { build } from "gluegun";
+import { build } from "@discloudapp/gluegun";
 import { exit } from "node:process";
 
 export async function run(argv: string[]) {

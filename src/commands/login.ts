@@ -1,5 +1,5 @@
 import { RESTGetApiUserResult, Routes } from "@discloudapp/api-types/v2";
-import { GluegunCommand, GluegunToolbox } from "gluegun";
+import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, config, RateLimit } from "../util";
 
 export default new class Login implements GluegunCommand {

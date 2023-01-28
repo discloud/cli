@@ -1,6 +1,6 @@
 import { RESTGetApiAppAllBackupResult, RESTGetApiAppBackupResult, Routes } from "@discloudapp/api-types/v2";
 import axios from "axios";
-import { GluegunCommand, GluegunToolbox } from "gluegun";
+import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
 import { backupsPath } from "../util/constants";
 

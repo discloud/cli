@@ -1,5 +1,5 @@
 import { AppLanguages, AppTypes, DiscloudConfig as DiscloudConfigType } from "@discloudapp/api-types/v2";
-import { filesystem } from "gluegun";
+import { filesystem } from "@discloudapp/gluegun";
 import { normalizePathlike, objToString } from ".";
 import { FileExt, requiredDiscloudConfigProps } from "./constants";
 

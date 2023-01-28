@@ -1,4 +1,4 @@
-import type { GluegunToolbox } from "gluegun";
+import type { GluegunToolbox } from "@discloudapp/gluegun";
 import { DiscloudConfig, sortAppsBySameId } from "../util";
 
 export default function (toolbox: GluegunToolbox) {

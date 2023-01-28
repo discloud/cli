@@ -1,5 +1,5 @@
 import archiver from "archiver";
-import { filesystem, print } from "gluegun";
+import { filesystem, print } from "@discloudapp/gluegun";
 import { MakeZipArgs } from "../@types";
 
 export async function makeZip(args: MakeZipArgs = {}) {

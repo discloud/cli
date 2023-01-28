@@ -1,5 +1,5 @@
 import { APT, APTPackages, RouteBases } from "@discloudapp/api-types/v2";
-import { filesystem, http, print } from "gluegun";
+import { filesystem, http, print } from "@discloudapp/gluegun";
 import type { ConfigData, ResolveArgsOptions } from "../@types";
 import { configPath, FileExt, required_files, version } from "./constants";
 import FsJson from "./FsJson";

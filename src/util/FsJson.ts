@@ -1,4 +1,4 @@
-import { filesystem } from "gluegun";
+import { filesystem } from "@discloudapp/gluegun";
 import { FsJsonOptions } from "../@types";
 
 export class FsJson<D extends Partial<Record<any, any>>> {

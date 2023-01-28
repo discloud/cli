@@ -1,5 +1,5 @@
 import { RESTGetApiAppAllStatusResult, RESTGetApiAppStatusResult, Routes } from "@discloudapp/api-types/v2";
-import { GluegunCommand, GluegunToolbox } from "gluegun";
+import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
 
 export default new class Status implements GluegunCommand {
