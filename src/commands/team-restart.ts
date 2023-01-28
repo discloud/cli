@@ -2,10 +2,10 @@ import { RESTPutApiAppAllStartResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
 
-export default new class TeamRestart implements GluegunCommand {
-  name = "team:restart";
-  description = "Restart one or all of your apps on Discloud.";
-  alias = ["team:r", "team:reboot", "team:reset"];
+export default <GluegunCommand>{
+  name: "team:restart",
+  description: "Restart one or all of your apps on Discloud.",
+  alias: ["team:r", "team:reboot", "team:reset"],
 
   async run(toolbox: GluegunToolbox) {
     const { parameters, print, prompt } = toolbox;
@@ -43,5 +43,5 @@ export default new class TeamRestart implements GluegunCommand {
       print.table(makeTable(apiRes.data.apps), {
         format: "lean",
       });
-  }
+  },
 };

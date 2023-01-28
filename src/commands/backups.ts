@@ -1,13 +1,13 @@
 import { RESTGetApiAppAllBackupResult, RESTGetApiAppBackupResult, Routes } from "@discloudapp/api-types/v2";
-import axios from "axios";
 import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
+import axios from "axios";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
 import { backupsPath } from "../util/constants";
 
-export default new class Backups implements GluegunCommand {
-  name = "backups";
-  description = "Make backup from your applications in Discloud.";
-  alias = ["backup", "bkp", "b"];
+export default <GluegunCommand>{
+  name: "backups",
+  description: "Make backup from your applications in Discloud.",
+  alias: ["backup", "bkp", "b"],
 
   async run(toolbox: GluegunToolbox) {
     const { filesystem, print, parameters } = toolbox;
@@ -87,5 +87,5 @@ export default new class Backups implements GluegunCommand {
         format: "lean",
       });
     }
-  }
+  },
 };

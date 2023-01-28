@@ -3,10 +3,10 @@ import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, config, RateLimit } from "../util";
 import { logsPath } from "../util/constants";
 
-export default new class TeamLogs implements GluegunCommand {
-  name = "team:logs";
-  description = "View the logs from team application in Discloud.";
-  alias = ["team:l", "team:t", "team:terminal", "team:console", "team:consola"];
+export default <GluegunCommand>{
+  name: "team:logs",
+  description: "View the logs from team application in Discloud.",
+  alias: ["team:l", "team:t", "team:terminal", "team:console", "team:consola"],
 
   async run(toolbox: GluegunToolbox) {
     const { filesystem, print, parameters } = toolbox;
@@ -76,5 +76,5 @@ export default new class TeamLogs implements GluegunCommand {
 
       print.table([[id, terminal.url]]);
     }
-  }
+  },
 };

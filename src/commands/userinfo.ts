@@ -2,10 +2,10 @@ import { RESTGetApiUserResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, makeTable, RateLimit } from "../util";
 
-export default new class UserInfo implements GluegunCommand {
-  name = "userinfo";
-  description = "View your Discloud user information.";
-  alias = ["ui", "uinfo"];
+export default <GluegunCommand>{
+  name: "userinfo",
+  description: "View your Discloud user information.",
+  alias: ["ui", "uinfo"],
 
   async run(toolbox: GluegunToolbox) {
     const { print } = toolbox;
@@ -25,5 +25,5 @@ export default new class UserInfo implements GluegunCommand {
       print.table(makeTable(apiRes.data.user), {
         format: "lean",
       });
-  }
+  },
 };

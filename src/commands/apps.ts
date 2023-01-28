@@ -2,10 +2,10 @@ import { RESTGetApiAppAllResult, RESTGetApiAppResult, Routes } from "@discloudap
 import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
 
-export default new class Apps implements GluegunCommand {
-  name = "apps";
-  description = "Get information of your applications.";
-  alias = ["app"];
+export default <GluegunCommand>{
+  name: "apps",
+  description: "Get information of your applications.",
+  alias: ["app"],
 
   async run(toolbox: GluegunToolbox) {
     const { print, parameters } = toolbox;
@@ -37,6 +37,5 @@ export default new class Apps implements GluegunCommand {
       print.table(makeTable(apiRes.data.apps), {
         format: "lean",
       });
-
-  }
+  },
 };

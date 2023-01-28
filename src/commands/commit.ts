@@ -1,12 +1,12 @@
 import { RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
-import FormData from "form-data";
 import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
+import FormData from "form-data";
 import { apidiscloud, arrayOfPathlikeProcessor, config, DiscloudConfig, makeZipFromFileList, RateLimit } from "../util";
 
-export default new class Commit implements GluegunCommand {
-  name = "commit";
-  description = "Commit one app or site to Discloud.";
-  alias = ["c"];
+export default <GluegunCommand>{
+  name: "commit",
+  description: "Commit one app or site to Discloud.",
+  alias: ["c"],
 
   async run(toolbox: GluegunToolbox) {
     const { filesystem, parameters, print, prompt } = toolbox;
@@ -71,5 +71,5 @@ export default new class Commit implements GluegunCommand {
     if (!apiRes.data) return;
 
     if ("logs" in apiRes.data) print.info(`[DISCLOUD API] ${apiRes.data.logs}`);
-  }
+  },
 };

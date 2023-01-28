@@ -2,9 +2,9 @@ import { RESTPutApiAppRamResult, Routes } from "@discloudapp/api-types/v2";
 import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, config, RateLimit } from "../util";
 
-export default new class RAM implements GluegunCommand {
-  name = "ram";
-  description = "Set amount of ram for your app.";
+export default <GluegunCommand>{
+  name: "ram",
+  description: "Set amount of ram for your app.",
 
   async run(toolbox: GluegunToolbox) {
     const { parameters, print } = toolbox;
@@ -37,5 +37,5 @@ export default new class RAM implements GluegunCommand {
     new RateLimit(apiRes.headers);
 
     print.spinApiRes(apiRes, spin);
-  }
+  },
 };

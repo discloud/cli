@@ -2,10 +2,10 @@ import { APT, APTPackages, RESTPutApiAppAptResult, Routes } from "@discloudapp/a
 import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, aptValidator, config, RateLimit } from "../util";
 
-export default new class AppApt implements GluegunCommand {
-  name = "app:apt";
-  description = "Install or uninstall apt packages for you application.";
-  alias = ["apt"];
+export default <GluegunCommand>{
+  name: "app:apt",
+  description: "Install or uninstall apt packages for you application.",
+  alias: ["apt"],
 
   async run(toolbox: GluegunToolbox) {
     const { parameters, print, prompt } = toolbox;
@@ -76,5 +76,5 @@ export default new class AppApt implements GluegunCommand {
 
       print.spinApiRes(apiRes, spin, { exitOnError: true });
     }
-  }
+  },
 };
