@@ -1,4 +1,4 @@
-import { GluegunToolbox } from "gluegun";
+import { GluegunToolbox } from "@discloudapp/gluegun";
 
 export default function (toolbox: GluegunToolbox) {
   const { parameters, print } = toolbox;

@@ -1,4 +1,4 @@
-import { GluegunToolbox } from "gluegun";
+import { GluegunToolbox } from "@discloudapp/gluegun";
 import { exit } from "node:process";
 
 export default function (toolbox: GluegunToolbox) {

@@ -1,6 +1,6 @@
 import { RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
 import FormData from "form-data";
-import { GluegunCommand, GluegunToolbox } from "gluegun";
+import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, arrayOfPathlikeProcessor, config, DiscloudConfig, makeZipFromFileList, RateLimit } from "../util";
 
 export default new class TeamCommit implements GluegunCommand {

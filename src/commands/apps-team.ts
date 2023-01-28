@@ -1,5 +1,5 @@
 import { RESTGetApiAppTeamResult, RESTPostApiAppTeamResult, Routes } from "@discloudapp/api-types/v2";
-import { GluegunCommand, GluegunToolbox } from "gluegun";
+import { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, config, makeTable, RateLimit } from "../util";
 import { ModPermissions } from "../util/constants";
 

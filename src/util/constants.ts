@@ -1,5 +1,5 @@
 import { AppLanguages, AppVersion } from "@discloudapp/api-types/v2";
-import { filesystem } from "gluegun";
+import { filesystem } from "@discloudapp/gluegun";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 

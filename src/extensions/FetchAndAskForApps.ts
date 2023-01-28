@@ -1,5 +1,5 @@
 import { RESTGetApiAppAllResult, RESTGetApiTeamResult, Routes } from "@discloudapp/api-types/v2";
-import { GluegunToolbox } from "gluegun";
+import { GluegunToolbox } from "@discloudapp/gluegun";
 import { apidiscloud, RateLimit } from "../util";
 
 export default function (toolbox: GluegunToolbox) {
