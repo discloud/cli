@@ -30,11 +30,10 @@ export default <GluegunCommand>{
       if (!filesystem.exists(parameters.array[0]))
         return print.error(`${parameters.array[0]} file does not exists.`);
     } else {
-      if (typeof dConfig.path !== "string")
+      if (!dConfig.exists)
         return print.error("discloud.config file is missing.");
 
       const missing = dConfig.missingProps;
-
       if (missing.length) {
         const missingProp = mapDiscloudConfigProps[dConfig.data.TYPE]?.[missing[0]] ?? missing[0];
 
