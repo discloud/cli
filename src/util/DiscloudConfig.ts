@@ -27,6 +27,10 @@ export class DiscloudConfig<T = AppTypes, V = AppLanguages> {
     return this.#data;
   }
 
+  get exists() {
+    return filesystem.exists(this.path);
+  }
+
   get fileExt() {
     return this.#data.MAIN?.split(".").pop() as `${keyof typeof FileExt}`;
   }
