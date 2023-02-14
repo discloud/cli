@@ -1,11 +1,11 @@
 import { APT, APTPackages, RouteBases } from "@discloudapp/api-types/v2";
 import { filesystem, http, print } from "@discloudapp/gluegun";
+import { DiscloudConfig } from "@discloudapp/util";
 import type { ConfigData, ResolveArgsOptions } from "../@types";
 import { configPath, cpu_arch, FileExt, os_name, os_platform, os_release, required_files, version } from "./constants";
 import FsJson from "./FsJson";
 import GS from "./GS";
 
-export * from "./DiscloudConfig";
 export * from "./FsJson";
 export * from "./GS";
 export * from "./RateLimit";
@@ -30,6 +30,15 @@ export function aptValidator(apts: keyof typeof APT | typeof APTPackages) {
     apts = <typeof APTPackages>apts.split(/\W/g);
 
   return apts.map(apt => <keyof typeof APT>apt.toLowerCase()).filter(apt => APTPackages.includes(apt));
+}
+
+export function findDiscloudConfig(paths: string[]) {
+  paths = paths.concat(__dirname);
+
+  for (const path of paths) {
+    const dConfig = new DiscloudConfig(path);
+    if (dConfig.exists) return dConfig.path
+  }
 }
 
 export function getFileExt(ext: `${keyof typeof FileExt}`) {
@@ -131,10 +140,10 @@ export function sortAppsBySameId<T extends { id: string }>(apps: T[], id: string
 
 export function verifyRequiredFiles(
   paths: string[],
-  ext: `${keyof typeof FileExt}`,
+  ext: string,
   files: string | string[] = [],
 ) {
-  const fileExt = getFileExt(ext);
+  const fileExt = getFileExt(<FileExt>ext);
   const requiredFiles = Object.values(required_files[fileExt] ?? {}).concat(required_files.common, files);
 
   for (let i = 0; i < requiredFiles.length; i++) {

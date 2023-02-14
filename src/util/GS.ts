@@ -1,71 +1,39 @@
-import { filesystem } from "@discloudapp/gluegun";
+import { IgnoreFiles } from "@discloudapp/util";
 import { GlobSync } from "glob";
-import { existsSync, readFileSync } from "node:fs";
-import { blocked_files } from "./constants";
+import { statSync } from "node:fs";
+import { isAbsolute } from "node:path";
 
 export class GS {
   found: string[] = [];
-  ignore: string[] = [];
-  ignoreFiles: string[] = [];
+  ignore: IgnoreFiles;
 
-  constructor(public path = "**", ignoreFileName?: string) {
-    this.path = path = this.normalizePath(path);
+  constructor(public path: string, ignoreFileName?: string, ignore: string[] = []) {
+    this.ignore = new IgnoreFiles({
+      fileName: ignoreFileName!,
+      path,
+      optionalIgnoreList: ignore,
+    });
 
-    if (ignoreFileName)
-      this.ignoreFiles = this.findIgnoreFiles(ignoreFileName);
+    this.path = this.#normalizePath(path);
 
-    this.ignore = this.getDiscloudIgnore(path);
-
-    this.found = new GlobSync(path, {
+    this.found = new GlobSync(this.path, {
       dot: true,
-      ignore: this.ignore,
-      windowsPathsNoEscape: true,
+      ignore: this.ignore.list,
     }).found;
   }
 
-  getDiscloudIgnore(path: string) {
-    return [
-      ...new Set(Object.values(blocked_files).flat()),
-      ...this.resolveIgnoreFile(this.ignoreFiles),
-    ]
-      .map(a => [a, `${a}/**`, `**/${a}`, `**/${a}/**`, `${path}/${a}`, `${path}/${a}/**`]).flat();
-  }
+  #normalizePath(path: string) {
+    try {
+      if (!isAbsolute(path))
+        path = path.replace(/^(\.|~)$|^(\.|~)\/|^\/|\/$/g, "") || "**";
 
-  normalizePath(path: string) {
-    path = path.replace(/^(\.|~)$|^(\.|~)\/|^\/|\/$/g, "") || "**";
-    path = filesystem.isDirectory(path) ? path + "/**" : path;
-    return path;
-  }
+      path = path.replace(/\/$/, "");
 
-  findIgnoreFiles(fileName: string, path = "**") {
-    const regex = RegExp(`${fileName}$`);
-
-    const files = new GlobSync(path, {
-      dot: true,
-      windowsPathsNoEscape: true,
-    });
-
-    return files.found.filter(f => regex.test(f));
-  }
-
-  resolveIgnoreFile(ignoreFile: string | string[]) {
-    if (Array.isArray(ignoreFile)) {
-      const ignored = <string[]>[];
-
-      for (let i = 0; i < ignoreFile.length; i++)
-        ignored.push(...this.resolveIgnoreFile(ignoreFile[i]));
-
-      return ignored;
+      path = statSync(path).isDirectory() ? path + "/**" : path;
+    } catch {
+      path = path + "/**";
     }
-
-    if (ignoreFile)
-      if (existsSync(ignoreFile))
-        return readFileSync(ignoreFile, "utf8")
-          .replace(/#[^\r?\n]+/g, "")
-          .split(/\r?\n/)
-          .filter(a => a);
-
-    return [];
+    return path;
   }
 }
 

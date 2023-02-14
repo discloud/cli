@@ -47,7 +47,7 @@ export async function makeZipFromFileList(files: string[], fileName?: string | n
 
         spin.text = `[${i + 1}/${files.length}] Zipping: ${name}`;
 
-        zipper.append(filesystem.createReadStream(name), { name });
+        zipper.file(name, { name });
       }
 
       amountZippedFiles++;

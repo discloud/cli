@@ -1,7 +1,8 @@
 import { RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
 import type { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
+import { DiscloudConfig } from "@discloudapp/util";
 import FormData from "form-data";
-import { apidiscloud, arrayOfPathlikeProcessor, config, DiscloudConfig, makeZipFromFileList, RateLimit } from "../util";
+import { apidiscloud, arrayOfPathlikeProcessor, config, findDiscloudConfig, makeZipFromFileList, RateLimit } from "../util";
 
 export default <GluegunCommand>{
   name: "commit",
@@ -21,7 +22,7 @@ export default <GluegunCommand>{
 
     if (!parameters.array?.length) parameters.array = ["**"];
 
-    const discloudConfigPath = DiscloudConfig.findDiscloudConfig(parameters.array);
+    const discloudConfigPath = findDiscloudConfig(parameters.array);
 
     if (!parameters.options.app || typeof parameters.options.app !== "string") {
       const { appId } = await prompt.fetchAndAskForApps({ discloudConfigPath });

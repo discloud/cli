@@ -1,4 +1,4 @@
-import { DiscloudConfig } from "../util";
+import { DiscloudConfig } from "@discloudapp/util"
 
 export interface ApiResPrinterOptions {
   exitOnError?: boolean

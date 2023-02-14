@@ -1,5 +1,6 @@
 import type { GluegunToolbox } from "@discloudapp/gluegun";
-import { DiscloudConfig, sortAppsBySameId } from "../util";
+import { DiscloudConfig } from "@discloudapp/util";
+import { sortAppsBySameId } from "../util";
 
 export default function (toolbox: GluegunToolbox) {
   toolbox.prompt.askForApps = function (apps, options = {}) {
@@ -9,7 +10,7 @@ export default function (toolbox: GluegunToolbox) {
       ...options,
     };
 
-    options.discloudConfig ??= new DiscloudConfig(options.discloudConfigPath);
+    options.discloudConfig ??= new DiscloudConfig(options.discloudConfigPath!);
 
     return toolbox.prompt.ask({
       name: "appId",

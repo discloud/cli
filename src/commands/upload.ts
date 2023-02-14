@@ -1,7 +1,8 @@
 import { RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
 import type { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
+import { DiscloudConfig } from "@discloudapp/util";
 import FormData from "form-data";
-import { apidiscloud, arrayOfPathlikeProcessor, config, DiscloudConfig, makeZipFromFileList, RateLimit, verifyRequiredFiles } from "../util";
+import { apidiscloud, arrayOfPathlikeProcessor, config, findDiscloudConfig, makeZipFromFileList, RateLimit, verifyRequiredFiles } from "../util";
 import { mapDiscloudConfigProps } from "../util/constants";
 
 export default <GluegunCommand>{
@@ -22,7 +23,9 @@ export default <GluegunCommand>{
 
     if (!parameters.array?.length) parameters.array = ["**"];
 
-    const dConfig = new DiscloudConfig(parameters.array);
+    const discloudConfigPath = findDiscloudConfig(parameters.array)
+
+    const dConfig = new DiscloudConfig(discloudConfigPath!);
 
     const formData = new FormData();
 
@@ -40,9 +43,12 @@ export default <GluegunCommand>{
         return print.error(`${missingProp} param is missing from discloud.config`);
       }
 
-      if (!verifyRequiredFiles(parameters.array, dConfig.fileExt, dConfig.data.MAIN)) return;
+      if (!verifyRequiredFiles(parameters.array, dConfig.fileExt!, dConfig.data.MAIN)) return;
 
-      const allFiles = dConfig.pushToFileList(arrayOfPathlikeProcessor(parameters.array));
+      const allFiles = [
+        ...new Set(arrayOfPathlikeProcessor(parameters.array)
+          .concat(dConfig.path))
+      ];
       print.debug(allFiles);
       if (!allFiles.length) return print.error("No files found!");
 
