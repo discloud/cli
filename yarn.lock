@@ -64,10 +64,10 @@
     which "2.0.2"
     yargs-parser "^21.0.0"
 
-"@discloudapp/util@^0.3.7":
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.3.7.tgz#66775f49120a7bb54eef3b3001d6aa3a6a6df63d"
-  integrity sha512-B129uHHJhdFT5nb7+Wta/pJY9bgU/igZj3fojtEAQ85XErIL6805m+PYcYCdPr7X7Epd25pHuAwx0w85iRd4Xg==
+"@discloudapp/util@^0.3.10":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.3.10.tgz#3686c760cd79f25eae2aec67dcda126fbd6db730"
+  integrity sha512-SGL4UH/KWnAe4C3qtk5FNPLMAsvz1RuwnOB5klzIltx49AARoYuT1P3Fbpylr3oAXGbYrGp1WSwL0ZrlPFJaUQ==
   dependencies:
     fs-jetpack "^5.1.0"
     undici "^5.19.1"
