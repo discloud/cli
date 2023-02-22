@@ -19,7 +19,7 @@ export default function (toolbox: GluegunToolbox) {
     return;
   }
 
-  if (!["help"].includes(toolbox.parameters.command ?? ""))
+  if (!["help", "version"].includes(toolbox.parameters.command ?? ""))
     print.info(
       "discloud"
       + (toolbox.parameters.command ?
