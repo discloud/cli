@@ -1,5 +1,5 @@
-import archiver from "archiver";
 import { filesystem, print } from "@discloudapp/gluegun";
+import archiver from "archiver";
 import { MakeZipArgs } from "../@types";
 
 export async function makeZip(args: MakeZipArgs = {}) {
@@ -47,6 +47,8 @@ export async function makeZipFromFileList(files: string[], fileName?: string | n
 
         spin.text = `[${i + 1}/${files.length}] Zipping: ${name}`;
 
+        zipper.file(name, { name });
+      } else if (filesystem.isDirectory(name)) {
         zipper.file(name, { name });
       }
 
