@@ -1,6 +1,5 @@
 import { RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
 import type { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
-import { DiscloudConfig } from "@discloudapp/util";
 import FormData from "form-data";
 import { apidiscloud, arrayOfPathlikeProcessor, config, findDiscloudConfig, makeZipFromFileList, RateLimit } from "../util";
 
