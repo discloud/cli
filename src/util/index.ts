@@ -1,6 +1,8 @@
 import { APT, APTPackages, RouteBases } from "@discloudapp/api-types/v2";
 import { filesystem, http, print } from "@discloudapp/gluegun";
 import { DiscloudConfig } from "@discloudapp/util";
+import { isAbsolute } from "node:path";
+import { cwd } from "node:process";
 import type { ConfigData, ResolveArgsOptions } from "../@types";
 import { configPath, cpu_arch, FileExt, os_name, os_platform, os_release, required_files, version } from "./constants";
 import FsJson from "./FsJson";
@@ -33,11 +35,12 @@ export function aptValidator(apts: keyof typeof APT | typeof APTPackages) {
 }
 
 export function findDiscloudConfig(paths: string[]) {
-  paths = paths.concat(__dirname);
+  paths = paths.concat(cwd());
 
-  for (const path of paths) {
+  for (let path of paths) {
+    path = path.replace(/\\/g, "/");
     const dConfig = new DiscloudConfig(path);
-    if (dConfig.exists) return dConfig.path
+    if (dConfig.exists) return dConfig.path;
   }
 }
 
@@ -78,7 +81,12 @@ export function makeTable(apps: Record<string, any> | Record<string, any>[]): an
 }
 
 export function normalizePathlike(path = "**") {
-  return path.replace(/\\/g, "/").replace(/^(\.|~)$|^(\.|~)\/|^\/|\/$/g, "");
+  path = path.replace(/\\/g, "/");
+
+  if (!isAbsolute(path))
+    path = path.replace(/^(\.|~)$|^(\.|~)\/|^\/|\/$/g, "");
+
+  return path;
 }
 
 export function objToString(obj: any, sep = ": "): string {
