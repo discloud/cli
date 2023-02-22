@@ -23,7 +23,8 @@ export default <GluegunCommand>{
 
     if (!parameters.array?.length) parameters.array = ["**"];
 
-    const discloudConfigPath = findDiscloudConfig(parameters.array)
+    const discloudConfigPath = findDiscloudConfig(parameters.array);
+    print.debug("discloud config path:", discloudConfigPath);
 
     const dConfig = new DiscloudConfig(discloudConfigPath!);
 
@@ -47,7 +48,7 @@ export default <GluegunCommand>{
 
       const allFiles = [
         ...new Set(arrayOfPathlikeProcessor(parameters.array)
-          .concat(dConfig.path))
+          .concat(dConfig.path)),
       ];
       print.debug(allFiles);
       if (!allFiles.length) return print.error("No files found!");
