@@ -64,10 +64,10 @@
     which "2.0.2"
     yargs-parser "^21.0.0"
 
-"@discloudapp/util@^0.3.11":
-  version "0.3.11"
-  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.3.11.tgz#64e5782f5d63c66d885a5788c5e51bdc2c05d8e4"
-  integrity sha512-RxwCaYsYmYG/ZZ42pNQJScXMth9Wnzl1j4D/uMd3Nss4eMgLdxSHKrsLEY5t+ZQQEO4kAF+1i28EuN8yiG+KSQ==
+"@discloudapp/util@^0.3.12":
+  version "0.3.12"
+  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.3.12.tgz#83a69c87b47b6e5b79b768bcc6e295635f2c2976"
+  integrity sha512-IA/lnCOzptkpZzuy36YC6CERxzK8ukBjqccjcYlYRKOiQOc8lduVOTf8QRw9CVqbngi/l57hJZ8zkP96m/tg3Q==
   dependencies:
     fs-jetpack "^5.1.0"
     undici "^5.20.0"
@@ -170,10 +170,15 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-5.1.2.tgz#07508b45797cb81ec3f273011b054cd0755eddca"
   integrity sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==
 
-"@types/node@*", "@types/node@^18.14.1":
+"@types/node@*":
   version "18.14.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.14.1.tgz#90dad8476f1e42797c49d6f8b69aaf9f876fc69f"
   integrity sha512-QH+37Qds3E0eDlReeboBxfHbX9omAcBCXEzswCu6jySP642jiM3cYSIkU/REqwhCUqXdonHFuBfJDiAJxMNhaQ==
+
+"@types/node@^18.14.2":
+  version "18.14.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.14.2.tgz#c076ed1d7b6095078ad3cf21dfeea951842778b1"
+  integrity sha512-1uEQxww3DaghA0RxqHx0O0ppVlo43pJhepY51OxuQIKHpjbnYLA7vcdwioNPzIqmC2u3I/dmylcqjlh0e7AyUA==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
