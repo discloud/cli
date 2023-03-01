@@ -25,7 +25,7 @@
   "dependencies": {
     "@discloudapp/api-types": "^0.2.7",
     "@discloudapp/gluegun": "^5.1.3",
-    "@discloudapp/util": "^0.3.12",
+    "@discloudapp/util": "^0.4.2",
     "archiver": "^5.3.1",
     "form-data": "^4.0.0",
     "glob": "^8.1.0"
