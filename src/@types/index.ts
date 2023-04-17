@@ -1,4 +1,4 @@
-import { DiscloudConfig } from "@discloudapp/util"
+import { DiscloudConfig } from "@discloudapp/util";
 
 export interface ApiResPrinterOptions {
   exitOnError?: boolean
@@ -30,14 +30,7 @@ export interface FsJsonOptions {
   encoding?: FsJsonEncoding
 }
 
-export type FsJsonEncoding = Extract<BufferEncoding, "base64" | "utf8">
-
-export interface MakeZipArgs {
-  debug?: boolean
-  fileName?: string | null
-  ignore?: string[]
-  path?: string
-}
+export type FsJsonEncoding = Extract<BufferEncoding, "base64" | "utf8">;
 
 export interface ResolveArgsOptions {
   name: string
