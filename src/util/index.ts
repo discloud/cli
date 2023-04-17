@@ -1,15 +1,13 @@
 import { APT, APTPackages, RouteBases } from "@discloudapp/api-types/v2";
 import { filesystem, http, print } from "@discloudapp/gluegun";
-import { DiscloudConfig } from "@discloudapp/util";
+import { DiscloudConfig, GS } from "@discloudapp/util";
 import { isAbsolute } from "node:path";
 import { cwd } from "node:process";
 import type { ConfigData, ResolveArgsOptions } from "../@types";
-import { configPath, cpu_arch, FileExt, os_name, os_platform, os_release, required_files, version } from "./constants";
 import FsJson from "./FsJson";
-import GS from "./GS";
+import { FileExt, configPath, cpu_arch, os_name, os_platform, os_release, required_files, version } from "./constants";
 
 export * from "./FsJson";
-export * from "./GS";
 export * from "./RateLimit";
 export * from "./Zip";
 
@@ -114,8 +112,8 @@ export function objToString(obj: any, sep = ": "): string {
 export function arrayOfPathlikeProcessor(paths: string[], files: string[] = []) {
   if (!paths?.length) paths = ["**"];
   for (let i = 0; i < paths.length; i++)
-    files.push(...new GS(normalizePathlike(paths[i]), ".discloudignore").found);
-  return files;
+    files.push(...new GS(paths[i], ".discloudignore", ["."]).found);
+  return Array.from(new Set(files));
 }
 
 export function resolveArgs(args: string[], options: ResolveArgsOptions[]) {
