@@ -17,9 +17,6 @@ ALIAS
   $ discloud team:console [APP_ID]
   $ discloud team:consola [APP_ID]
 
-OPTIONS
-  -s, --save Write the log locally
-
 ARGUMENTS
   APP_ID The id of your app on Discloud
 ```

@@ -1,6 +1,6 @@
 import { RESTGetApiAppAllLogResult, RESTGetApiAppLogResult, Routes } from "@discloudapp/api-types/v2";
 import type { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
-import { apidiscloud, config, RateLimit } from "../util";
+import { RateLimit, apidiscloud, config } from "../util";
 import { logsPath } from "../util/constants";
 
 export default <GluegunCommand>{
@@ -39,20 +39,18 @@ export default <GluegunCommand>{
       for (let i = 0; i < apiRes.data.apps.length; i++) {
         const app = apiRes.data.apps[i];
 
-        terminal.push([app.id, app.terminal.url]);
+        const terminalParams = [
+          "", "-".repeat(60),
+          new Date().toString(),
+          "",
+          app.terminal.big,
+        ];
 
-        if (parameters.options.save || parameters.options.s) {
-          const terminalParams = [
-            "", "-".repeat(60),
-            new Date().toString(),
-            app.terminal.url, "",
-            app.terminal.big,
-          ];
+        const uri = `${logsPath}/${app.id}.log`;
 
-          filesystem.append(`${logsPath}/${app.id}.log`, terminalParams.join("\n"));
+        filesystem.append(uri, terminalParams.join("\n"));
 
-          terminal[i][1] = `${terminal[i][1]}\n${logsPath}/${app.id}.log`;
-        }
+        terminal.push([app.id, uri]);
       }
 
       print.table(terminal, {
@@ -61,20 +59,18 @@ export default <GluegunCommand>{
     } else {
       const terminal = apiRes.data.apps.terminal;
 
-      if (parameters.options.save || parameters.options.s) {
-        const terminalParams = [
-          "", "-".repeat(60),
-          new Date().toString(),
-          terminal.url, "",
-          terminal.big,
-        ];
+      const terminalParams = [
+        "", "-".repeat(60),
+        new Date().toString(),
+        "",
+        terminal.big,
+      ];
 
-        filesystem.append(`${logsPath}/${id}.log`, terminalParams.join("\n"));
+      const uri = `${logsPath}/${id}.log`;
 
-        terminal.url = `${terminal.url}\n${logsPath}/${id}.log`;
-      }
+      filesystem.append(uri, terminalParams.join("\n"));
 
-      print.table([[id, terminal.url]]);
+      print.table([[id, uri]]);
     }
   },
 };
