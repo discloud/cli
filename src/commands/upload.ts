@@ -2,7 +2,8 @@ import { RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
 import type { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
 import { DiscloudConfig } from "@discloudapp/util";
 import FormData from "form-data";
-import { apidiscloud, arrayOfPathlikeProcessor, config, findDiscloudConfig, makeZipFromFileList, RateLimit, verifyRequiredFiles } from "../util";
+import { cwd } from "node:process";
+import { RateLimit, apidiscloud, arrayOfPathlikeProcessor, config, findDiscloudConfig, makeZipFromFileList, verifyRequiredFiles } from "../util";
 import { mapDiscloudConfigProps } from "../util/constants";
 
 export default <GluegunCommand>{
@@ -46,10 +47,7 @@ export default <GluegunCommand>{
 
       if (!verifyRequiredFiles(parameters.array, dConfig.fileExt!, dConfig.data.MAIN)) return;
 
-      const allFiles = [
-        ...new Set(arrayOfPathlikeProcessor(parameters.array)
-          .concat(dConfig.path)),
-      ];
+      const allFiles = arrayOfPathlikeProcessor(parameters.array.concat(dConfig.path.replace(`${cwd()}\\`, "")));
       print.debug(allFiles);
       if (!allFiles.length) return print.error("No files found!");
 

@@ -112,8 +112,8 @@ export function objToString(obj: any, sep = ": "): string {
 export function arrayOfPathlikeProcessor(paths: string[], files: string[] = []) {
   if (!paths?.length) paths = ["**"];
   for (let i = 0; i < paths.length; i++)
-    files.push(...new GS(normalizePathlike(paths[i]), ".discloudignore").found);
-  return files;
+    files.push(...new GS(paths[i], ".discloudignore", ["."]).found);
+  return Array.from(new Set(files));
 }
 
 export function resolveArgs(args: string[], options: ResolveArgsOptions[]) {
