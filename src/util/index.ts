@@ -1,15 +1,13 @@
 import { APT, APTPackages, RouteBases } from "@discloudapp/api-types/v2";
 import { filesystem, http, print } from "@discloudapp/gluegun";
-import { DiscloudConfig } from "@discloudapp/util";
+import { DiscloudConfig, GS } from "@discloudapp/util";
 import { isAbsolute } from "node:path";
 import { cwd } from "node:process";
 import type { ConfigData, ResolveArgsOptions } from "../@types";
-import { configPath, cpu_arch, FileExt, os_name, os_platform, os_release, required_files, version } from "./constants";
 import FsJson from "./FsJson";
-import GS from "./GS";
+import { FileExt, configPath, cpu_arch, os_name, os_platform, os_release, required_files, version } from "./constants";
 
 export * from "./FsJson";
-export * from "./GS";
 export * from "./RateLimit";
 export * from "./Zip";
 

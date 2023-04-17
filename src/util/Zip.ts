@@ -1,24 +1,5 @@
 import { filesystem, print } from "@discloudapp/gluegun";
 import archiver from "archiver";
-import { MakeZipArgs } from "../@types";
-
-export async function makeZip(args: MakeZipArgs = {}) {
-  const { debug, fileName, ignore = [], path = "**" } = args;
-  const zipper = archiver("zip");
-
-  const outFileName = fileName ?? `${process.cwd().split(/(\\|\/)/).pop()}.zip`;
-  ignore.push(outFileName, `${path}/${outFileName}`);
-
-  if (filesystem.exists(outFileName))
-    filesystem.remove(outFileName);
-
-  const output = filesystem.createWriteStream(outFileName);
-  zipper.pipe(output);
-
-  zipper.glob(path, { dot: true, ignore, debug });
-
-  return zipper.finalize().then(() => outFileName);
-}
 
 export async function makeZipFromFileList(files: string[], fileName?: string | null, debug?: boolean) {
   const zipper = archiver("zip");
