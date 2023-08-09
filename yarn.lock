@@ -28,10 +28,10 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@discloudapp/api-types@^0.2.8":
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.2.8.tgz#e85dd321bc0e32a5ae8e7a99ecdfb6ccae19f0eb"
-  integrity sha512-dFfxgtjMHj8mySDr+CZlpG4TKyuUxtXP78bz+zFrkwLTx1o57fVjJjNowqNDDgBfZe7fD6KzZkyX8rjeGiuOkQ==
+"@discloudapp/api-types@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.3.0.tgz#1b64e6e8dab7c26437d708fdf730a194d087ddc7"
+  integrity sha512-nK0ccUeiGT7FbJ9arzqn4eVi30tir9gp6ck/pHGyEAilBzbiPv0FVfHybWnSyTx+s9Etjs6lnlUJ8OLLUOVA7w==
 
 "@discloudapp/gluegun@^5.1.3":
   version "5.1.3"
