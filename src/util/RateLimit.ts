@@ -2,7 +2,7 @@ import { config } from ".";
 
 export class RateLimit {
   constructor(headers?: Record<string, string>) {
-    this.limit(headers);
+    RateLimit.limit(headers);
   }
 
   static get limited() {
@@ -11,15 +11,14 @@ export class RateLimit {
   }
 
   static get isLimited() {
-    return new Date(config.data.limited!) >= new Date();
+    return new Date() < new Date(config.data.limited!);
   }
 
-  limit(headers?: Record<string, string>) {
+  static limit(headers?: Record<string, string>) {
     if (!headers) return;
 
     const remaining = Number(headers["ratelimit-remaining"]);
-    if (isNaN(remaining)) return;
-    if (remaining > 0) return;
+    if (isNaN(remaining) || remaining > 0) return;
 
     config.update({ limited: Date.now() + (Number(headers["ratelimit-reset"]) * 1000) });
   }

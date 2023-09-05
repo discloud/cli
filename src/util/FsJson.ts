@@ -1,16 +1,20 @@
-import { filesystem } from "@discloudapp/gluegun";
-import { FsJsonOptions } from "../@types";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { dirname } from "node:path";
 
-export class FsJson<D extends Partial<Record<any, any>>> {
-  #data = <D>{};
+export type Encoding = Exclude<BufferEncoding, "ucs-2" | "ucs2" | "utf16le">;
 
-  constructor(public path: string, public options: FsJsonOptions = {}) {
-    this.options = {
-      encoding: "utf8",
-      ...this.options,
-    };
+export interface Options {
+  encoding: Encoding
+}
 
-    this.#data = this.#read() ?? this.#data;
+export class FsJson<D extends Record<any, any>> {
+  #data: D;
+  declare options: Options;
+
+  constructor(public path: string, options?: Partial<Options>) {
+    this.options = Object.assign({ encoding: "utf8" }, options);
+
+    this.#data = this.#read();
   }
 
   get data() {
@@ -23,26 +27,68 @@ export class FsJson<D extends Partial<Record<any, any>>> {
 
   #decode(path = this.path, encoding = this.options.encoding): D {
     try {
-      return JSON.parse(Buffer.from(filesystem.read(path)!, encoding).toString("utf8"));
+      if (existsSync(path))
+        return JSON.parse(Buffer.from(readFileSync(path, "utf8"), encoding).toString("utf8"));
+
+      return <D>{};
     } catch {
       return <D>{};
     }
   }
 
-  #read(path = this.path) {
-    if (filesystem.exists(path))
-      try {
-        return filesystem.read(path, "json");
-      } catch {
-        return this.#decode(path);
-      }
+  #read(path = this.path): D {
+    if (existsSync(path)) {
+      return this.#decode(path);
+    } else {
+      mkdirSync(dirname(path), { recursive: true });
+      return <D>{};
+    }
   }
 
-  update(data: D, path = this.path) {
-    this.#data = { ...this.#data, ...data };
-    const encoded = this.#encode(this.#data);
-    filesystem.write(path, encoded);
-    return this.#data;
+  clear<K extends keyof D>(key?: K) {
+    if (key !== undefined) {
+      this.delete(key);
+
+      return;
+    }
+
+    this.#data = <D>{};
+
+    this.update(this.#data);
+
+    return this;
+  }
+
+  delete<K extends keyof D>(key: K) {
+    delete this.#data[key];
+
+    this.update(this.#data);
+
+    return this;
+  }
+
+  destroy() {
+    try { rmSync(this.path); } catch { null; }
+
+    return this;
+  }
+
+  get<V extends D[K] = any, K extends keyof D = keyof D>(key: K): V {
+    return this.#data[key];
+  }
+
+  set<K extends keyof D, V extends D[K]>(key: K, value: V) {
+    this.#data[key] = value;
+
+    this.update(this.#data);
+
+    return this;
+  }
+
+  update(data: Partial<D>) {
+    writeFileSync(this.path, this.#encode(Object.assign(this.#data, data)), "utf8");
+
+    return this.data;
   }
 }
 
