@@ -168,10 +168,10 @@
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
-"@types/archiver@^5.3.2":
-  version "5.3.4"
-  resolved "https://registry.yarnpkg.com/@types/archiver/-/archiver-5.3.4.tgz#32172d5a56f165b5b4ac902e366248bf03d3ae84"
-  integrity sha512-Lj7fLBIMwYFgViVVZHEdExZC3lVYsl+QL0VmdNdIzGZH544jHveYWij6qdnBgJQDnR7pMKliN9z2cPZFEbhyPw==
+"@types/archiver@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@types/archiver/-/archiver-6.0.2.tgz#0daf8c83359cbde69de1e4b33dcade6a48a929e2"
+  integrity sha512-KmROQqbQzKGuaAbmK+ZcytkJ51+YqDa7NmbXjmtC5YBLSyQYo21YaUnQ3HbaPFKL1ooo6RQ6OPYPIDyxfpDDXw==
   dependencies:
     "@types/readdir-glob" "*"
 
