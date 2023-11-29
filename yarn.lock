@@ -73,14 +73,14 @@
     yargs-parser "^21.0.0"
 
 "@discloudapp/util@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.5.1.tgz#c9c4b654159d745eaea34176efe96f3e8fa26427"
-  integrity sha512-DguXDsLvXotKhkcAZiTzGkqOclIeBinYOLB7mO4kSfH7YEpKYflTVM5IhdTRdXjCUb6ndk0r2ZmJ4gph2z984g==
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.5.2.tgz#6fae8ae4aaa3a7aaefc94c64c5acd2eb81a56325"
+  integrity sha512-93qJW4G06HsqrA5HT3B7IeAMKvZzO0S/xr4i7wuWdU2Nwt0bd21UI1EJjBKkm+j3LN0pJ9m8Nv4LrDcYLMRxMA==
   dependencies:
-    glob "^10.3.4"
+    glob "^10.3.10"
     source-map-support "^0.5.21"
     tslib "^2.6.2"
-    undici "^5.24.0"
+    undici "^5.28.1"
 
 "@eslint-community/eslint-utils@^4.2.0", "@eslint-community/eslint-utils@^4.4.0":
   version "4.4.0"
@@ -973,7 +973,7 @@ glob-parent@^6.0.2:
   dependencies:
     is-glob "^4.0.3"
 
-glob@^10.3.4:
+glob@^10.3.10, glob@^10.3.4:
   version "10.3.10"
   resolved "https://registry.yarnpkg.com/glob/-/glob-10.3.10.tgz#0351ebb809fd187fe421ab96af83d3a70715df4b"
   integrity sha512-fa46+tv1Ak0UPK1TOy/pZrIybNNt4HCv7SDzwyfiOZkvZLEbjsZkJBPtDHVshZjbecAoAGSC20MjLDG/qr679g==
@@ -1848,10 +1848,10 @@ undici-types@~5.26.4:
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-5.26.5.tgz#bcd539893d00b56e964fd2657a4866b221a65617"
   integrity sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==
 
-undici@^5.24.0:
-  version "5.28.0"
-  resolved "https://registry.yarnpkg.com/undici/-/undici-5.28.0.tgz#09f6aa4a6f34de8996eec585fe4ceebaa9ef3f36"
-  integrity sha512-gM12DkXhlAc5+/TPe60iy9P6ETgVfqTuRJ6aQ4w8RYu0MqKuXhaq3/b86GfzDQnNA3NUO6aUNdvevrKH59D0Nw==
+undici@^5.28.1:
+  version "5.28.1"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-5.28.1.tgz#1052d37bd1a2e8cf3e188d7caebff833fdc06fa7"
+  integrity sha512-xcIIvj1LOQH9zAL54iWFkuDEaIVEjLrru7qRpa3GrEEHk6OBhb/LycuUY2m7VCcTuDeLziXCxobQVyKExyGeIA==
   dependencies:
     "@fastify/busboy" "^2.0.0"
 
