@@ -1,4 +1,5 @@
 import { GluegunCommand } from "@discloudapp/gluegun";
+import { setTimeout as sleep } from "node:timers/promises";
 import { RestPutApiTerminalResult } from "../@types";
 import { RateLimit, apidiscloud, config } from "../util";
 import { tokenIsDiscloudJwt } from "../util/utils";
@@ -38,6 +39,8 @@ export default <GluegunCommand>{
       if (!command) continue;
       if (command === "exit") break;
 
+      const spin = toolbox.print.spin();
+
       const apiRes = await apidiscloud.put<RestPutApiTerminalResult>(`/app/${toolbox.parameters.first}/console`, {
         command,
       }, {
@@ -47,6 +50,9 @@ export default <GluegunCommand>{
       });
 
       new RateLimit(apiRes.headers);
+
+      spin.stop();
+      await sleep(100);
 
       if (!apiRes.data) break;
 
