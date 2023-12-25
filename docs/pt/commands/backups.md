@@ -22,4 +22,4 @@ ARGUMENTOS
   APP_ID O id do seu app no ​​Discloud.
 ```
 
-- Se não contiver `APP_ID`, obterá todos os seus aplicativos.
+- Caso não contenha `APP_ID`, obterá todos os seus aplicativos.

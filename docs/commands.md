@@ -24,5 +24,6 @@
 - [team:status](./commands/team-status.md) - View status information of your team applications.
 - [team:stop](./commands/team-stop.md) - Stop one or all of your apps on Discloud.
 - [team](./commands/team.md) - View team information.
+- [terminal](./commands/terminal.md) - Use the application terminal.
 - [upload](./commands/upload.md) - Upload one app or site to Discloud.
 - [userinfo](./commands/userinfo.md) - View your Discloud user information.

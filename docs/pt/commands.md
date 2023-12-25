@@ -24,5 +24,6 @@
 - [team:status](./commands/team-status.md) - Visualize as informações de status dos aplicativos de sua equipe.
 - [team:stop](./commands/team-stop.md) - Interrompa um ou todos os seus aplicativos no Discloud.
 - [team](./commands/team.md) - Ver informações da equipe.
+- [terminal](./commands/terminal.md) - Use o terminal da aplicação.
 - [upload](./commands/upload.md) - Carregue um aplicativo ou site no Discloud.
 - [userinfo](./commands/userinfo.md) - Visualize suas informações de usuário do Discloud.

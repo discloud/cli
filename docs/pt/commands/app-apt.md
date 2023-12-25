@@ -34,4 +34,4 @@ PACOTE
   - tools
 ```
 
-- Se não contiver `APP_ID`, a CLI mostrará uma lista de seus aplicativos para você selecionar.
+- Caso não contenha `APP_ID`, a CLI mostrará uma lista de seus aplicativos para você selecionar.

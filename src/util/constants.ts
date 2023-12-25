@@ -31,16 +31,13 @@ export enum FileExt {
   cjs = "js",
   cts = "ts",
   go = "go",
-  js = "js",
-  jsx = "js",
-  mjs = "js",
-  mts = "ts",
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
+  js = "js", jsx = "js", mjs = "js", mts = "ts",
   py = "py",
   rb = "rb",
   rlib = "rs",
-  rs = "rs",
-  ts = "ts",
-  tsx = "ts",
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
+  rs = "rs", ts = "ts", tsx = "ts",
 }
 
 export const required_files = {
