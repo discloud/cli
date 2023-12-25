@@ -36,3 +36,27 @@ export interface ResolveArgsOptions {
   name: string
   pattern: RegExp
 }
+
+export type RestPutApiTerminalResult =
+  | RestPutApiTerminalOkResult
+  | RestPutApiTerminalErrorResult;
+
+export interface RestPutApiTerminalOkResult {
+  status: "ok"
+  apps: ApiTerminalApp
+}
+
+export interface RestPutApiTerminalErrorResult {
+  status: "error"
+  message: string
+}
+
+export interface ApiTerminalApp {
+  id: string
+  shell: ApiTerminalAppShell
+}
+
+export interface ApiTerminalAppShell {
+  online: boolean
+  cmd: string
+}

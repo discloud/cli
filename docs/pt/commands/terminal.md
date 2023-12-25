@@ -1,17 +1,14 @@
-# Comandos
+# Commands
 
-## Stop
+## Terminal
 
-Interrompa um ou todos os seus aplicativos no Discloud.
+Use o terminal da aplicação.
 
-- [stop](#stop)
+- [terminal](#terminal)
 
 ```sh-session
 USO
-  $ discloud stop [APP_ID]
-
-ALIAS
-  $ discloud p [APP_ID]
+  $ discloud terminal [APP_ID]
 
 ARGUMENTOS
   APP_ID O id do seu app no ​​Discloud.
