@@ -1,14 +1,14 @@
 {
   "name": "discloud-cli",
   "description": "A fast option to manage your apps on Discloud.",
-  "version": "1.16.1",
+  "version": "1.17.0",
   "bin": {
     "discloud": "bin/discloud"
   },
   "scripts": {
     "watch": "tsc -watch",
     "build": "tsc && npm run copy-templates",
-    "copy-templates": "copyfiles -f ./src/templates/* ./build/templates",
+    "copy-templates": "npx copyfiles -f ./src/templates/* ./build/templates",
     "prepublish": "npm run build",
     "test": "npm run test:ts",
     "test:ts": "tsc --noEmit"
@@ -39,7 +39,6 @@
     "@types/node": "^20.10.5",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
-    "copyfiles": "^2.4.1",
     "eslint": "^8.56.0",
     "typescript": "^5.3.3"
   }
