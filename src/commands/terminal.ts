@@ -57,7 +57,8 @@ export default <GluegunCommand>{
       if (!apiRes.data) break;
 
       if (apiRes.data.status === "error") {
-        toolbox.print.error(apiRes.data.message);
+        if (apiRes.data.message)
+          toolbox.print.error(apiRes.data.message);
         continue;
       }
 
