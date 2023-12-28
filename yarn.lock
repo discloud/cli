@@ -30,9 +30,9 @@
     js-tokens "^4.0.0"
 
 "@discloudapp/api-types@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.5.1.tgz#542c53f9445fc677fc34e59ac7dddaf5267e68ff"
-  integrity sha512-uxNblvZCef7Ixq49YACaUOT2iX6mN+vtkGab1yUIrcVvhkViAWLeEaZ2MVb0biH7Usl6OT//QBRWE0dMfvJ1Ug==
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.5.3.tgz#f751ba97e012767fb97c016d814897d44d4bbe48"
+  integrity sha512-VvaSQslJP+K49NKyfNwA/TOJrstzQ/An5mU5ZPzwhjc2FDoLzU2eq5HsUemQUagm1oeotLh3SFl05CuZj6W+pA==
   dependencies:
     source-map-support "^0.5.21"
     tslib "^2.6.2"
