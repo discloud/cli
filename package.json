@@ -23,9 +23,9 @@
   },
   "homepage": "https://github.com/discloud/cli#readme",
   "dependencies": {
-    "@discloudapp/api-types": "^0.5.1",
+    "@discloudapp/api-types": "^0.5.3",
     "@discloudapp/gluegun": "^5.1.6",
-    "@discloudapp/util": "^0.5.2",
+    "@discloudapp/util": "^0.5.3",
     "archiver": "^6.0.1",
     "form-data": "^4.0.0",
     "glob": "^10.3.10",
@@ -37,8 +37,8 @@
     "@types/eslint": "^8.56.0",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.10.5",
-    "@typescript-eslint/eslint-plugin": "^6.15.0",
-    "@typescript-eslint/parser": "^6.15.0",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "@typescript-eslint/parser": "^6.16.0",
     "eslint": "^8.56.0",
     "typescript": "^5.3.3"
   }

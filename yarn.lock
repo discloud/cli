@@ -29,7 +29,7 @@
     chalk "^2.4.2"
     js-tokens "^4.0.0"
 
-"@discloudapp/api-types@^0.5.1":
+"@discloudapp/api-types@^0.5.3":
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.5.3.tgz#f751ba97e012767fb97c016d814897d44d4bbe48"
   integrity sha512-VvaSQslJP+K49NKyfNwA/TOJrstzQ/An5mU5ZPzwhjc2FDoLzU2eq5HsUemQUagm1oeotLh3SFl05CuZj6W+pA==
@@ -73,7 +73,7 @@
     which "2.0.2"
     yargs-parser "^21.0.0"
 
-"@discloudapp/util@^0.5.2":
+"@discloudapp/util@^0.5.3":
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.5.3.tgz#0a90e66552514e8583da57b86dce8f5d626a7910"
   integrity sha512-X5pBYBluy1cZR712YFKS0IRs9cTrWLLVQdZnZ8cn+kfGgxEs7hPyHpCED7Ybp7MZgd3CE1/3WJFoj5FAqx0Dhg==
@@ -233,7 +233,7 @@
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.5.6.tgz#c65b2bfce1bec346582c07724e3f8c1017a20339"
   integrity sha512-dn1l8LaMea/IjDoHNd9J52uBbInB796CDffS6VdIxvqYCPSG0V0DzHp76GpaWnlhg88uYyPbXCDIowa86ybd5A==
 
-"@typescript-eslint/eslint-plugin@^6.15.0":
+"@typescript-eslint/eslint-plugin@^6.16.0":
   version "6.16.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-6.16.0.tgz#cc29fbd208ea976de3db7feb07755bba0ce8d8bc"
   integrity sha512-O5f7Kv5o4dLWQtPX4ywPPa+v9G+1q1x8mz0Kr0pXUtKsevo+gIJHLkGc8RxaZWtP8RrhwhSNIWThnW42K9/0rQ==
@@ -250,7 +250,7 @@
     semver "^7.5.4"
     ts-api-utils "^1.0.1"
 
-"@typescript-eslint/parser@^6.15.0":
+"@typescript-eslint/parser@^6.16.0":
   version "6.16.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-6.16.0.tgz#36f39f63b126aa25af2ad2df13d9891e9fd5b40c"
   integrity sha512-H2GM3eUo12HpKZU9njig3DF5zJ58ja6ahj1GoHEHOgQvYxzoFJJEvC1MQ7T2l9Ha+69ZSOn7RTxOdpC/y3ikMw==
