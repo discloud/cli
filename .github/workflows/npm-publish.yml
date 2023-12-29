@@ -11,10 +11,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: lts
+          node-version: lts/*
       - run: yarn
       - run: npm run build
       - run: npm run test
@@ -23,10 +23,10 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: lts
+          node-version: lts/*
           registry-url: https://registry.npmjs.org/
       - run: yarn
       - if: ${{ github.event.release.prerelease }}
