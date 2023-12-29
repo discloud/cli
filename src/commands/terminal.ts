@@ -22,9 +22,11 @@ export default <GluegunCommand>{
 
     let token = process.env.DISCLOUD_TOKEN;
 
-    if (token && !tokenIsDiscloudJwt(token)) {
-      token = config.data.token;
+    if (typeof token === "string" && !tokenIsDiscloudJwt(token)) {
+      return toolbox.print.error("Please a valid token.");
     }
+
+    token ??= config.data.token;
 
     if (!token)
       return toolbox.print.error("Please use login command before using this command.");
