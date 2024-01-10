@@ -10,10 +10,10 @@ export const os_release = release().split?.(".").slice(0, 2).join(".") ?? releas
 export const os_platform = platform();
 export const cpu_arch = arch();
 
-export const backupsPath = "discloud/backups";
-export const logsPath = "discloud/logs";
+export const backupsPath = join("discloud", "backups");
+export const logsPath = join("discloud", "logs");
 
-export const configPath = `${filesystem.homedir()}/.discloud`;
+export const configPath = join(filesystem.homedir(), ".discloud");
 
 export const locales = ["en-US", "pt-BR"];
 
