@@ -36,6 +36,13 @@
   dependencies:
     tslib "^2.6.2"
 
+"@discloudapp/api-types@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.6.0.tgz#2774357578c1c26de45af8fef794ca6d17d80a56"
+  integrity sha512-8scHE4lgvra0R5wdHlFaBn6ymmuZXryYXxvSL9koSviHgVscLaBAslpABd1VjM5eYiFcwt0nOn6d0tT3Gsep1g==
+  dependencies:
+    tslib "^2.6.2"
+
 "@discloudapp/gluegun@^5.1.6":
   version "5.1.6"
   resolved "https://registry.yarnpkg.com/@discloudapp/gluegun/-/gluegun-5.1.6.tgz#3f86d7664bf9c1fad2bcc9e5d496c450c13b69f8"
@@ -72,12 +79,13 @@
     which "2.0.2"
     yargs-parser "^21.0.0"
 
-"@discloudapp/util@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.6.0.tgz#4700df89f46477b99fb2bf2af4161650794fde1d"
-  integrity sha512-znMJbxYjp/oexxuzBsJPri/t90b9aHcQTmReQxe9CpyfSLFGzutOM7vnROngCw6ulN8iSeVlY/NKV/Y2EvBB/g==
+"@discloudapp/util@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.7.0.tgz#8bc4fd76e71a57b563e0bc6e2b1fd88706ca7507"
+  integrity sha512-v9e9wuE7a6WeFjk7E7GDMXZaNvCH8Rz4DA4v94WZXy+dvsxYQcMRfjPzybLPwZQ7cRjzvHsAw9QKN5zEoqZjIw==
   dependencies:
-    glob "^10.3.10"
+    "@discloudapp/api-types" "^0.6.0"
+    glob "^10.4.1"
     source-map-support "^0.5.21"
     tslib "^2.6.2"
 
@@ -991,7 +999,7 @@ glob-parent@^6.0.2:
   dependencies:
     is-glob "^4.0.3"
 
-glob@^10.3.10:
+glob@^10.3.10, glob@^10.4.1:
   version "10.4.1"
   resolved "https://registry.yarnpkg.com/glob/-/glob-10.4.1.tgz#0cfb01ab6a6b438177bfe6a58e2576f6efe909c2"
   integrity sha512-2jelhlq3E4ho74ZyVLN03oKdAZVUa6UDZzFLVH1H7dnoax+y9qyaq8zBkfDIggjniU19z0wU18y16jMB2eyVIw==
