@@ -29,10 +29,10 @@
     chalk "^2.4.2"
     js-tokens "^4.0.0"
 
-"@discloudapp/api-types@^0.5.3":
-  version "0.5.6"
-  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.5.6.tgz#c3d88a3c35278ed8b0be89381cb01cc9ea4f5303"
-  integrity sha512-BKXw1WRNaPx/tQdrhuRAyBo3pQwBaijnlhSVPN3UDWC/mF2FaLVwFs6dkojvxFC7aA4zaMK141+V+M8rZSPLxQ==
+"@discloudapp/api-types@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.6.0.tgz#2774357578c1c26de45af8fef794ca6d17d80a56"
+  integrity sha512-8scHE4lgvra0R5wdHlFaBn6ymmuZXryYXxvSL9koSviHgVscLaBAslpABd1VjM5eYiFcwt0nOn6d0tT3Gsep1g==
   dependencies:
     tslib "^2.6.2"
 
