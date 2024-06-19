@@ -21,7 +21,7 @@ export const blocked_files = {
   common: [".git", ".vscode"],
   go: [],
   js: ["node_modules", "package-lock.json", "yarn.lock"],
-  py: [],
+  py: [".venv"],
   rb: ["Gemfile.lock"],
   rs: ["Cargo.lock", "target"],
   ts: ["node_modules", "package-lock.json", "yarn.lock"],
