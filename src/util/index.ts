@@ -1,7 +1,7 @@
 import { APT, APTPackages, RouteBases } from "@discloudapp/api-types/v2";
 import { filesystem, http, print } from "@discloudapp/gluegun";
 import { DiscloudConfig, GS } from "@discloudapp/util";
-import { isAbsolute } from "node:path";
+import { isAbsolute, join } from "node:path";
 import { cwd } from "node:process";
 import type { ConfigData, ResolveArgsOptions } from "../@types";
 import FsJson from "./FsJson";
@@ -13,7 +13,7 @@ export * from "./Zip";
 
 export const config = new class Config extends FsJson<ConfigData> {
   constructor() {
-    super(`${configPath}/.cli`, { encoding: "base64" });
+    super(join(configPath, ".cli"), { encoding: "base64" });
   }
 };
 
@@ -36,7 +36,7 @@ export function findDiscloudConfig(paths: string[]) {
   paths = paths.concat(cwd());
 
   for (let path of paths) {
-    path = path.replace(/\\/g, "/");
+    path = join(...path.split(/[\\/]/g));
     const dConfig = new DiscloudConfig(path);
     if (dConfig.exists) return dConfig.path;
   }

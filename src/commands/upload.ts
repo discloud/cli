@@ -45,7 +45,7 @@ export default <GluegunCommand>{
         return print.error(`${missingProp} param is missing from discloud.config`);
       }
 
-      if (!verifyRequiredFiles(parameters.array, dConfig.fileExt!, dConfig.data.MAIN)) return;
+      if (!verifyRequiredFiles(parameters.array, dConfig.mainFileExt!, dConfig.data.MAIN)) return;
 
       const allFiles = arrayOfPathlikeProcessor(parameters.array.concat(dConfig.path.replace(`${cwd()}\\`, "")));
       print.debug(allFiles);

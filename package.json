@@ -26,7 +26,7 @@
     "@discloudapp/api-types": "^0.6.0",
     "@discloudapp/gluegun": "^5.1.6",
     "@discloudapp/util": "^0.7.0",
-    "archiver": "^6.0.1",
+    "archiver": "^7.0.1",
     "form-data": "^4.0.0",
     "glob": "^10.3.10",
     "jsonwebtoken": "^9.0.2",
@@ -34,11 +34,11 @@
   },
   "devDependencies": {
     "@types/archiver": "^6.0.2",
-    "@types/eslint": "^8.56.1",
+    "@types/eslint": "^8.56.10",
     "@types/jsonwebtoken": "^9.0.5",
-    "@types/node": "^20.10.8",
-    "@typescript-eslint/eslint-plugin": "^7.0.0",
-    "@typescript-eslint/parser": "^6.18.1",
+    "@types/node": "^20.14.5",
+    "@typescript-eslint/eslint-plugin": "^7.13.1",
+    "@typescript-eslint/parser": "^7.13.1",
     "eslint": "^8.56.0",
     "typescript": "^5.3.3"
   }
