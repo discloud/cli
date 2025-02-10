@@ -73,9 +73,9 @@
     yargs-parser "^21.0.0"
 
 "@discloudapp/util@^0.7.0":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.7.2.tgz#367ffb317dd8245d84605b3e6ea9147c22c459a5"
-  integrity sha512-1FOLxyOJSmFiHLRpSlrU1WSu8LfFB1MpheetM1BUMuL2mO5/CnMa9RygHqWS8AgJjr+kYdqqusL0Mr7j0OlCvA==
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.7.3.tgz#9f13cf60017f9041b721ed73b35a9f89b1855769"
+  integrity sha512-PLjexgDRpG/EFP9S1IFN7tI0X4s1/H2GR9GJ7XcAM7/SRQWk6k3VMKhkqfCmvxgLFGh1Z/eHMv7C2v+t4hXT+Q==
   dependencies:
     "@discloudapp/api-types" "^0.6.0"
     glob "^11.0.1"
