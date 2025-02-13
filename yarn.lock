@@ -36,6 +36,13 @@
   dependencies:
     tslib "^2.6.2"
 
+"@discloudapp/api-types@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.7.0.tgz#ce519735351370e28ed842a49891a5a1eb5e1564"
+  integrity sha512-qanqT/gUA+6Ubh+bH/2GngI4Q/TQN2FKm9lSJqj6KfRdsM3+HMuG2HRLfKVbx8BdokZytEzl8ZcIIqgnGHsnNA==
+  dependencies:
+    tslib "^2.8.1"
+
 "@discloudapp/gluegun@^5.1.6":
   version "5.1.6"
   resolved "https://registry.yarnpkg.com/@discloudapp/gluegun/-/gluegun-5.1.6.tgz#3f86d7664bf9c1fad2bcc9e5d496c450c13b69f8"
