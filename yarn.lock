@@ -29,13 +29,6 @@
     chalk "^2.4.2"
     js-tokens "^4.0.0"
 
-"@discloudapp/api-types@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.6.0.tgz#2774357578c1c26de45af8fef794ca6d17d80a56"
-  integrity sha512-8scHE4lgvra0R5wdHlFaBn6ymmuZXryYXxvSL9koSviHgVscLaBAslpABd1VjM5eYiFcwt0nOn6d0tT3Gsep1g==
-  dependencies:
-    tslib "^2.6.2"
-
 "@discloudapp/api-types@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.7.0.tgz#ce519735351370e28ed842a49891a5a1eb5e1564"
@@ -80,9 +73,9 @@
     yargs-parser "^21.0.0"
 
 "@discloudapp/util@^0.7.0":
-  version "0.7.4"
-  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.7.4.tgz#7ba7734d5e31a296bbea5a6cf6c6d5d396bed757"
-  integrity sha512-iKWrmXhZ49QUPdF1gHKX1SMWZ2RKwNJofYkfeh4p0MdXNJ6jrI5yb3Szu1REW9L5eaaIev5HfhxYTgbmcbERJg==
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.7.5.tgz#46c1bf5d4f8840b860ce8fb51ad19cb389749a2b"
+  integrity sha512-Fue+EIrLdN6G8g4aiL/TxNcFblUlIqnBdwHDLX3AxJxY+bfTsquLCmAh3NTMXlGyXPZ6n3kjAiN2Kf2zspthgA==
   dependencies:
     "@discloudapp/api-types" "^0.7.0"
     glob "^11.0.1"
