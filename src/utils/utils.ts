@@ -1,9 +1,8 @@
 import { readFileSync } from "fs";
-import { join } from "path";
-import { ROOT_PATH } from "..";
+import { joinWithRoot } from "./path";
 
 export function getPackageJSON() {
-  return importJSON<any>(join(ROOT_PATH, "package.json"));
+  return importJSON<any>(joinWithRoot("package.json"));
 }
 
 const JSONs: Record<any, any> = {};
