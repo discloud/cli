@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { dirname } from "path";
 import { type Store } from "../interfaces/store";
+import StoreError from "../errors/store";
 
 export type Encoding = Exclude<BufferEncoding, "ucs-2" | "ucs2" | "utf16le">;
 
@@ -75,7 +76,7 @@ export default class FsJsonStore<T extends Record<any, any>> implements Store<T>
   get<V extends T[K], K extends keyof T = keyof T>(key: K): V | void
   get<V extends T[K], K extends keyof T = keyof T>(key: K, required: true): V
   get(key: string, required?: boolean) {
-    if (required && !Reflect.has(this.#data, key)) throw Error(`${key} is required`);
+    if (required && !Reflect.has(this.#data, key)) throw new StoreError(`${key} is required`);
     return this.#data[key];
   }
 

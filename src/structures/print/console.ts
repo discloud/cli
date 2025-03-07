@@ -11,7 +11,7 @@ export default class ConsolePrint implements PrintInterface {
   // #noop() { }
 
   #debug(...args: any) {
-    console.log(...args);
+    console.debug(...args);
   }
 
   debug(..._args: any) { }
@@ -25,6 +25,10 @@ export default class ConsolePrint implements PrintInterface {
   }
 
   log(...args: any) {
+    console.log(...args);
+  }
+
+  success(...args: any): void {
     console.log(...args);
   }
 

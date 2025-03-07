@@ -7,5 +7,5 @@ export default async function (argv: string[]) {
   await core.run();
 }
 
-export const buildRootPath = __dirname;
-export const rootPath = dirname(buildRootPath);
+export const BUILD_ROOT_PATH = __dirname;
+export const ROOT_PATH = dirname(BUILD_ROOT_PATH);

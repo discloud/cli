@@ -1,4 +1,4 @@
 export interface ConfigData {
-  limited?: number
-  token?: string
+  limited: number
+  token: string
 }

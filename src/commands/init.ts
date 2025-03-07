@@ -4,7 +4,7 @@ import { type CommandInterface } from "../interfaces/command";
 import { promptAppApt, promptAppAutoRestart, promptAppMain, promptAppRam, promptAppType, promptAppVersion } from "../prompts/discloud/config";
 import { CONFIG_FILENAME } from "../utils/constants";
 
-interface InitArgs {
+interface CommandArgs {
   autorestart?: boolean
   build?: string
   "engine-version"?: string
@@ -16,7 +16,7 @@ interface InitArgs {
   yes?: boolean
 }
 
-export default <CommandInterface<InitArgs>>{
+export default <CommandInterface<CommandArgs>>{
   name: "init",
   description: `Init ${CONFIG_FILENAME} file`,
 

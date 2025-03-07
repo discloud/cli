@@ -3,66 +3,54 @@ import { existsSync } from "fs";
 import { readdir, stat } from "fs/promises";
 import inquirer from "inquirer";
 import { dirname, join } from "path";
-
-function getAnswer<T extends { answer: any }>(value: T) {
-  return value.answer;
-}
-
-async function promptTrier<R extends { answer: any }>(fn: () => Promise<R>) {
-  try {
-    return await fn().then(getAnswer);
-  } catch (error) {
-    if (error instanceof Error) {
-      if (error.name === "ExitPromptError")
-        throw new Error("Cancelled");
-    }
-
-    throw error;
-  }
-}
+import { promptTrier } from "../utils";
 
 export function promptAppApt(): Promise<string[]> {
-  return promptTrier(() => inquirer.prompt([{
+  return promptTrier(() => inquirer.prompt({
     type: "checkbox",
     name: "answer",
     message: "Select APTs for your app",
     choices: APTPackages,
-  }]));
+  }));
 }
 
 export function promptAppAutoRestart(): Promise<boolean> {
-  return promptTrier(() => inquirer.prompt([{
+  return promptTrier(() => inquirer.prompt({
     type: "confirm",
     name: "answer",
     message: "Auto restart?",
     default: false,
-  }]));
+  }));
 }
 
 export function promptAppMain(): Promise<string> {
-  return promptTrier(() => inquirer.prompt([{
+  return promptTrier(() => inquirer.prompt({
     type: "search",
     name: "answer",
     message: "Input the main file path of your app",
     async source(term, _opt) {
       if (term) term = term.replace(/[\\]/g, "/");
 
-      const dir = join(typeof term === "string" ? existsSync(term) ? term : dirname(term) : "");
+      const dir = join(typeof term === "string" ? existsSync(term) ? term : dirname(term) : ".");
 
-      const files = await readdir(dir);
+      const files = await readdir(dir, { withFileTypes: true });
 
-      for (let i = 0; i < files.length;) {
-        files[i] = join(dir, files[i]).replace(/[\\]/g, "/");
+      files.sort((a, b) => a.name.localeCompare(b.name) + (a.isDirectory() ? -2 : 2) + (b.isDirectory() ? 2 : -2));
 
-        if (term ? files[i].startsWith(term) : true) {
-          i++;
+      const result: string[] = [];
+
+      for (let i = 0; i < files.length; i++) {
+        const filename = join(dir, files[i].name).replace(/[\\]/g, "/");
+
+        if (term ? filename.includes(term) : true) {
+          result.push(filename);
           continue;
         }
-
-        files.splice(i, 1);
       }
 
-      return files;
+      if (term) result.sort((a, b) => (a.startsWith(term) ? -1 : 1) + (b.startsWith(term) ? 1 : -1));
+
+      return result;
     },
     async validate(value) {
       if (typeof value === "string" && existsSync(value)) {
@@ -71,7 +59,7 @@ export function promptAppMain(): Promise<string> {
       }
       return false;
     },
-  }]));
+  }));
 }
 
 export function promptAppRam(min?: number, max?: number): Promise<number> {
@@ -87,21 +75,21 @@ export function promptAppRam(min?: number, max?: number): Promise<number> {
 }
 
 export function promptAppType(type?: string): Promise<string> {
-  return promptTrier(() => inquirer.prompt([{
+  return promptTrier(() => inquirer.prompt({
     type: "list",
     name: "answer",
     message: "Input the type of your app",
     choices: ["bot", "site"],
     default: type,
-  }]));
+  }));
 }
 
 export function promptAppVersion(): Promise<string> {
-  return promptTrier(() => inquirer.prompt([{
+  return promptTrier(() => inquirer.prompt({
     type: "list",
     name: "answer",
     message: "Input the engine version of your app",
     choices: ["latest", "current", "suja"],
     default: "latest",
-  }]));
+  }));
 }

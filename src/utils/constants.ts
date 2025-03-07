@@ -9,7 +9,7 @@ export const CONFIG_FILENAME = "discloud.config";
 
 export const ERRORS_TO_IGNORE = new Set<string>([]);
 
-export const ERRORS_TO_LOG = new Set<string>([]);
+export const ERRORS_TO_LOG = new Set<string>(["Prompt", "Store"]);
 
 export const backupsPath = join("discloud", "backups");
 export const logsPath = join("discloud", "logs");

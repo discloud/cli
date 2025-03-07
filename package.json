@@ -3,7 +3,7 @@
   "description": "A fast option to manage your apps on Discloud.",
   "version": "1.18.0",
   "bin": {
-    "discloud": "bin/discloud.js"
+    "discloud": "bin/discloud"
   },
   "scripts": {
     "watch": "tsc -watch",
