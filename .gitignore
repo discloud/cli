@@ -2,7 +2,6 @@
 **/.ignore.*
 /test*.[j|t]s
 /test*.m[j|t]s
-.discloudignore
 build
 /discloud
 discloud.config

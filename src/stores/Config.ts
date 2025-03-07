@@ -1,13 +1,12 @@
-import { join } from "path";
 import { type ConfigData } from "../@types";
 import { type Store } from "../interfaces/store";
-import { CONFIG_PATH } from "../utils/constants";
+import { CLI_CONFIG_FILEPATH } from "../utils/constants";
 import FsJsonStore from "./FsJson";
 
 type T = ConfigData
 
 export default class ConfigStore implements Store<T> {
-  readonly #fs: Store<T> = new FsJsonStore<T>(join(CONFIG_PATH, ".cli"));
+  readonly #fs: Store<T> = new FsJsonStore<T>(CLI_CONFIG_FILEPATH);
 
   delete<K extends keyof T>(key: K): void {
     this.#fs.delete(key);

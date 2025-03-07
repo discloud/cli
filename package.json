@@ -28,6 +28,7 @@
     "adm-zip": "^0.5.16",
     "ejs": "^3.1.10",
     "glob": "^11.0.1",
+    "globify-gitignore": "^1.0.3",
     "inquirer": "^12.4.2",
     "jsonwebtoken": "^9.0.2",
     "ora": "^8.2.0",

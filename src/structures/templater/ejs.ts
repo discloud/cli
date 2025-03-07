@@ -1,12 +1,11 @@
 import { type Data, renderFile } from "ejs";
 import { writeFile } from "fs/promises";
-import { join } from "path";
-import { ROOT_PATH } from "../..";
 import { type Templater } from "../../interfaces/templater";
+import { joinWithRoot } from "../../utils/path";
 
 export default class EjsTemplater implements Templater {
   #readTemplateFile(inputFileName: string, props?: any) {
-    return renderFile(join(ROOT_PATH, "templates", `${inputFileName}.ejs`), { props });
+    return renderFile(joinWithRoot("templates", `${inputFileName}.ejs`), { props });
   }
 
   #writeFile(outputFilePath: string, content: string) {

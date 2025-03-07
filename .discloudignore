@@ -1,0 +1,20 @@
+# COMMON
+.git
+.vscode
+.cache
+
+# GO LANG
+
+# JAVASCRIPT
+.npm
+jspm_packages
+node_modules
+*-lock.json
+*.lock
+
+# PYTHON
+venv
+
+# RUST
+*.lock
+target

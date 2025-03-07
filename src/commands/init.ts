@@ -2,7 +2,7 @@ import { type DiscloudConfigScopes } from "@discloudapp/api-types/v2";
 import { existsSync } from "fs";
 import { type CommandInterface } from "../interfaces/command";
 import { promptAppApt, promptAppAutoRestart, promptAppMain, promptAppRam, promptAppType, promptAppVersion } from "../prompts/discloud/config";
-import { CONFIG_FILENAME } from "../utils/constants";
+import { CONFIG_FILENAME } from "../services/discloud/constants";
 
 interface CommandArgs {
   autorestart?: boolean
@@ -23,52 +23,52 @@ export default <CommandInterface<CommandArgs>>{
   options: {
     autorestart: {
       alias: "ar",
-      boolean: true,
+      type: "boolean",
       defaultDescription: "false",
       description: "Auto restart switch",
     },
     build: {
       alias: "b",
-      string: true,
+      type: "string",
       description: "App build",
     },
     "engine-version": {
       alias: "ev",
-      string: true,
+      type: "string",
       defaultDescription: "latest",
       description: "App engine version",
     },
     main: {
       alias: "m",
-      string: true,
+      type: "string",
       description: "App main file",
     },
     name: {
       alias: "n",
-      string: true,
+      type: "string",
       description: "App name",
     },
     ram: {
       alias: "r",
-      number: true,
+      type: "number",
       defaultDescription: "100",
       description: "App RAM (min: 100)",
     },
     start: {
       alias: "s",
-      string: true,
+      type: "string",
       description: "App start",
     },
     type: {
       alias: "t",
       choices: ["bot", "site"],
-      string: true,
+      type: "string",
       defaultDescription: "bot",
       description: "App type",
     },
     yes: {
       alias: "y",
-      boolean: true,
+      type: "boolean",
       description: "Skip config prompts",
     },
   },

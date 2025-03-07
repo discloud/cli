@@ -3,7 +3,6 @@
 **/*.zip
 **/eslint.config.*
 **/tsconfig.json
-**/.discloudignore
 **/.env
 node_modules
 /assets
