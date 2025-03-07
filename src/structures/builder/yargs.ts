@@ -46,7 +46,7 @@ export default class YargsBuilder implements BuilderInterface {
           return yargs;
         },
         handler: (...args) => {
-          if (command.requiresApiToken) {
+          if (command.requireAuth) {
             if (!this.core.api.hasToken)
               return this.core.print.error("Error: Missing Discloud token\n\nPlease use login command");
 

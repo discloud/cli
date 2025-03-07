@@ -7,7 +7,7 @@ export interface CommandInterface<Args = any> {
   aliases?: string | string[]
   /** Always `true` if `requiresApiToken` is `true` */
   checkRateLimit?: boolean
-  requiresApiToken?: boolean
+  requireAuth?: boolean
   options?: Record<keyof Args, Options>
   run(core: Core, args: Args): Promise<void>
 }
