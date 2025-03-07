@@ -1,16 +1,11 @@
-import { build } from "@discloudapp/gluegun";
-import { exit } from "node:process";
+import { dirname } from "path";
+import Core from "./core";
 
-export async function run(argv: string[]) {
-  const cli = build("discloud")
-    .src(__dirname)
-    .plugins("./node_modules", { matching: "discloud-*", hidden: true })
-    .defaultCommand()
-    .help()
-    .version()
-    .create();
+export default async function (argv: string[]) {
+  const core = new Core(argv);
 
-  await cli.run(argv);
-
-  exit(0);
+  await core.run();
 }
+
+export const buildRootPath = __dirname;
+export const rootPath = dirname(buildRootPath);
