@@ -1,3 +1,5 @@
+import { type RESTApiBaseResult } from "@discloudapp/api-types/v2";
+import ora from "ora";
 import type Core from "../../core";
 import { type PrintInterface } from "../../interfaces/print";
 
@@ -8,31 +10,41 @@ export default class ConsolePrint implements PrintInterface {
     if (process.argv.includes("--debug")) this.debug = this.#debug;
   }
 
+  apiResponse(response: RESTApiBaseResult) {
+    const method: keyof PrintInterface = response.status === "ok" ? "info" : "warn";
+
+    this[method]("[DISCLOUD API] %s", response.message);
+  }
+
   // #noop() { }
 
-  #debug(...args: any) {
-    console.debug(...args);
+  #debug(first: string, ...args: any) {
+    console.debug(`[debug] ${first}`, ...args);
   }
 
   debug(..._args: any) { }
 
-  error(...args: any) {
-    console.error(...args);
+  error(first: string, ...args: any) {
+    console.error(`[error] ${first}`, ...args);
   }
 
-  info(...args: any) {
-    console.log(...args);
+  info(first: string, ...args: any) {
+    console.log(`[info] ${first}`, ...args);
   }
 
   log(...args: any) {
     console.log(...args);
   }
 
-  success(...args: any): void {
-    console.log(...args);
+  spin(text?: string) {
+    return ora({ text }).start();
   }
 
-  warn(...args: any): void {
-    console.warn(...args);
+  success(first: string, ...args: any): void {
+    console.log(`[success] ${first}`, ...args);
+  }
+
+  warn(first: string, ...args: any): void {
+    console.warn(`[warn] ${first}`, ...args);
   }
 }

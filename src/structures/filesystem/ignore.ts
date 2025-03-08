@@ -2,11 +2,23 @@ import { existsSync } from "fs";
 import { readFile } from "fs/promises";
 import { glob } from "glob";
 import { globifyGitIgnore } from "globify-gitignore";
-import { dirname, isAbsolute } from "path";
+import { dirname } from "path";
 import { IGNORE_FILENAME } from "../../utils/constants";
 import { joinWithRoot } from "../../utils/path";
 
 export default class Ignore {
+  async globify(content: string, directory?: string, absolute?: boolean) {
+    const patterns = [];
+
+    const result = await globifyGitIgnore(content, directory, absolute);
+
+    for (let i = 0; i < result.length; i++) {
+      patterns.push(result[i].glob);
+    }
+
+    return patterns;
+  }
+
   async findIgnoreFiles() {
     const path = joinWithRoot(IGNORE_FILENAME);
 
@@ -18,7 +30,7 @@ export default class Ignore {
       nodir: true,
     });
 
-    return files;
+    return files.concat(path);
   }
 
   async resolveIgnoreFiles(files: string[]) {
@@ -38,20 +50,15 @@ export default class Ignore {
   }
 
   async #getGlobfiedIgnore(path: string) {
-    const patterns: string[] = [];
+    const patterns = [];
 
     if (existsSync(path)) {
       const content = await this.#readIgnoreFile(path);
-      const absolute = isAbsolute(path);
 
-      const globfiedEntries = await globifyGitIgnore(content, absolute ? void 0 : dirname(path), !absolute);
-
-      for (let i = 0; i < globfiedEntries.length; i++) {
-        patterns.push(globfiedEntries[i].glob);
-      }
+      patterns.push(await this.globify(content, dirname(path)));
     }
 
-    return patterns;
+    return patterns.flat();
   }
 
   #readIgnoreFile(path: string) {

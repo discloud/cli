@@ -23,7 +23,6 @@ export default <CommandInterface<CommandArgs>>{
       alias: "g",
       type: "array",
       description: "Directories/files with glob pattern to zip",
-      demandOption: true,
       default: "**",
     },
   },
