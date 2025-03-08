@@ -1,5 +1,4 @@
 import { type RESTPutApiAppConsoleResult, Routes } from "@discloudapp/api-types/v2";
-import { setTimeout as sleep } from "timers/promises";
 import MissingRequiredOptionError from "../errors/args";
 import { type CommandInterface } from "../interfaces/command";
 import { promptAppConsoleCommand } from "../prompts/discloud/api";
@@ -25,10 +24,7 @@ export default <CommandInterface<CommandArgs>>{
   },
 
   async run(core, args) {
-    if (!args.app && args._[1]) {
-      emitDeprecation("arguments", "app option");
-      await sleep();
-    }
+    if (!args.app && args._[1]) emitDeprecation("arguments", "app option");
 
     const appId = args.app ?? args._[1];
 

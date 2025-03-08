@@ -6,7 +6,6 @@ import { type BuilderInterface } from "../../interfaces/builder";
 import { type CommandInterface } from "../../interfaces/command";
 import { DiscloudAPIError } from "../../services/discloud/errors";
 import { ERRORS_TO_IGNORE, ERRORS_TO_LOG, MODULES_EXTENSIONS } from "../../utils/constants";
-
 export default class YargsBuilder implements BuilderInterface {
   constructor(
     readonly core: Core,
@@ -78,9 +77,6 @@ export default class YargsBuilder implements BuilderInterface {
 
         if (!args._.length) this.yargs.showHelp();
       })
-      .options({
-        "trace-errors": { type: "boolean" },
-      })
       .version();
   }
 
@@ -102,7 +98,7 @@ export default class YargsBuilder implements BuilderInterface {
           this.yargs.exit(1, error);
         }
 
-        this.core.print.error(error.toString());
+        this.core.print.error(error);
         this.yargs.showVersion((message) => console.log("discloud -v v%s\nnode -v %s", message, process.version));
         this.yargs.exit(1, error);
       } else if (error !== undefined && error !== null) {
