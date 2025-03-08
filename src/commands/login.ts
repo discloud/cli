@@ -5,7 +5,7 @@ interface CommandArgs { }
 
 export default <CommandInterface<CommandArgs>>{
   name: "login",
-  description: "Login on Discloud API.",
+  description: "Login on Discloud API",
 
   async run(core, _args) {
     const token = await promptApiToken();

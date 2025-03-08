@@ -14,6 +14,7 @@ export default class ConsolePrint implements PrintInterface {
     const method: keyof PrintInterface = response.status === "ok" ? "info" : "warn";
 
     const additional: unknown[] = [];
+    if ("localeList" in response) additional.push("Supported locales:", response.localeList);
     if ("logs" in response) additional.push(response.logs);
 
     this[method]("[DISCLOUD API] %s", response.message, ...additional);

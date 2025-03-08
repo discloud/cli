@@ -10,7 +10,7 @@ interface CommandArgs {
 
 export default <CommandInterface<CommandArgs>>{
   name: "upload",
-  description: "Upload one app or site to Discloud.",
+  description: "Upload one app or site to Discloud",
   aliases: "up",
 
   requireAuth: true,

@@ -12,7 +12,7 @@ interface CommandArgs {
 
 export default <CommandInterface<CommandArgs>>{
   name: "commit",
-  description: "Commit one app or site to Discloud.",
+  description: "Commit one app or site to Discloud",
   aliases: "c",
 
   requireAuth: true,
