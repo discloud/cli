@@ -1,4 +1,5 @@
 import inquirer from "inquirer";
+import { API_LOCALES } from "../../services/discloud/constants";
 import { tokenIsDiscloudJwt } from "../../services/discloud/utils";
 import { promptTrier } from "../utils";
 
@@ -17,5 +18,14 @@ export async function promptAppConsoleCommand(): Promise<string> {
     name: "answer",
     message: ">",
     required: true,
+  }));
+}
+
+export async function promptUserLocale(): Promise<string> {
+  return promptTrier(() => inquirer.prompt({
+    type: "select",
+    name: "answer",
+    message: "Choose your locale",
+    choices: API_LOCALES,
   }));
 }

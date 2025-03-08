@@ -18,8 +18,6 @@ export const ERRORS_TO_LOG = new Set<string>(["MissingRequiredOption", "Prompt",
 export const BACKUPS_PATH = join("discloud", "backups");
 export const LOGS_PATH = join("discloud", "logs");
 
-export const API_LOCALES = ["en-US", "pt-BR"];
-
 /* export enum FileExt {
   cjs = "js",
   cts = "ts",
