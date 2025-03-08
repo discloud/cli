@@ -48,7 +48,7 @@ export default class YargsBuilder implements BuilderInterface {
         handler: (...args) => {
           if (command.requireAuth) {
             if (!this.core.api.hasToken)
-              return this.core.print.error("Error: Missing Discloud token\n\nPlease use login command");
+              return this.core.print.error("Missing Discloud token! Please use login command");
 
             command.checkRateLimit ||= true;
           }
@@ -70,12 +70,16 @@ export default class YargsBuilder implements BuilderInterface {
       .command(commands)
       .fail(false)
       .help()
+      .locale("en") // TODO: multi-locale
       .middleware((args) => {
         this.yargs.showVersion((message) => args._.length
           ? console.log("discloud %s v%s", args._[0], message)
           : console.log("discloud v%s", message));
 
         if (!args._.length) this.yargs.showHelp();
+      })
+      .options({
+        "trace-errors": { type: "boolean" },
       })
       .version();
   }
@@ -86,8 +90,7 @@ export default class YargsBuilder implements BuilderInterface {
     } catch (error) {
       if (error instanceof DiscloudAPIError) {
         this.core.print.error(error.toString());
-        this.yargs.showVersion((message) => console.log("discloud -v v%s", message));
-        console.log("node -v %s", process.version);
+        this.yargs.showVersion((message) => console.log("discloud -v v%s\nnode -v %s", message, process.version));
         this.yargs.exit(1, error);
       }
 
@@ -95,14 +98,15 @@ export default class YargsBuilder implements BuilderInterface {
         if (ERRORS_TO_IGNORE.has(error.name)) this.yargs.exit(1, error);
 
         if (ERRORS_TO_LOG.has(error.name)) {
-          this.core.print.error("%s: %s", error.name, error.message);
+          this.core.print.error("%s", error.message);
           this.yargs.exit(1, error);
         }
 
-        this.core.print.error(error);
-        this.yargs.showVersion((message) => console.log("discloud -v v%s", message));
-        console.log("node -v %s", process.version);
+        this.core.print.error(error.toString());
+        this.yargs.showVersion((message) => console.log("discloud -v v%s\nnode -v %s", message, process.version));
         this.yargs.exit(1, error);
+      } else if (error !== undefined && error !== null) {
+        this.core.print.error(error);
       }
 
       this.yargs.exit(1, error as Error);

@@ -13,7 +13,7 @@ export const CLI_CONFIG_FILEPATH = join(CLI_CONFIG_DIR, CLI_CONFIG_FILENAME);
 
 export const ERRORS_TO_IGNORE = new Set<string>([]);
 
-export const ERRORS_TO_LOG = new Set<string>(["Prompt", "Store"]);
+export const ERRORS_TO_LOG = new Set<string>(["MissingRequiredOption", "Prompt", "Store"]);
 
 export const BACKUPS_PATH = join("discloud", "backups");
 export const LOGS_PATH = join("discloud", "logs");

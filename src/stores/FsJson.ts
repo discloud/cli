@@ -32,9 +32,7 @@ export default class FsJsonStore<T extends Record<any, any>> implements Store<T>
     return Buffer.from(JSON.stringify(data)).toString(encoding);
   }
 
-  #decode(path = this.path, encoding = this.options.encoding): T {
-    const content = this.#readFile(path);
-
+  #decode(content: string, encoding = this.options.encoding): T {
     if (content !== undefined)
       try { return JSON.parse(Buffer.from(content, encoding).toString(this.#decoding)); } catch { }
 
@@ -42,12 +40,12 @@ export default class FsJsonStore<T extends Record<any, any>> implements Store<T>
   }
 
   #readFile(path = this.path) {
-    try { if (existsSync(path)) return readFileSync(path, this.#decoding); } catch { }
+    try { return readFileSync(path, this.#decoding); } catch { }
   }
 
   #read(path = this.path): T {
     if (existsSync(path)) {
-      return this.#decode(path);
+      return this.#decode(this.#readFile(path)!);
     } else {
       mkdirSync(dirname(path), { recursive: true });
       return <T>{};

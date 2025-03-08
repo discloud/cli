@@ -75,12 +75,16 @@ export default class REST implements ApiInterface {
   async request(url: URL, config: RequestOptions = {}) {
     const pathname = url.pathname;
 
-    if (this.rateLimiter.isLimited)
+    const requestToken = this.#getHeaderValue(config.headers, "api-token");
+
+    const isSavedToken = this.core.config.get("token") === requestToken;
+
+    if (isSavedToken && this.rateLimiter.isLimited)
       throw new RateLimitError();
 
     const response = await fetch(url, config);
 
-    this.#resolveResponseHeaders(response.headers);
+    if (isSavedToken) this.#handleResponseHeaders(response.headers);
 
     const responseBody = await this.#resolveResponseBody(response);
 
@@ -94,6 +98,29 @@ export default class REST implements ApiInterface {
       );
 
     return responseBody;
+  }
+
+  #getHeaderValue(headers: RequestOptions["headers"], headerKey: any) {
+    if (!headers) return;
+
+    if (headers instanceof Headers)
+      return headers.get(headerKey);
+
+    if (Array.isArray(headers)) {
+      let value;
+
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i][0] === headerKey) {
+          value = headers[i][1];
+          break;
+        }
+      }
+
+      return value;
+    }
+
+    if (headerKey in headers)
+      return headers[headerKey as keyof typeof headers];
   }
 
   #raw<T>(options: InternalRequestData) {
@@ -166,7 +193,7 @@ export default class REST implements ApiInterface {
     return response.arrayBuffer();
   }
 
-  #resolveResponseHeaders(headers: Headers) {
+  #handleResponseHeaders(headers: Headers) {
     this.rateLimiter.limit(headers);
   }
 }

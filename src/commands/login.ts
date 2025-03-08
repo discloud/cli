@@ -7,8 +7,6 @@ export default <CommandInterface<CommandArgs>>{
   name: "login",
   description: "Login on Discloud API.",
 
-  checkRateLimit: true,
-
   async run(core, _args) {
     const token = await promptApiToken();
 

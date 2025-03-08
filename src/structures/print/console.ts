@@ -13,38 +13,46 @@ export default class ConsolePrint implements PrintInterface {
   apiResponse(response: RESTApiBaseResult) {
     const method: keyof PrintInterface = response.status === "ok" ? "info" : "warn";
 
-    this[method]("[DISCLOUD API] %s", response.message);
+    const additional: unknown[] = [];
+    if ("logs" in response) additional.push(response.logs);
+
+    this[method]("[DISCLOUD API] %s", response.message, ...additional);
   }
 
   // #noop() { }
 
-  #debug(first: string, ...args: any) {
-    console.debug(`[debug] ${first}`, ...args);
+  #debug(first: any, ...args: any) {
+    if (typeof first === "string") return console.debug(`[debug] ${first}`, ...args);
+    console.debug("[debug]", first, ...args);
   }
 
   debug(..._args: any) { }
 
-  error(first: string, ...args: any) {
-    console.error(`[error] ${first}`, ...args);
+  error(first: any, ...args: any) {
+    if (typeof first === "string") return console.error(`[error] ${first}`, ...args);
+    console.error("[error]", first, ...args);
   }
 
-  info(first: string, ...args: any) {
-    console.log(`[info] ${first}`, ...args);
+  info(first: any, ...args: any) {
+    if (typeof first === "string") return console.log(`[info] ${first}`, ...args);
+    console.log("[info]", first, ...args);
   }
 
   log(...args: any) {
     console.log(...args);
   }
 
-  spin(text?: string) {
+  spin(text?: any) {
     return ora({ text }).start();
   }
 
-  success(first: string, ...args: any): void {
-    console.log(`[success] ${first}`, ...args);
+  success(first: any, ...args: any): void {
+    if (typeof first === "string") return console.log(`[success] ${first}`, ...args);
+    console.log("[success]", first, ...args);
   }
 
-  warn(first: string, ...args: any): void {
-    console.warn(`[warn] ${first}`, ...args);
+  warn(first: any, ...args: any): void {
+    if (typeof first === "string") return console.warn(`[warn] ${first}`, ...args);
+    console.warn("[warn]", first, ...args);
   }
 }
