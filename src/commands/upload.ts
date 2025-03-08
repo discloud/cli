@@ -39,11 +39,11 @@ export default <CommandInterface<CommandArgs>>{
 
     const buffer = await core.fs.execZip(args.glob, core.workspaceFolder);
 
+    const file = await resolveFile(buffer);
+
     spinner.text = "Uploading...";
 
-    const files: File[] = [await resolveFile(buffer)];
-
-    const response = await core.api.post<RESTPostApiUploadResult>(Routes.upload(), { files });
+    const response = await core.api.post<RESTPostApiUploadResult>(Routes.upload(), { files: [file] });
 
     spinner.stop();
 
