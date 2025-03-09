@@ -5,7 +5,7 @@ interface CommandArgs { }
 
 export default <CommandInterface<CommandArgs>>{
   name: "info",
-  description: "Get info of team apps",
+  description: "Get info of your team apps",
 
   requireAuth: true,
 
