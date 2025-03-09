@@ -16,7 +16,8 @@ export default <CommandInterface<CommandArgs>>{
     amount: {
       type: "number",
       coerce(arg) {
-        if (arg >= 100) return arg;
+        if (arg < 100) return 100;
+        return arg;
       },
     },
     app: {
