@@ -1,5 +1,6 @@
 import { type ApiAppBackup, type ApiAppBackupAll, type RESTGetApiAppAllBackupResult, type RESTGetApiAppBackupResult, Routes } from "@discloudapp/api-types/v2";
-import { writeFile } from "fs/promises";
+import { existsSync } from "fs";
+import { mkdir, writeFile } from "fs/promises";
 import { join } from "path";
 import { type CommandInterface } from "../../interfaces/command";
 import { BACKUPS_PATH } from "../../utils/constants";
@@ -52,7 +53,9 @@ export default <CommandInterface<CommandArgs>>{
 
           spinner.text = `Saving ${i + 1}/${response.backups.length}: ${backup.id}`;
 
-          await getBackup(backup, args.path);
+          const responseStatus = await getBackup(backup, args.path);
+
+          if (responseStatus === 429) break;
         }
       } else {
         await getBackup(response.backups, args.path);
@@ -66,16 +69,22 @@ export default <CommandInterface<CommandArgs>>{
 
 async function getBackup(backup: ApiAppBackup | ApiAppBackupAll, path: string) {
   try {
+    if (!existsSync(path)) await mkdir(path, { recursive: true });
+
     const response = await fetch(backup.url);
 
     if (response.ok) {
-      const backupPath = join(path, backup.id);
+      const backupPath = join(path, `${backup.id}.zip`);
 
       await writeFile(backupPath, Buffer.from(await response.arrayBuffer()));
 
       backup.url = backupPath;
     } else {
       backup.url = `${response.status}: ${response.statusText}`;
+
+      if ("status" in backup) backup.status = "error";
+
+      return response.status;
     }
   } catch (error: any) {
     backup.url = `[error]: ${error.message}`;
