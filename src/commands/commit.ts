@@ -1,8 +1,6 @@
 import { type RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
 import { resolveFile } from "@discloudapp/util";
-import MissingRequiredOptionError from "../errors/args";
 import { type CommandInterface } from "../interfaces/command";
-import { emitDeprecation } from "../utils/deprecate";
 
 interface CommandArgs {
   _: string[]
@@ -11,7 +9,7 @@ interface CommandArgs {
 }
 
 export default <CommandInterface<CommandArgs>>{
-  name: "commit",
+  name: "commit <app> [glob..]",
   description: "Commit one app or site to Discloud",
   aliases: "c",
 
@@ -31,11 +29,7 @@ export default <CommandInterface<CommandArgs>>{
   },
 
   async run(core, args) {
-    if (!args.app && args._[1]) emitDeprecation("arguments", "app option");
-
-    const appId = args.app ?? args._[1];
-
-    if (!appId) throw new MissingRequiredOptionError("app");
+    const appId = args.app;
 
     const spinner = core.print.spin("Zipping files...");
 

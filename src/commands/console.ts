@@ -1,10 +1,8 @@
 import { type RESTPutApiAppConsoleResult, Routes } from "@discloudapp/api-types/v2";
-import MissingRequiredOptionError from "../errors/args";
 import { type CommandInterface } from "../interfaces/command";
 import { promptAppConsoleCommand } from "../prompts/discloud/api";
 import { DiscloudAPIError } from "../services/discloud/errors";
 import { tokenIsDiscloudJwt } from "../services/discloud/utils";
-import { emitDeprecation } from "../utils/deprecate";
 
 interface CommandArgs {
   _: string[]
@@ -12,7 +10,7 @@ interface CommandArgs {
 }
 
 export default <CommandInterface<CommandArgs>>{
-  name: "console",
+  name: "console <app>",
   description: "Use the app terminal",
   aliases: "terminal",
 
@@ -24,12 +22,6 @@ export default <CommandInterface<CommandArgs>>{
   },
 
   async run(core, args) {
-    if (!args.app && args._[1]) emitDeprecation("arguments", "app option");
-
-    const appId = args.app ?? args._[1];
-
-    if (!appId) throw new MissingRequiredOptionError("app");
-
     const token = process.env.DISCLOUD_TOKEN;
 
     if (typeof token === "string") {
@@ -48,7 +40,7 @@ export default <CommandInterface<CommandArgs>>{
       const spinner = core.print.spin();
 
       try {
-        const response = await core.api.put<RESTPutApiAppConsoleResult>(Routes.appConsole(appId), {
+        const response = await core.api.put<RESTPutApiAppConsoleResult>(Routes.appConsole(args.app), {
           body: { command },
           headers: token ? { "api-token": token } : {},
         });

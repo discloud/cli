@@ -9,7 +9,7 @@ interface CommandArgs {
 }
 
 export default <CommandInterface<CommandArgs>>{
-  name: "zip",
+  name: "zip [glob..]",
   description: "Make zip",
 
   options: {
