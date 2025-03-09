@@ -75,7 +75,7 @@ export default <CommandInterface<CommandArgs>>{
 
   async run(core, args) {
     if (existsSync(CONFIG_FILENAME))
-      return core.print.error(`${CONFIG_FILENAME} file already exists!`);
+      return core.print.error("%s file already exists!", CONFIG_FILENAME);
 
     let minRam = args.type === "site" ? 512 : 100;
 
