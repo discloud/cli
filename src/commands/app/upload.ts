@@ -45,8 +45,6 @@ export default <CommandInterface<CommandArgs>>{
 
     const response = await core.api.post<RESTPostApiUploadResult>(Routes.upload(), { files: [file] });
 
-    spinner.stop();
-
     core.print.apiResponse(response);
 
     if (response.status === "ok" && response.app)

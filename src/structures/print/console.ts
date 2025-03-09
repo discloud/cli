@@ -1,6 +1,6 @@
 import { type RESTApiBaseResult } from "@discloudapp/api-types/v2";
 import Table from "easy-table";
-import ora from "ora";
+import ora, { type Ora } from "ora";
 import type Core from "../../core";
 import { type PrintInterface } from "../../interfaces/print";
 
@@ -12,6 +12,8 @@ export default class ConsolePrint implements PrintInterface {
   }
 
   apiResponse(response: RESTApiBaseResult) {
+    this.#stopSpin();
+
     const method: keyof PrintInterface = response.status === "ok" ? "info" : "warn";
 
     const additional: unknown[] = [];
@@ -24,6 +26,8 @@ export default class ConsolePrint implements PrintInterface {
   // #noop() { }
 
   #debug(first: any, ...args: any) {
+    this.#stopSpin();
+
     if (typeof first === "string") return console.debug(`[debug] ${first}`, ...args);
     console.debug("[debug]", first, ...args);
   }
@@ -31,35 +35,54 @@ export default class ConsolePrint implements PrintInterface {
   debug(..._args: any) { }
 
   error(first: any, ...args: any) {
+    this.#stopSpin();
+
     if (typeof first === "string") return console.error(`[error] ${first}`, ...args);
     console.error("[error]", first, ...args);
   }
 
   info(first: any, ...args: any) {
+    this.#stopSpin();
+
     if (typeof first === "string") return console.log(`[info] ${first}`, ...args);
     console.log("[info]", first, ...args);
   }
 
   log(...args: any) {
+    this.#stopSpin();
+
     console.log(...args);
   }
 
+  #spinner!: Ora;
   spin(text?: any) {
-    return ora({ text }).start();
+    this.#stopSpin();
+
+    return this.#spinner = ora({ text }).start();
+  }
+
+  #stopSpin() {
+    if (this.#spinner?.isSpinning) this.#spinner.stop();
   }
 
   success(first: any, ...args: any): void {
+    this.#stopSpin();
+
     if (typeof first === "string") return console.log(`[success] ${first}`, ...args);
     console.log("[success]", first, ...args);
   }
 
   table<T>(objOrArray: T, excludeKeys?: any[]) {
+    this.#stopSpin();
+
     resolveTableObj(objOrArray, excludeKeys);
 
     Table.log(objOrArray);
   }
 
   warn(first: any, ...args: any): void {
+    this.#stopSpin();
+
     if (typeof first === "string") return console.warn(`[warn] ${first}`, ...args);
     console.warn("[warn]", first, ...args);
   }

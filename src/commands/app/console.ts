@@ -38,15 +38,13 @@ export default <CommandInterface<CommandArgs>>{
 
       if (command === "exit") break;
 
-      const spinner = core.print.spin();
+      core.print.spin();
 
       try {
         const response = await core.api.put<RESTPutApiAppConsoleResult>(Routes.appConsole(args.app), {
           body: { command },
           headers: token ? { "api-token": token } : {},
         });
-
-        spinner.stop();
 
         if (response.status === "ok") {
           if (response.apps?.shell) {
@@ -60,8 +58,6 @@ export default <CommandInterface<CommandArgs>>{
           core.print.error(response.message);
         }
       } catch (error) {
-        spinner.stop();
-
         if (error instanceof DiscloudAPIError) {
           switch (error.code) {
             case 401:

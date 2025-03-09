@@ -40,8 +40,6 @@ export default <CommandInterface<CommandArgs>>{
 
     const response = await core.api.post<RESTPostApiUploadResult>(Routes.appCommit(appId), { files: [file] });
 
-    spinner.stop();
-
     core.print.apiResponse(response);
   },
 };

@@ -10,11 +10,9 @@ export default <CommandInterface<CommandArgs>>{
   requireAuth: true,
 
   async run(core, _args) {
-    const spinner = core.print.spin("Fetching user info...");
+    core.print.spin("Fetching user info...");
 
     const response = await core.api.get<RESTGetApiUserResult>(Routes.user());
-
-    spinner.stop();
 
     if (response.user) {
       core.print.table([response.user], ["apps", "customdomains", "subdomains"]);

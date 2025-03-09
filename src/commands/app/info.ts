@@ -20,14 +20,12 @@ export default <CommandInterface<CommandArgs>>{
   },
 
   async run(core, args) {
-    const spinner = core.print.spin(`Fetching app${args.app === "all" ? "s" : ""}...`);
+    core.print.spin(`Fetching app${args.app === "all" ? "s" : ""}...`);
 
     const response = await core.api.get<
       | RESTGetApiAppResult
       | RESTGetApiAppAllResult
     >(Routes.app(args.app));
-
-    spinner.stop();
 
     if (response.apps) {
       const apps = Array.isArray(response.apps) ? response.apps : [response.apps];

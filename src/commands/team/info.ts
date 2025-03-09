@@ -10,11 +10,9 @@ export default <CommandInterface<CommandArgs>>{
   requireAuth: true,
 
   async run(core, _args) {
-    const spinner = core.print.spin("Fetching team info...");
+    core.print.spin("Fetching team info...");
 
     const response = await core.api.get<RESTGetApiTeamResult>(Routes.team());
-
-    spinner.stop();
 
     if (response.apps) {
       core.print.table(response.apps, ["perms"]);
