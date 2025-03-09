@@ -8,14 +8,14 @@ export default <CommandInterface<CommandArgs>>{
   description: "Get info of team apps",
 
   async run(core, _args) {
-    const spinner = core.print.spin("Fetching user info...");
+    const spinner = core.print.spin("Fetching team info...");
 
     const response = await core.api.get<RESTGetApiTeamResult>(Routes.team());
 
     spinner.stop();
 
     if (response.apps) {
-      core.print.table(response.apps, ["apps", "customdomains", "subdomains"]);
+      core.print.table(response.apps, ["perms"]);
     } else {
       core.print.apiResponse(response);
     }
