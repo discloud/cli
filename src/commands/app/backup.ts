@@ -14,7 +14,7 @@ interface CommandArgs {
 export default <CommandInterface<CommandArgs>>{
   name: "backup [app] [path]",
   description: "Get backup of your app code from Discloud",
-  aliases: "c",
+  aliases: "bkp",
 
   requireAuth: true,
 
