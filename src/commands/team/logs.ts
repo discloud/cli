@@ -41,7 +41,7 @@ export default <CommandInterface<CommandArgs>>{
     const response = await core.api.get<
       | RESTGetApiAppLogResult
       | RESTGetApiAppAllLogResult
-    >(Routes.appLogs(args.app));
+    >(Routes.teamLogs(args.app));
 
     if (!response.apps) return core.print.apiResponse(response);
 
