@@ -28,17 +28,15 @@ export default <CommandInterface<CommandArgs>>{
   },
 
   async run(core, args) {
-    const appId = args.app;
-
     const spinner = core.print.spin("Zipping files...");
 
     const buffer = await core.fs.execZip(args.glob, core.workspaceFolder);
 
     const file = await resolveFile(buffer);
 
-    spinner.text = "Uploading...";
+    spinner.text = "Commiting...";
 
-    const response = await core.api.post<RESTPostApiUploadResult>(Routes.appCommit(appId), { files: [file] });
+    const response = await core.api.post<RESTPostApiUploadResult>(Routes.appCommit(args.app), { files: [file] });
 
     core.print.apiResponse(response);
   },

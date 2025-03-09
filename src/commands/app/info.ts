@@ -20,18 +20,16 @@ export default <CommandInterface<CommandArgs>>{
   },
 
   async run(core, args) {
-    core.print.spin(`Fetching app${args.app === "all" ? "s" : ""}...`);
+    core.print.spin(`Fetching ${args.app}...`);
 
     const response = await core.api.get<
       | RESTGetApiAppResult
       | RESTGetApiAppAllResult
     >(Routes.app(args.app));
 
-    if (response.apps) {
-      const apps = Array.isArray(response.apps) ? response.apps : [response.apps];
-      core.print.table(apps, ["autoDeployGit", "avatarURL", "mainFile", "mods", "name", "type"]);
-    } else {
-      core.print.apiResponse(response);
-    }
+    if (!response.apps) return core.print.apiResponse(response);
+
+    const apps = Array.isArray(response.apps) ? response.apps : [response.apps];
+    core.print.table(apps, ["autoDeployGit", "avatarURL", "mainFile", "mods", "name", "type"]);
   },
 };

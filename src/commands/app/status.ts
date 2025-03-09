@@ -27,11 +27,9 @@ export default <CommandInterface<CommandArgs>>{
       | RESTGetApiAppAllStatusResult
     >(Routes.appStatus(args.app));
 
-    if (response.apps) {
-      const apps = Array.isArray(response.apps) ? response.apps : [response.apps];
-      core.print.table(apps, ["netIO"]);
-    } else {
-      core.print.apiResponse(response);
-    }
+    if (!response.apps) return core.print.apiResponse(response);
+
+    const apps = Array.isArray(response.apps) ? response.apps : [response.apps];
+    core.print.table(apps, ["netIO"]);
   },
 };

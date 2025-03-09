@@ -36,7 +36,7 @@ export default <CommandInterface<CommandArgs>>{
   },
 
   async run(core, args) {
-    const apinner = core.print.spin("Fetching logs...");
+    const apinner = core.print.spin(`Fetching ${args.app} logs...`);
 
     const response = await core.api.get<
       | RESTGetApiAppLogResult
@@ -45,7 +45,7 @@ export default <CommandInterface<CommandArgs>>{
 
     if (!response.apps) return core.print.apiResponse(response);
 
-    apinner.text = "Saving logs...";
+    apinner.text = `Saving ${args.app} logs...`;
 
     const table = [];
 

@@ -14,10 +14,8 @@ export default <CommandInterface<CommandArgs>>{
 
     const response = await core.api.get<RESTGetApiUserResult>(Routes.user());
 
-    if (response.user) {
-      core.print.table([response.user], ["apps", "customdomains", "subdomains"]);
-    } else {
-      core.print.apiResponse(response);
-    }
+    if (!response.user) return core.print.apiResponse(response);
+
+    core.print.table([response.user], ["apps", "customdomains", "subdomains"]);
   },
 };

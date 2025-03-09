@@ -14,10 +14,8 @@ export default <CommandInterface<CommandArgs>>{
 
     const response = await core.api.get<RESTGetApiTeamResult>(Routes.team());
 
-    if (response.apps) {
-      core.print.table(response.apps, ["perms"]);
-    } else {
-      core.print.apiResponse(response);
-    }
+    if (!response.apps) return core.print.apiResponse(response);
+
+    core.print.table(response.apps, ["perms"]);
   },
 };

@@ -37,7 +37,7 @@ export default <CommandInterface<CommandArgs>>{
   },
 
   async run(core, args) {
-    const spinner = core.print.spin(`Fetching your app${args.app === "all" ? "s" : ""} backup...`);
+    const spinner = core.print.spin(`Fetching ${args.app} backup...`);
 
     const response = await core.api.get<
       | RESTGetApiAppBackupResult
