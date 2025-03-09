@@ -7,6 +7,8 @@ export default <CommandInterface<CommandArgs>>{
   name: "info",
   description: "Get info of team apps",
 
+  requireAuth: true,
+
   async run(core, _args) {
     const spinner = core.print.spin("Fetching team info...");
 
