@@ -36,7 +36,7 @@ export default <CommandInterface<CommandArgs>>{
 
     spinner.text = "Commiting...";
 
-    const response = await core.api.put<RESTPutApiAppCommitResult>(Routes.appCommit(args.app), { files: [file] });
+    const response = await core.api.put<RESTPutApiAppCommitResult>(Routes.teamCommit(args.app), { files: [file] });
 
     core.print.apiResponse(response);
   },
