@@ -1,9 +1,8 @@
 import { type RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
 import { resolveFile } from "@discloudapp/util";
-import { type CommandInterface } from "../interfaces/command";
+import { type CommandInterface } from "../../interfaces/command";
 
 interface CommandArgs {
-  _: string[]
   app: string
   glob: string[]
 }

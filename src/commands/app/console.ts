@@ -1,11 +1,10 @@
 import { type RESTPutApiAppConsoleResult, Routes } from "@discloudapp/api-types/v2";
-import { type CommandInterface } from "../interfaces/command";
-import { promptAppConsoleCommand } from "../prompts/discloud/api";
-import { DiscloudAPIError } from "../services/discloud/errors";
-import { tokenIsDiscloudJwt } from "../services/discloud/utils";
+import { type CommandInterface } from "../../interfaces/command";
+import { promptAppConsoleCommand } from "../../prompts/discloud/api";
+import { DiscloudAPIError } from "../../services/discloud/errors";
+import { tokenIsDiscloudJwt } from "../../services/discloud/utils";
 
 interface CommandArgs {
-  _: string[]
   app: string
 }
 
@@ -76,6 +75,8 @@ export default <CommandInterface<CommandArgs>>{
               core.print.error("[Discloud API: %o] %s", error.code, error.message);
               break;
           }
+
+          continue;
         }
 
         return core.print.error(error);

@@ -1,4 +1,5 @@
 import { type RESTApiBaseResult } from "@discloudapp/api-types/v2";
+import Table from "easy-table";
 import ora from "ora";
 import type Core from "../../core";
 import { type PrintInterface } from "../../interfaces/print";
@@ -52,8 +53,35 @@ export default class ConsolePrint implements PrintInterface {
     console.log("[success]", first, ...args);
   }
 
+  table<T>(objOrArray: T, excludeKeys?: any[]) {
+    resolveTableObj(objOrArray, excludeKeys);
+
+    Table.log(objOrArray);
+  }
+
   warn(first: any, ...args: any): void {
     if (typeof first === "string") return console.warn(`[warn] ${first}`, ...args);
     console.warn("[warn]", first, ...args);
+  }
+}
+
+function resolveTableObj(objOrArray: any, excludeKeys: string[] = []) {
+  if (Array.isArray(objOrArray)) {
+    for (let i = 0; i < objOrArray.length; i++) {
+      resolveTableObj(objOrArray[i], excludeKeys);
+    }
+  } else if (typeof objOrArray === "object" && objOrArray !== null) {
+    if (excludeKeys?.length) {
+      for (let j = 0; j < excludeKeys.length; j++) {
+        Reflect.deleteProperty(objOrArray, excludeKeys[j]);
+      }
+    }
+
+    const keys = Object.keys(objOrArray);
+
+    for (let j = 0; j < keys.length; j++) {
+      const key = keys[j] as keyof typeof objOrArray;
+      if (typeof objOrArray[key] === "string") objOrArray[key].replace(/[\r\n]+/g, "");
+    }
   }
 }

@@ -1,9 +1,6 @@
 import { type AppLanguages, type AppVersion } from "@discloudapp/api-types/v2";
 import { homedir } from "os";
-import { extname, join } from "path";
-
-export const FILE_EXT = extname(__filename);
-export const MODULES_EXTENSIONS = new Set([FILE_EXT, ".js", ".cjs", ".mjs"]);
+import { join } from "path";
 
 export const IGNORE_FILENAME = ".discloudignore";
 

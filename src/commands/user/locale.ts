@@ -1,6 +1,6 @@
 import { type RESTPutApiLocaleResult, Routes } from "@discloudapp/api-types/v2";
-import { type CommandInterface } from "../interfaces/command";
-import { promptUserLocale } from "../prompts/discloud/api";
+import { type CommandInterface } from "../../interfaces/command";
+import { promptUserLocale } from "../../prompts/discloud/api";
 
 interface CommandArgs { }
 
