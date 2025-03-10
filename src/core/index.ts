@@ -61,10 +61,22 @@ export default class Core {
     return locale();
   }
 
-  async run() {
+  #loaded!: boolean;
+  #loading!: boolean;
+  async load() {
+    if (this.#loaded || this.#loading) return;
+    this.#loading = true;
+
     const commandsPath = joinWithBuildRoot("commands");
 
     await this.builder.loadCommands(commandsPath);
+
+    this.#loading = false;
+    this.#loaded = true;
+  }
+
+  async run() {
+    if (!this.#loaded && !this.#loading) await this.load();
 
     await this.builder.run();
   }

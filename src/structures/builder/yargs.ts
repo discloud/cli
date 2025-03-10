@@ -77,6 +77,8 @@ export default class YargsBuilder implements BuilderInterface {
         return yargs;
       },
       handler: (args) => {
+        if (typeof command.run !== "function") return this.yargs.showHelp();
+
         const commandName = args._.reduce<string[]>((acc, cur) => {
           cur = `${cur}`;
 
