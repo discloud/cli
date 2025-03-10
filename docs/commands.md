@@ -1,29 +1,48 @@
 # Commands
 
-- [app:apt](./commands/app-apt.md) - Install or uninstall apt packages for you application.
-- [apps:team](./commands/apps-team.md) - Get team information of your applications.
-- [apps](./commands/apps.md) - Get information of your applications.
-- [backups](./commands/backups.md) - Make backup from your applications in Discloud.
-- [commit](./commands/commit.md) - Commit one app or site to Discloud.
-- [delete](./commands/delete.md) - Delete one or all of your apps on Discloud.
-- [init](./commands/init.md) - Init discloud.config file.
-- [locale](./commands/locale.md) - Set your locale.
-- [login](./commands/login.md) - Login to Discloud API.
-- [logs](./commands/logs.md) - View the logs from application in Discloud.
-- [ram](./commands/ram.md) - Set amount of ram for your app.
-- [restart](./commands/restart.md) - Restart one or all of your apps on Discloud.
-- [start](./commands/start.md) - Start one or all of your apps on Discloud.
-- [status](./commands/status.md) - View status information of your applications.
-- [stop](./commands/stop.md) - Stop one or all of your apps on Discloud.
-- [team:backups](./commands/team-backups.md) - Make backup from your team applications in Discloud.
-- [team:commit](./commands/team-commit.md) - Commit one app for your team.
-- [team:logs](./commands/team-logs.md) - View the logs from team application in Discloud.
-- [team:ram](./commands/team-ram.md) - Set amount of ram for an app of your team.
-- [team:restart](./commands/team-restart.md) - Restart one or all of your apps on Discloud.
-- [team:start](./commands/team-start.md) - Start one or all of your apps on Discloud.
-- [team:status](./commands/team-status.md) - View status information of your team applications.
-- [team:stop](./commands/team-stop.md) - Stop one or all of your apps on Discloud.
-- [team](./commands/team.md) - View team information.
-- [terminal](./commands/terminal.md) - Use the application terminal.
-- [upload](./commands/upload.md) - Upload one app or site to Discloud.
-- [userinfo](./commands/userinfo.md) - View your Discloud user information.
+```sh
+discloud --help
+
+discloud [command]
+
+discloud app <command>                         Manage your apps
+  discloud app apt <command>                   Manager your apps APT
+    discloud app apt install <app> [apt...]    Install APT on your app                          [aliases: i]
+    discloud app apt uninstall <app> [apt...]  Uninstall APT from your app                      [aliases: u]
+  discloud app backup [app] [path]             Get backup of your app code from Discloud        [aliases: bkp]
+  discloud app commit <app> [glob..]           Commit one app or site to Discloud               [aliases: c]
+  discloud app console <app>                   Use the app terminal                             [aliases: terminal]
+  discloud app delete <app>                    Delete one or all of your apps on Discloud       
+  discloud app info [app]                      Get information of your apps                     
+  discloud app logs [app] [path]               View the logs from application in Discloud       
+  discloud app mod <command>                   Manager your app team                            
+  discloud app mod add <app> <mod> [perms...]  Add MOD to your app                              
+  discloud app mod delete <app> <mod>          Delete MOD of your app                           
+  discloud app mod edit <app> <mod> [perms...] Edit MOD perms of your app                       
+  discloud app mod info <app>                  Get MOD info of your app                         
+  discloud app ram <app> <amount>              Set amount of ram for your app                   
+  discloud app restart [app]                   Restart one or all of your team apps on Discloud 
+  discloud app start [app]                     Start one or all of your apps on Discloud        
+  discloud app status [app]                    Get status of your apps                          
+  discloud app stop [app]                      Stop one or all of your apps on Discloud         
+  discloud app upload [glob..]                 Upload one app or site to Discloud               [aliases: up]
+discloud init                                  Init discloud.config file                        
+discloud login                                 Login on Discloud API                            
+discloud team <command>                        Manage team apps                                 
+  discloud team backup [app] [path]            Get backup of your team app code from Discloud   [aliases: bkp]
+  discloud team commit <app> [glob..]          Commit one app or site to Discloud               [aliases: c]
+  discloud team info                           Get info of your team apps                       
+  discloud team logs [app] [path]              View the logs from your tean app in Discloud     
+  discloud team ram <app> <amount>             Set amount of ram for your app                   
+  discloud team restart [app]                  Restart one or all of your apps on Discloud      
+  discloud team start [app]                    Start one or all of your team apps on Discloud   
+  discloud team stop [app]                     Stop one or all of your team apps on Discloud    
+discloud user <command>                        Manage your profile                              
+  discloud user info                           Get your information                             
+  discloud user locale                         Set your locale                                  
+discloud zip [glob..]                          Make zip                                         
+
+Options:
+  -h, --help                                   Show help                                        [boolean]
+  -v, --version                                Show version number                              [boolean]
+```
