@@ -23,7 +23,7 @@ export default class YargsBuilder implements BuilderInterface {
       .help()
       .locale("en") // TODO: multi-locale
       .middleware((args) => {
-        if (!args._.length) this.yargs.showHelp();
+        if (!args._.length && Object.keys(args).length < 3) this.yargs.showHelp();
       })
       .version();
   }
@@ -34,7 +34,7 @@ export default class YargsBuilder implements BuilderInterface {
     } catch (error) {
       if (error instanceof DiscloudAPIError) {
         this.core.print.error(error.toString());
-        this.yargs.showVersion((message) => console.log("discloud -v v%s\nnode -v %s", message, process.version));
+        this.yargs.showVersion((v) => this.core.print.log("discloud -v v%s\nnode -v %s", v, process.version));
         this.yargs.exit(1, error);
       }
 
@@ -47,7 +47,7 @@ export default class YargsBuilder implements BuilderInterface {
         }
 
         this.core.print.error(error);
-        this.yargs.showVersion((message) => console.log("discloud -v v%s\nnode -v %s", message, process.version));
+        this.yargs.showVersion((v) => this.core.print.log("discloud -v v%s\nnode -v %s", v, process.version));
         this.yargs.exit(1, error);
       } else if (error !== undefined && error !== null) {
         this.core.print.error(error);
