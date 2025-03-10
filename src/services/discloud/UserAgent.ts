@@ -1,17 +1,18 @@
 import { arch, platform, release, type } from "os";
 
 export class UserAgent {
-  constructor(version: string, prefix?: string) {
+  constructor(readonly version: string, readonly prefix?: string) {
     prefix ??= "DiscloudCLI";
-
-    const osRelease = release().split?.(".").slice(0, 2).join(".") ?? release();
-
-    this.#userAgent = `${prefix}/${version} (${type()} ${osRelease}; ${platform()}; ${arch()})`;
   }
 
   #userAgent!: string;
 
+  #getUserAgent() {
+    const osRelease = release().split?.(".").slice(0, 2).join(".") ?? release();
+    return `${this.prefix}/${this.version} (${type()} ${osRelease}; ${platform()}; ${arch()})`;
+  }
+
   toString() {
-    return this.#userAgent;
+    return this.#userAgent ??= this.#getUserAgent();
   }
 }
