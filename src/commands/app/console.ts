@@ -13,8 +13,6 @@ export default <CommandInterface<CommandArgs>>{
   description: "Use the app terminal",
   aliases: "terminal",
 
-  requireAuth: true,
-
   options: {
     app: {
       type: "string",
