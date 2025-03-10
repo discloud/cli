@@ -52,8 +52,9 @@ export default class Core {
     return this.#cwd ??= process.cwd();
   }
 
+  #workspaceName!: string;
   get workspaceName() {
-    return basename(this.workspaceFolder);
+    return this.#workspaceName ??= basename(this.workspaceFolder);
   }
 
   get locale(): string {
