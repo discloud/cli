@@ -6,6 +6,7 @@ import { type BuilderInterface } from "../../interfaces/builder";
 import { type CommandInterface } from "../../interfaces/command";
 import { DiscloudAPIError } from "../../services/discloud/errors";
 import { ERRORS_TO_IGNORE, ERRORS_TO_LOG } from "../../utils/constants";
+
 export default class YargsBuilder implements BuilderInterface {
   constructor(
     readonly core: Core,
