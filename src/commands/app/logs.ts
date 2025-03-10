@@ -45,16 +45,18 @@ export default <CommandInterface<CommandArgs>>{
 
     if (!response.apps) return core.print.apiResponse(response);
 
-    apinner.text = `Saving ${args.app} logs...`;
-
     const table = [];
 
     if (Array.isArray(response.apps)) {
+      apinner.text = `Saving ${response.apps.length} logs...`;
+
       for (let i = 0; i < response.apps.length; i++) {
         const line = await saveLog(response.apps[i], args.path, args.overwrite);
         table.push(line);
       }
     } else {
+      apinner.text = "Saving logs...";
+
       const line = await saveLog(response.apps, args.path, args.overwrite);
       table.push(line);
     }

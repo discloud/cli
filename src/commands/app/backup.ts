@@ -58,6 +58,8 @@ export default <CommandInterface<CommandArgs>>{
           if (responseStatus === 429) break;
         }
       } else {
+        spinner.text = "Saving backup...";
+
         await getBackup(response.backups, args.path);
       }
     }

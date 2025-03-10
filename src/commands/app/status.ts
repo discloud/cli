@@ -20,7 +20,7 @@ export default <CommandInterface<CommandArgs>>{
   },
 
   async run(core, args) {
-    core.print.spin(`Fetching your app${args.app === "all" ? "s" : ""} status...`);
+    core.print.spin(`Fetching ${args.app} status...`);
 
     const response = await core.api.get<
       | RESTGetApiAppStatusResult

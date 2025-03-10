@@ -13,6 +13,8 @@ export default <CommandInterface<CommandArgs>>{
   async run(core, _args) {
     const locale = await promptUserLocale();
 
+    core.print.spin("Changing user locale...");
+
     const response = await core.api.put<RESTPutApiLocaleResult>(Routes.locale(locale));
 
     core.print.apiResponse(response);

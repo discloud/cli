@@ -10,6 +10,8 @@ export default <CommandInterface<CommandArgs>>{
   async run(core, _args) {
     const token = await promptApiToken();
 
+    core.print.spin();
+
     const isValidToken = await core.api.validateToken(token);
 
     if (isValidToken) {
