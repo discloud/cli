@@ -158,8 +158,9 @@ export default class REST implements ApiInterface {
         if (typeof request.body === "string")
           try { request.body = JSON.parse(request.body); } catch { }
 
-        for (const key in request.body ?? {})
-          formData.append(key, request.body![key as keyof InternalRequestData["body"]]);
+        if (request.body !== null)
+          for (const key in request.body)
+            formData.append(key, request.body[key as keyof InternalRequestData["body"]]);
       } else {
         headers.set("Content-Type", "application/json");
 
