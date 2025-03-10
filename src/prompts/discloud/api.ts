@@ -8,6 +8,7 @@ export async function promptApiToken(): Promise<string> {
     type: "password",
     name: "answer",
     message: "Your Discloud token:",
+    mask: true,
     validate: tokenIsDiscloudJwt,
   }));
 }
