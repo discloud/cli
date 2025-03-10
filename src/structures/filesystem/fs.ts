@@ -17,7 +17,7 @@ export default class FileSystem implements FileSystemInterface {
     return relative(cwd, join(cwd, path));
   }
 
-  async execZip(glob: string | string[], cwd: string = process.cwd()) {
+  async zip(glob: string | string[], cwd: string = process.cwd()) {
     if (Array.isArray(glob)) glob = glob.join(" ");
 
     const encoding = "base64";

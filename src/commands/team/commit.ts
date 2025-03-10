@@ -30,7 +30,7 @@ export default <CommandInterface<CommandArgs>>{
   async run(core, args) {
     const spinner = core.print.spin("Zipping files...");
 
-    const buffer = await core.fs.execZip(args.glob, core.workspaceFolder);
+    const buffer = await core.fs.zip(args.glob, core.workspaceFolder);
 
     const file = await resolveFile(buffer);
 

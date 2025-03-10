@@ -19,7 +19,7 @@ export interface FileSystemInterface {
   /**
    * @param cwd default `process.cwd()`
    */
-  execZip(glob: string | string[], cwd?: string): Promise<Buffer>
+  zip(glob: string | string[], cwd?: string): Promise<Buffer>
 
   /**
    * @param cwd default `process.cwd()`
