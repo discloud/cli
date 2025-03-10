@@ -7,8 +7,7 @@
   },
   "scripts": {
     "watch": "tsc -watch",
-    "build": "tsc && npm run copy-templates",
-    "copy-templates": "npx copyfiles -f ./src/templates/* ./build/templates",
+    "build": "tsc",
     "prepublish": "npm run build",
     "test": "npm run test:ts",
     "test:ts": "tsc --noEmit"
