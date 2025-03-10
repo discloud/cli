@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { dirname } from "path";
 import StoreError from "../errors/store";
-import { type Store } from "../interfaces/store";
+import { type DefaultNestChar, type NestedStoreData, type NestedStoreKeys, type Store } from "../interfaces/store";
 
 export type Encoding = Exclude<BufferEncoding, "ucs-2" | "ucs2" | "utf16le">;
 
@@ -12,6 +12,8 @@ export interface Options {
 const defaultOptions: Options = {
   encoding: "utf8",
 };
+
+const defaultNestChar: DefaultNestChar = ".";
 
 export default class FsJsonStore<T extends Record<any, any>> implements Store<T> {
   readonly #data: T;
@@ -37,6 +39,35 @@ export default class FsJsonStore<T extends Record<any, any>> implements Store<T>
       try { return JSON.parse(Buffer.from(content, encoding).toString(this.#decoding)); } catch { }
 
     return <T>{};
+  }
+
+  #getNestedData(key: string): [any, string]
+  #getNestedData(key: any) {
+    let data = this.#data as any;
+
+    const keys = key.split(defaultNestChar);
+    const lastKey = keys.splice(-1)[0];
+
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      if (!Reflect.has(data, key)) data[key] = isNaN(key as any) ? {} : [];
+      data = data[key];
+    }
+
+    return [data, lastKey];
+  }
+
+  #setNestedData(key: string, value: unknown) {
+    let data = this.#data as Record<string, any>;
+
+    const keys = key.split(defaultNestChar);
+    const lastKey = keys.splice(-1)[0];
+
+    for (let i = 0; i < keys.length; i++) {
+      data = data[keys[i]];
+    }
+
+    data[lastKey] = value;
   }
 
   #readFile(path = this.path) {
@@ -67,7 +98,8 @@ export default class FsJsonStore<T extends Record<any, any>> implements Store<T>
     return this;
   }
 
-  delete<K extends keyof T>(key: K) {
+  delete<K extends NestedStoreKeys<T>>(key: K): void
+  delete(key: string) {
     Reflect.deleteProperty(this.#data, key);
 
     this.update();
@@ -75,15 +107,17 @@ export default class FsJsonStore<T extends Record<any, any>> implements Store<T>
     return this;
   }
 
-  get<V extends T[K], K extends keyof T = keyof T>(key: K): V | void
-  get<V extends T[K], K extends keyof T = keyof T>(key: K, required: true): V
+  get<K extends NestedStoreKeys<T>, V extends NestedStoreData<T, K>>(key: K): V | void
+  get<K extends NestedStoreKeys<T>, V extends NestedStoreData<T, K>>(key: K, required: true): V
   get(key: string, required?: boolean) {
-    if (required && !Reflect.has(this.#data, key)) throw new StoreError(`${key} is required`);
-    return this.#data[key];
+    const [data, lastKey] = this.#getNestedData(key);
+    if (required && !Reflect.has(data, lastKey)) throw new StoreError(`${key} is required, but is missing`);
+    return data[lastKey];
   }
 
-  set<K extends keyof T, V extends T[K]>(key: K, value: V) {
-    this.#data[key] = value;
+  set<K extends NestedStoreKeys<T>, V extends NestedStoreData<T, K>>(key: K, value: V): this
+  set(key: string, value: unknown) {
+    this.#setNestedData(key, value);
 
     this.update(this.#data);
 
