@@ -10,6 +10,7 @@ interface CommandArgs {
   "engine-version"?: string
   main?: string
   name?: string
+  overwrite?: boolean
   ram?: number
   start?: string
   type?: string
@@ -48,6 +49,11 @@ export default <CommandInterface<CommandArgs>>{
       type: "string",
       description: "App name",
     },
+    overwrite: {
+      alias: "o",
+      type: "boolean",
+      description: "Overwrite file",
+    },
     ram: {
       alias: "r",
       type: "number",
@@ -74,7 +80,7 @@ export default <CommandInterface<CommandArgs>>{
   },
 
   async run(core, args) {
-    if (existsSync(CONFIG_FILENAME))
+    if (!args.overwrite && existsSync(CONFIG_FILENAME))
       return core.print.error("%s file already exists!", CONFIG_FILENAME);
 
     let minRam = args.type === "site" ? 512 : 100;
