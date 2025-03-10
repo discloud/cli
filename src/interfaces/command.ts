@@ -11,3 +11,16 @@ export interface CommandInterface<Args = any> {
   options?: Record<keyof Args, Options>
   run(core: Core, args: Args): Promise<void>
 }
+
+export interface CommandOptions {
+  alias?: string | readonly string[]
+  coerce?: (arg: any) => any
+  default?: any
+  description?: string
+  type:
+  | "array"
+  | "boolean"
+  | "count"
+  | "number"
+  | "string"
+}
