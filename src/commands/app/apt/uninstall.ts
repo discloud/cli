@@ -11,6 +11,8 @@ export default <CommandInterface<CommandArgs>>{
   description: "Uninstall APT from your app",
   aliases: "u",
 
+  requireAuth: true,
+
   options: {
     app: {
       type: "string",

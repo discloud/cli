@@ -11,6 +11,8 @@ export default <CommandInterface<CommandArgs>>{
   description: "Install APT on your app",
   aliases: "i",
 
+  requireAuth: true,
+
   options: {
     app: {
       type: "string",
