@@ -2,7 +2,7 @@ import { type RESTGetApiUserResult, RouteBases, Routes } from "@discloudapp/api-
 import type Core from "../../core";
 import { type ApiInterface } from "../../interfaces/api";
 import { RequestMethod } from "./enum";
-import { DiscloudAPIError, RateLimitError } from "./errors";
+import { DiscloudAPIError } from "./errors";
 import RateLimit from "./RateLimit";
 import { type InternalRequestData, type RequestData, type RequestOptions, type RESTOptions, type RouteLike } from "./types";
 import { tokenIsDiscloudJwt } from "./utils";
@@ -25,7 +25,9 @@ export default class REST implements ApiInterface {
   }
 
   get isLimited() {
-    return this.rateLimiter.isLimited;
+    const token = this.core.config.get("token");
+    if (token) try { this.rateLimiter.verify(token); } catch { return true; }
+    return false;
   }
 
   get hasToken() {
@@ -33,7 +35,8 @@ export default class REST implements ApiInterface {
   }
 
   get resetDateString() {
-    return this.rateLimiter.limited;
+    const token = this.core.config.get("token");
+    return token && this.rateLimiter.getResetDateString(token);
   }
 
   async validateToken(token: string): Promise<boolean> {
@@ -75,16 +78,13 @@ export default class REST implements ApiInterface {
   async request(url: URL, config: RequestOptions = {}) {
     const pathname = url.pathname;
 
-    const requestToken = this.#getHeaderValue(config.headers, "api-token");
+    const requestToken = this.#getHeaderValue(config.headers, "api-token") as string;
 
-    const isSavedToken = this.core.config.get("token") === requestToken;
-
-    if (isSavedToken && this.rateLimiter.isLimited)
-      throw new RateLimitError();
+    if (requestToken) this.rateLimiter.verify(requestToken);
 
     const response = await fetch(url, config);
 
-    if (isSavedToken) this.#handleResponseHeaders(response.headers);
+    if (requestToken) this.#handleResponseHeaders(response.headers, requestToken);
 
     const responseBody = await this.#resolveResponseBody(response);
 
@@ -193,7 +193,7 @@ export default class REST implements ApiInterface {
     return response.arrayBuffer();
   }
 
-  #handleResponseHeaders(headers: Headers) {
-    this.rateLimiter.limit(headers);
+  #handleResponseHeaders(headers: Headers, context: string) {
+    this.rateLimiter.limit(headers, context);
   }
 }

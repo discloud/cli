@@ -1,4 +1,4 @@
 export interface ConfigData {
-  limited: number
+  limited: Record<string, number>
   token: string
 }

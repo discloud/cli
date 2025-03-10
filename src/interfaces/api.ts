@@ -3,7 +3,7 @@ import { type RequestData, type RouteLike } from "../services/discloud/types";
 export interface ApiInterface {
   get isLimited(): boolean
   get hasToken(): boolean
-  get resetDateString(): string
+  get resetDateString(): string | void
 
   validateToken(token: string): Promise<boolean>
 

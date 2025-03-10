@@ -1,20 +1,28 @@
 import type Core from "../../core";
+import { RateLimitError } from "./errors";
 
 export default class RateLimit {
   constructor(
     readonly core: Core,
   ) { }
 
-  get limited() {
+  #encoding: BufferEncoding = "base64";
+
+  #encode(context: string) {
+    return Buffer.from(context).toString(this.#encoding);
+  }
+
+  getResetDateString(context: string) {
     return Intl.DateTimeFormat([this.core.locale], { dateStyle: "short", timeStyle: "medium" })
-      .format(new Date(this.core.config.get("limited", true)));
+      .format(new Date(this.core.config.get(`limited.${this.#encode(context)}`, true)));
   }
 
-  get isLimited() {
-    return Date.now() < (this.core.config.get("limited") ?? 0);
+  verify(context: string) {
+    if (Date.now() < (this.core.config.get(`limited.${this.#encode(context)}`) ?? 0))
+      throw new RateLimitError();
   }
 
-  limit(headers: Headers) {
+  limit(headers: Headers, context: string) {
     let remaining: string | number | null = headers.get("ratelimit-remaining");
     let reset: string | number | null = headers.get("ratelimit-reset");
 
@@ -30,6 +38,6 @@ export default class RateLimit {
 
     const resetTimestamp = reset * 1000 + date.getTime();
 
-    this.core.config.set("limited", resetTimestamp);
+    this.core.config.set(`limited.${this.#encode(context)}`, resetTimestamp);
   }
 }
