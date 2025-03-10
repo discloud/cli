@@ -5,6 +5,8 @@
 **/tsconfig.json
 **/.env
 node_modules
+/.github
+/.vscode
 /assets
 /discloud
 /test*.[j|t]s
