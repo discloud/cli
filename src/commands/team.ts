@@ -1,35 +1,8 @@
-import { RESTGetApiTeamResult, Routes } from "@discloudapp/api-types/v2";
-import type { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
-import { apidiscloud, config, makeTable, RateLimit } from "../util";
+import { type CommandInterface } from "../interfaces/command";
 
-export default <GluegunCommand>{
-  name: "team",
-  description: "View team information.",
+interface CommandArgs { }
 
-  async run(toolbox: GluegunToolbox) {
-    const { print } = toolbox;
-
-    if (!config.data.token)
-      return print.error("Please use login command before using this command.");
-
-    if (RateLimit.isLimited)
-      return print.error(`Rate limited until: ${RateLimit.limited}`);
-
-    const spin = print.spin({
-      text: print.colors.cyan("Fetching apps..."),
-    });
-
-    const apiRes = await apidiscloud.get<RESTGetApiTeamResult>(Routes.team());
-
-    new RateLimit(apiRes.headers);
-
-    print.spinApiRes(apiRes, spin, { exitOnError: true });
-
-    if (!apiRes.data) return;
-
-    if ("apps" in apiRes.data)
-      print.table(makeTable(apiRes.data.apps), {
-        format: "lean",
-      });
-  },
+export default <CommandInterface<CommandArgs>>{
+  name: "team [command]",
+  description: "Manage team apps",
 };

@@ -1,121 +1,121 @@
-import { AppLanguages, APT } from "@discloudapp/api-types/v2";
-import type { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
-import { app_version } from "../util/constants";
+import { type DiscloudConfigScopes } from "@discloudapp/api-types/v2";
+import { existsSync } from "fs";
+import { type CommandInterface } from "../interfaces/command";
+import { promptAppApt, promptAppAutoRestart, promptAppMain, promptAppRam, promptAppType, promptAppVersion } from "../prompts/discloud/config";
+import { CONFIG_FILENAME } from "../services/discloud/constants";
 
-export default <GluegunCommand>{
+interface CommandArgs {
+  autorestart?: boolean
+  build?: string
+  "engine-version"?: string
+  main?: string
+  name?: string
+  ram?: number
+  start?: string
+  type?: string
+  yes?: boolean
+}
+
+export default <CommandInterface<CommandArgs>>{
   name: "init",
-  description: "Init discloud.config file.",
+  description: `Init ${CONFIG_FILENAME} file`,
 
-  async run(toolbox: GluegunToolbox) {
-    const { filesystem, parameters, print, prompt, template } = toolbox;
+  options: {
+    autorestart: {
+      alias: "ar",
+      type: "boolean",
+      defaultDescription: "false",
+      description: "Auto restart switch",
+    },
+    build: {
+      alias: "b",
+      type: "string",
+      description: "App build",
+    },
+    "engine-version": {
+      alias: "ev",
+      type: "string",
+      defaultDescription: "latest",
+      description: "App engine version",
+    },
+    main: {
+      alias: "m",
+      type: "string",
+      description: "App main file",
+    },
+    name: {
+      alias: "n",
+      type: "string",
+      description: "App name",
+    },
+    ram: {
+      alias: "r",
+      type: "number",
+      defaultDescription: "100",
+      description: "App RAM (min: 100)",
+    },
+    start: {
+      alias: "s",
+      type: "string",
+      description: "App start",
+    },
+    type: {
+      alias: "t",
+      choices: ["bot", "site"],
+      type: "string",
+      defaultDescription: "bot",
+      description: "App type",
+    },
+    yes: {
+      alias: "y",
+      type: "boolean",
+      description: "Skip config prompts",
+    },
+  },
 
-    if (filesystem.exists("discloud.config"))
-      return print.error("discloud.config file already exists!");
+  async run(core, args) {
+    if (existsSync(CONFIG_FILENAME))
+      return core.print.error("%s file already exists!", CONFIG_FILENAME);
 
-    if (parameters.options.y)
-      return template.generate({
-        template: "discloud.config.bot.ejs",
-        target: "discloud.config",
-        props: { appType: "bot", appAutoRestart: "false", appRam: 100, appVersion: "latest" },
-      });
+    let minRam = args.type === "site" ? 512 : 100;
 
-    const { app_apt, appMain, appType, appAutoRestart } = await prompt.ask([
-      {
-        name: "appType",
-        message: "Choose your app type",
-        type: "select",
-        choices: ["bot", "site"],
-      }, {
-        name: "appMain",
-        message: "Input the path of main file",
-        type: "input",
-        required: true,
-      }, {
-        name: "app_apt",
-        message: "Choose apt (use space to select)",
-        type: "multiselect",
-        choices: Object.entries(APT).map(([name, value]) => ({
-          name,
-          hint: value.join(),
-          value: name,
-        })),
-        initial: 6,
-      }, {
-        name: "appAutoRestart",
-        message: "Auto restart?",
-        type: "confirm",
-        initial: false,
-      },
-    ]);
+    const config: Record<DiscloudConfigScopes, unknown> = {
+      APT: void 0,
+      AUTORESTART: args.autorestart,
+      AVATAR: void 0,
+      BUILD: args.build,
+      ID: void 0,
+      MAIN: args.main,
+      NAME: args.name,
+      RAM: args.ram ? Math.min(args.ram, minRam) : null,
+      START: args.start,
+      TYPE: args.type,
+      VERSION: args["engine-version"],
+    };
 
-    /** Sorry, it is because app_apt is typed like string, not array */
-    const appApt = [...app_apt].join();
+    if (args.yes) {
+      config.AUTORESTART ??= false;
+      config.TYPE ??= "bot";
+      config.RAM ??= minRam;
+      config.VERSION ??= "latest";
 
-    const { appVersion } = await prompt.ask({
-      name: "appVersion",
-      message: "Choose the version for your app",
-      type: "select",
-      choices: app_version[<AppLanguages>appMain.split(".").pop()] ?? ["latest"],
-      initial: 0,
-    });
-
-    const minRam = appType === "site" ? 512 : 100;
-    let appRam;
-    do {
-      if (typeof appRam === "number")
-        print.warning(`RAM must to be greater than ${minRam}!`);
-
-      const { app_ram } = await prompt.ask({
-        name: "app_ram",
-        message: "Input the amount of RAM for your application",
-        type: "numeral",
-        initial: minRam,
-        required: true,
-      });
-
-      appRam = parseInt(app_ram);
-    } while (appRam < (minRam));
-
-    let appId;
-    if (appType === "site") {
-      const { app_id } = await prompt.ask({
-        name: "app_id",
-        message: `Input the ${appType === "site" ? "subdomain" : "app id"}`,
-        type: "input",
-      });
-
-      appId = app_id.match(appType === "site" ? /(\w+)(?:\.discloud.*)?/ : /(.+)/)?.[1];
+      return await core.templater.generate(`${CONFIG_FILENAME}.${config.TYPE}`, CONFIG_FILENAME, config);
     }
 
-    let appName;
-    let appAvatar;
-    if (appType === "bot") {
-      const { app_name } = await prompt.ask({
-        name: "app_name",
-        message: "App name",
-        type: "input",
-        required: true,
-      });
-      appName = app_name;
+    if (!config.TYPE) config.TYPE = await promptAppType();
 
-      do {
-        if (appAvatar)
-          print.warning("This must be like URL with extensions JPG, JPEG or PNG.");
+    if (!config.MAIN) config.MAIN = await promptAppMain();
 
-        const { app_avatar } = await prompt.ask({
-          name: "app_avatar",
-          message: "Avatar URL",
-          type: "input",
-        });
+    if (!config.AUTORESTART) config.AUTORESTART = await promptAppAutoRestart();
 
-        appAvatar = app_avatar;
-      } while (appAvatar && !/^(https?:\/\/.+\.(?:jpg|jpeg|png))(?:\?.*)?$/.test(appAvatar));
-    }
+    minRam = config.TYPE === "site" ? 512 : 100;
 
-    template.generate({
-      template: `discloud.config.${appType}.ejs`,
-      target: "discloud.config",
-      props: { appApt, appAvatar, appId, appMain, appName, appRam, appType, appAutoRestart, appVersion },
-    });
+    if (!config.RAM) config.RAM = await promptAppRam(minRam);
+
+    if (!config.APT) config.APT = await promptAppApt().then(v => v.join(","));
+
+    if (!config.VERSION) config.VERSION = await promptAppVersion();
+
+    await core.templater.generate(`${CONFIG_FILENAME}.${config.TYPE}`, CONFIG_FILENAME, config);
   },
 };

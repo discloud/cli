@@ -1,16 +1,18 @@
-import { build } from "@discloudapp/gluegun";
-import { exit } from "node:process";
+import ora from "ora";
+import { dirname } from "path";
+import Core from "./core";
 
-export async function run(argv: string[]) {
-  const cli = build("discloud")
-    .src(__dirname)
-    .plugins("./node_modules", { matching: "discloud-*", hidden: true })
-    .defaultCommand()
-    .help()
-    .version()
-    .create();
+export default async function (argv: string[]) {
+  const spinner = ora().start();
 
-  await cli.run(argv);
+  const core = new Core(argv);
 
-  exit(0);
+  await core.load();
+
+  spinner.stop();
+
+  await core.run();
 }
+
+export const BUILD_ROOT_PATH = __dirname;
+export const ROOT_PATH = dirname(BUILD_ROOT_PATH);

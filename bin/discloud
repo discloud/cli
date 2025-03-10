@@ -1,4 +1,2 @@
 #!/usr/bin/env node
-
-// run the CLI with the current process arguments
-require("../build/index").run(process.argv);
+require("../build").default(process.argv);

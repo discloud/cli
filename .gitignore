@@ -1,10 +1,9 @@
 # ignore average files with this pattern
 **/.ignore.*
-/test*.js
-/test*.ts
-.discloudignore
+/test*.[j|t]s
+/test*.m[j|t]s
 build
-discloud
+/discloud
 discloud.config
 *.zip
 

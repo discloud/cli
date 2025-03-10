@@ -1,34 +1,23 @@
-import { RESTGetApiUserResult, Routes } from "@discloudapp/api-types/v2";
-import type { GluegunCommand, GluegunToolbox } from "@discloudapp/gluegun";
-import { apidiscloud, config, RateLimit } from "../util";
+import { type CommandInterface } from "../interfaces/command";
+import { promptApiToken } from "../prompts/discloud/api";
 
-export default <GluegunCommand>{
+interface CommandArgs { }
+
+export default <CommandInterface<CommandArgs>>{
   name: "login",
-  description: "Login to Discloud API.",
+  description: "Login on Discloud API",
 
-  async run(toolbox: GluegunToolbox) {
-    const { print, prompt } = toolbox;
+  async run(core, _args) {
+    const token = await promptApiToken();
 
-    if (RateLimit.isLimited)
-      return print.error(`Rate limited until: ${RateLimit.limited}`);
+    const isValidToken = await core.api.validateToken(token);
 
-    const { token } = await prompt.ask({
-      name: "token",
-      message: "Your discloud token:",
-      type: "password",
-    });
+    if (isValidToken) {
+      core.config.set("token", token);
 
-    const apiRes = await apidiscloud.get<RESTGetApiUserResult>(Routes.user(), {}, {
-      headers: {
-        "api-token": token,
-      },
-    });
+      return core.print.success("Discloud token successfully validated");
+    }
 
-    new RateLimit(apiRes.headers);
-
-    print.printApiRes(apiRes, { exitOnError: true });
-
-    if (apiRes.data?.status === "ok")
-      config.update({ token });
+    core.print.error("Invalid Discloud token");
   },
 };
