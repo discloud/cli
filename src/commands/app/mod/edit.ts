@@ -1,4 +1,5 @@
 import { type RESTPutApiAppTeamResult, Routes } from "@discloudapp/api-types/v2";
+import { ModPermissionsBF } from "@discloudapp/util";
 import { type CommandInterface } from "../../../interfaces/command";
 
 interface CommandArgs {
@@ -25,6 +26,7 @@ export default <CommandInterface<CommandArgs>>{
     perms: {
       type: "array",
       description: "MOD permissions",
+      choices: ModPermissionsBF.All.toArray(),
     },
   },
 
