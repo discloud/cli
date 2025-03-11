@@ -28,16 +28,19 @@ export default class FileSystem implements FileSystemInterface {
         maxBuffer: MAX_ZIP_BUFFER,
       }, function (error, stdout, _stderr) {
         if (error) return reject(error);
-        resolve(stdout);
+
+        const parts = stdout.split(/[\r\n]+/);
+
+        let result = "";
+        for (let i = 1; i < parts.length; i++) {
+          if (parts[i].length > result.length) result = parts[i];
+        }
+
+        resolve(result);
       });
-    }).then(r => r.split(/[\r\n]+/));
+    });
 
-    let result = "";
-    for (let i = 1; i < response.length; i++) {
-      if (response[i].length > result.length) result = response[i];
-    }
-
-    return Buffer.from(result, encoding);
+    return Buffer.from(response, encoding);
   }
 
   exists(path: string, cwd: string = process.cwd()): boolean {
