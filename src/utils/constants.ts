@@ -2,6 +2,8 @@ import { type AppLanguages, type AppVersion } from "@discloudapp/api-types/v2";
 import { homedir } from "os";
 import { join } from "path";
 
+export const DAY_IN_MILLISECONDS = 86_400_000;
+
 export const IGNORE_FILENAME = ".discloudignore";
 
 export const CLI_CONFIG_DIR = join(homedir(), ".discloud");

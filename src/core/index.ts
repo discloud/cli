@@ -1,4 +1,5 @@
 import { basename } from "path";
+import updateNotifier from "update-notifier";
 import yargs, { locale } from "yargs";
 import { hideBin } from "yargs/helpers";
 import { type ConfigData } from "../@types";
@@ -15,6 +16,7 @@ import YargsBuilder from "../structures/builder/yargs";
 import FileSystem from "../structures/filesystem/fs";
 import ConsolePrint from "../structures/print/console";
 import EjsTemplater from "../structures/templater/ejs";
+import { DAY_IN_MILLISECONDS } from "../utils/constants";
 import { joinWithBuildRoot } from "../utils/path";
 import { getPackageJSON } from "../utils/utils";
 
@@ -28,13 +30,13 @@ export default class Core {
   readonly templater: Templater;
 
   constructor(readonly argv: string[]) {
+    this.packageJSON = getPackageJSON();
+
     this.print = new ConsolePrint(this);
 
     this.fs = new FileSystem();
 
     this.config = new ConfigStore();
-
-    this.packageJSON = getPackageJSON();
 
     const userAgent = new UserAgent(this.packageJSON.version);
 
@@ -77,6 +79,11 @@ export default class Core {
 
   async run() {
     if (!this.#loaded && !this.#loading) await this.load();
+
+    updateNotifier({
+      pkg: this.packageJSON,
+      updateCheckInterval: DAY_IN_MILLISECONDS,
+    }).notify({ defer: false });
 
     await this.builder.run();
   }
