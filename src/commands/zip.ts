@@ -32,7 +32,7 @@ export default <CommandInterface<CommandArgs>>{
 
     const zipper: ZipInterface = new Zip();
 
-    zipper.appendFiles(files, core.workspaceFolder);
+    await zipper.appendFiles(files, core.workspaceFolder);
 
     if (args.encoding)
       return core.print.log(zipper.getBuffer().toString(args.encoding));
