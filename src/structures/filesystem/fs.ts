@@ -6,6 +6,7 @@ import { type } from "os";
 import { join, relative } from "path";
 import { type FileSystemInterface, type FileSystemReadDirWithFileTypesOptions } from "../../interfaces/filesystem";
 import { MAX_ZIP_BUFFER } from "../../services/discloud/constants";
+import { MINUTE_IN_MILLISECONDS } from "../../utils/constants";
 import Ignore from "./ignore";
 
 export default class FileSystem implements FileSystemInterface {
@@ -21,18 +22,24 @@ export default class FileSystem implements FileSystemInterface {
     if (Array.isArray(glob)) glob = glob.join(" ");
 
     const encoding = "base64";
+    const zipCommand = "discloud zip";
 
     const response = await new Promise<string>(function (resolve, reject) {
-      exec(`discloud zip -e=${encoding} -g=${glob ?? "**"}`, {
+      exec(`${zipCommand} -e=${encoding} -g=${glob ?? "**"}`, {
         cwd,
         maxBuffer: MAX_ZIP_BUFFER,
+        timeout: MINUTE_IN_MILLISECONDS,
       }, function (error, stdout, _stderr) {
         if (error) return reject(error);
 
         const parts = stdout.split(/[\r\n]+/);
 
-        let result = "";
-        for (let i = 1; i < parts.length; i++) {
+        let result = "", isSkipped = false;
+        for (let i = 0; i < parts.length; i++) {
+          if (!isSkipped) {
+            if (parts[i].includes(zipCommand)) isSkipped = true;
+            continue;
+          }
           if (parts[i].length > result.length) result = parts[i];
         }
 
