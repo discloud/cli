@@ -20,7 +20,10 @@ export default class ConsolePrint implements PrintInterface {
     if ("localeList" in response) additional.push("Supported locales:", response.localeList);
     if ("logs" in response) additional.push(response.logs);
 
-    this[method]("[DISCLOUD API] %s", response.message, ...additional);
+    if ("statusCode" in response)
+      return this[method]("[Discloud API: %o] %s", response.statusCode, response.message, ...additional);
+
+    this[method]("[Discloud API] %s", response.message, ...additional);
   }
 
   // #noop() { }
