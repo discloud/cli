@@ -22,7 +22,7 @@ To get started using this CLI, first use:
 discloud login
 ```
 
-[![discloud-login](./assets/discloud-login.gif)](./docs/login.md)
+![discloud-login](./assets/discloud-login.gif)
 
 If your app does not contain `discloud.config`, use:
 
@@ -30,7 +30,7 @@ If your app does not contain `discloud.config`, use:
 discloud init
 ```
 
-[![discloud-init](./assets/discloud-init.gif)](./docs/init.md)
+![discloud-init](./assets/discloud-init.gif)
 
 Do you want to send an app to discloud? Use:
 
@@ -38,7 +38,7 @@ Do you want to send an app to discloud? Use:
 discloud app up
 ```
 
-[![discloud-upload](./assets/discloud-upload.gif)](./docs/upload.md)
+![discloud-upload](./assets/discloud-upload.gif)
 
 If you want to see all commands
 
