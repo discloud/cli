@@ -50,7 +50,7 @@ export default class FsJsonStore<T extends Record<any, any>> implements Store<T>
 
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
-      if (!Reflect.has(data, key)) data[key] = isNaN(key as any) ? {} : [];
+      if (!Reflect.has(data, key)) data[key] = isNaN(keys[i + 1] as any) ? {} : [];
       data = data[key];
     }
 
@@ -64,7 +64,9 @@ export default class FsJsonStore<T extends Record<any, any>> implements Store<T>
     const lastKey = keys.splice(-1)[0];
 
     for (let i = 0; i < keys.length; i++) {
-      data = data[keys[i]];
+      const key = keys[i];
+      if (!Reflect.has(data, key)) data[key] = isNaN(keys[i + 1] as any) ? {} : [];
+      data = data[key];
     }
 
     data[lastKey] = value;
