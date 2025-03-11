@@ -21,8 +21,15 @@ export class DiscloudAPIError<T = any> extends Error {
     super(message);
   }
 
+  /**
+   * @returns `["[Discloud API: %o] %s", this.code, this.message]`
+   */
+  toArray(): [string, number, string] {
+    return ["[Discloud API: %o] %s", this.code, this.message];
+  }
+
   toString() {
-    return `[Discloud API: ${this.code}]: ${this.message}`;
+    return `[Discloud API: ${this.code}] ${this.message}`;
   }
 }
 
