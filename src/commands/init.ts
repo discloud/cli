@@ -57,8 +57,12 @@ export default <CommandInterface<CommandArgs>>{
     ram: {
       alias: "r",
       type: "number",
-      defaultDescription: "100",
       description: "App RAM (min: 100)",
+      defaultDescription: "100",
+      coerce(arg) {
+        if (arg < 100) return 100;
+        return arg;
+      },
     },
     start: {
       alias: "s",
