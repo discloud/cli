@@ -20,12 +20,16 @@ export default class YargsBuilder implements BuilderInterface {
         v: "version",
       })
       .commandDir(path, { visit: (...args) => this.#resolveCommand(...args) })
-      .fail(false)
+      .completion()
+      .fail((msg, _err, _yargs) => {
+        if (msg) throw msg;
+      })
       .help()
       .locale("en") // TODO: multi-locale
       .middleware((args) => {
         if (!args._.length && Object.keys(args).length < 3) this.yargs.showHelp();
       })
+      .showHelpOnFail(false)
       .version();
   }
 
@@ -34,8 +38,7 @@ export default class YargsBuilder implements BuilderInterface {
       await this.yargs.parse();
     } catch (error) {
       if (error instanceof DiscloudAPIError) {
-        this.core.print.error(error.toString());
-        this.yargs.showVersion((v) => this.core.print.log("discloud -v v%s\nnode -v %s", v, process.version));
+        this.core.print.error(...error.toArray());
         this.yargs.exit(1, error);
       }
 
@@ -43,16 +46,17 @@ export default class YargsBuilder implements BuilderInterface {
         if (ERRORS_TO_IGNORE.has(error.name)) this.yargs.exit(1, error);
 
         if (ERRORS_TO_LOG.has(error.name)) {
-          this.core.print.error("%s", error.message);
+          this.core.print.error(error.message);
           this.yargs.exit(1, error);
         }
 
         this.core.print.error(error);
         this.yargs.showVersion((v) => this.core.print.log("discloud -v v%s\nnode -v %s", v, process.version));
         this.yargs.exit(1, error);
-      } else if (error !== undefined && error !== null) {
-        this.core.print.error(error);
       }
+
+      if (error !== undefined && error !== null)
+        this.core.print.error(error);
 
       this.yargs.exit(1, error as Error);
     }
