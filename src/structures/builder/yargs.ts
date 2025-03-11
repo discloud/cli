@@ -109,8 +109,8 @@ export default class YargsBuilder implements BuilderInterface {
         }, []).join(" ");
 
         this.yargs.showVersion((message) => args._.length
-          ? console.log("discloud %s v%s", commandName, message)
-          : console.log("discloud v%s", message));
+          ? this.core.print.bold("discloud %s v%s", commandName, message)
+          : this.core.print.bold("discloud v%s", message));
 
         if (command.requireAuth) {
           if (!this.core.api.hasToken)
