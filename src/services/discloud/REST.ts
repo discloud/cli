@@ -180,12 +180,16 @@ export default class REST implements ApiInterface {
   }
 
   #resolveResponseBody<T>(response: Response): Promise<T>
-  #resolveResponseBody(response: Response) {
+  async #resolveResponseBody(response: Response) {
     const contentType = response.headers.get("content-type");
 
     if (typeof contentType === "string") {
-      if (contentType.includes("application/json"))
-        return response.json();
+      if (contentType.includes("application/json")) {
+        const body = await response.json() as any;
+        if (typeof body === "object" && body !== null)
+          body.statusCode ??= response.status;
+        return body;
+      }
 
       if (contentType.includes("text/"))
         return response.text();
