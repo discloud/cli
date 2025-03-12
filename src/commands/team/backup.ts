@@ -87,6 +87,6 @@ async function getBackup(backup: ApiAppBackup | ApiAppBackupAll, path: string) {
       return response.status;
     }
   } catch (error: any) {
-    backup.url = `[error]: ${error.message}`;
+    backup.url = `[error] ${error.message}`;
   }
 }

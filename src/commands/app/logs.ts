@@ -91,7 +91,7 @@ async function saveLog(log: ApiAppLog, path: string, overwrite?: boolean) {
   } catch (error: any) {
     return {
       id: log.id,
-      log: `[error]: ${error.message}`,
+      log: `[error] ${error.message}`,
     };
   }
 }
