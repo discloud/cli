@@ -18,6 +18,36 @@ export default class FileSystem implements FileSystemInterface {
     return relative(cwd, join(cwd, path));
   }
 
+  exists(path: string, cwd: string = process.cwd()): boolean {
+    return existsSync(join(cwd, path));
+  }
+
+  async glob(pattern: string | string[]): Promise<string[]> {
+    const ignoreModule = new Ignore();
+    const ignoreFiles = await ignoreModule.findIgnoreFiles();
+    const ignore = await ignoreModule.resolveIgnoreFiles(ignoreFiles);
+
+    return glob(pattern, {
+      nodir: true,
+      dot: true,
+      ignore,
+      windowsPathsNoEscape: type() === "Windows_NT",
+    });
+  }
+
+  readdir(path: string, recursive?: boolean): Promise<string[]>
+  readdir(path: string, options: FileSystemReadDirWithFileTypesOptions): Promise<Dirent[]>
+  async readdir(path: string, recursive?: boolean | FileSystemReadDirWithFileTypesOptions) {
+    if (typeof recursive === "boolean") return await readdir(path, { recursive });
+    return await readdir(path, recursive!);
+  }
+
+  readFile(path: string): Promise<Buffer>;
+  readFile(path: string, encoding: BufferEncoding): Promise<string>;
+  async readFile(path: string, encoding?: BufferEncoding) {
+    return await readFile(path, encoding);
+  }
+
   async zip(glob: string | string[], cwd: string = process.cwd()) {
     if (Array.isArray(glob)) glob = glob.join(" ");
 
@@ -48,35 +78,5 @@ export default class FileSystem implements FileSystemInterface {
     });
 
     return Buffer.from(response, encoding);
-  }
-
-  exists(path: string, cwd: string = process.cwd()): boolean {
-    return existsSync(join(cwd, path));
-  }
-
-  async glob(pattern: string | string[]): Promise<string[]> {
-    const ignoreModule = new Ignore();
-    const ignoreFiles = await ignoreModule.findIgnoreFiles();
-    const ignore = await ignoreModule.resolveIgnoreFiles(ignoreFiles);
-
-    return glob(pattern, {
-      nodir: true,
-      dot: true,
-      ignore,
-      windowsPathsNoEscape: type() === "Windows_NT",
-    });
-  }
-
-  readdir(path: string, recursive?: boolean): Promise<string[]>
-  readdir(path: string, options: FileSystemReadDirWithFileTypesOptions): Promise<Dirent[]>
-  async readdir(path: string, recursive?: boolean | FileSystemReadDirWithFileTypesOptions) {
-    if (typeof recursive === "boolean") return await readdir(path, { recursive });
-    return await readdir(path, recursive!);
-  }
-
-  readFile(path: string): Promise<Buffer>;
-  readFile(path: string, encoding: BufferEncoding): Promise<string>;
-  async readFile(path: string, encoding?: BufferEncoding) {
-    return await readFile(path, encoding);
   }
 }

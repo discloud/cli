@@ -19,11 +19,6 @@ export interface FileSystemInterface {
   /**
    * @param cwd default `process.cwd()`
    */
-  zip(glob: string | string[], cwd?: string): Promise<Buffer>
-
-  /**
-   * @param cwd default `process.cwd()`
-   */
   exists(path: string, cwd?: string): boolean
 
   glob(pattern: string | string[]): Promise<string[]>
@@ -34,4 +29,9 @@ export interface FileSystemInterface {
   readFile(path: string): Promise<Buffer>
   readFile(path: string, encoding: BufferEncoding): Promise<string>
   readFile(path: string, encoding?: BufferEncoding): Promise<Buffer | string>
+
+  /**
+   * @param cwd default `process.cwd()`
+   */
+  zip(glob: string | string[], cwd?: string): Promise<Buffer>
 }
