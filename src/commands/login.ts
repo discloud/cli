@@ -10,16 +10,16 @@ export default <CommandInterface<CommandArgs>>{
   async run(core, _args) {
     const token = await promptApiToken();
 
-    core.print.spin();
+    const apinner = core.print.spin();
 
     const isValidToken = await core.api.validateToken(token);
 
     if (isValidToken) {
       core.config.set("token", token);
 
-      return core.print.success("Discloud token successfully validated");
+      return apinner.succeed("Discloud token successfully validated");
     }
 
-    core.print.error("Invalid Discloud token");
+    apinner.fail("Invalid Discloud token");
   },
 };
