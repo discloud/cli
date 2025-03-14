@@ -10,7 +10,7 @@
     "build": "tsc",
     "prepublish": "npm run build",
     "test": "npm run test:ts && npm run build && npm run test:node",
-    "test:node": "node --test \"**/test/**/*.?(c|m)js\"",
+    "test:node": "node --test \"**/test/**/*.test.?(c|m)js\"",
     "test:ts": "tsc --noEmit"
   },
   "repository": {
