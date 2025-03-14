@@ -9,6 +9,10 @@ export default class Zip implements ZipInterface {
     this.zip = new AdmZip();
   }
 
+  get fileCount(): number {
+    return this.zip.getEntryCount();
+  }
+
   async appendFiles(files: string[], cwd: string = process.cwd()) {
     if (!files?.length) return;
 

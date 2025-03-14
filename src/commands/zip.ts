@@ -1,4 +1,3 @@
-import { join } from "path";
 import { type CommandInterface } from "../interfaces/command";
 import { type ZipInterface } from "../interfaces/zip";
 import Zip from "../structures/filesystem/zip";
@@ -6,6 +5,7 @@ import Zip from "../structures/filesystem/zip";
 interface CommandArgs {
   encoding?: BufferEncoding
   glob: string[]
+  out: string
 }
 
 export default <CommandInterface<CommandArgs>>{
@@ -16,8 +16,9 @@ export default <CommandInterface<CommandArgs>>{
     encoding: {
       alias: "e",
       type: "string",
-      choices: ["base64"],
+      choices: ["base64", "base64url", "hex"] as BufferEncoding[],
       description: "Response encoding (This option doesn't create the zip file)",
+      conflicts: "out",
     },
     glob: {
       alias: "g",
@@ -25,22 +26,38 @@ export default <CommandInterface<CommandArgs>>{
       description: "Directories/files with glob pattern to zip",
       default: "**",
     },
+    out: {
+      alias: "o",
+      type: "string",
+      conflicts: "encoding",
+      defaultDescription: "folder_name.zip",
+    },
   },
 
   async run(core, args) {
+    const spinner = core.print.spin("Searching files...");
+
     const files = await core.fs.glob(args.glob);
+
+    core.print.debug("Found %o files:", files.length, files);
+
+    spinner.start(`Zipping ${files.length} files...`);
 
     const zipper: ZipInterface = new Zip();
 
     await zipper.appendFiles(files, core.workspaceFolder);
 
+    core.print.debug("Zipped %o files", zipper.fileCount);
+
     if (args.encoding)
       return core.print.log(zipper.getBuffer().toString(args.encoding));
 
-    const zipName = `${core.workspaceName}.zip`;
+    spinner.start("Writting zip file...");
 
-    zipper.writeZip(join(core.workspaceFolder, zipName));
+    args.out ??= (core.workspaceName || "file") + ".zip";
 
-    core.print.success("Zip successfully created: %s", zipName);
+    await zipper.writeZip(args.out);
+
+    spinner.succeed(`Zip successfully created: ${args.out}`);
   },
 };
