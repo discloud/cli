@@ -76,6 +76,7 @@ suite("Testing zip command", async () => {
    * @returns {Promise<string>}
    * @typedef OptionsWithEncoding
    * @prop {BufferEncoding} encoding
+   * @prop {number} [maxBuffer]
    * 
    * @overload
    * @param {string} [glob]
@@ -85,8 +86,6 @@ suite("Testing zip command", async () => {
    * @prop {string} out
    */
   function executeZipCommand(glob, options) {
-    /** `100MB` */
-    const MAX_ZIP_BUFFER = 104_857_600;
     const MINUTE_IN_MILLISECONDS = 60_000;
     const zipCommand = "discloud zip";
     const localBinCommand = "bin/" + zipCommand;
@@ -100,24 +99,10 @@ suite("Testing zip command", async () => {
     ].join(" ");
 
     return new Promise(function (resolve, reject) {
-      exec(command, {
-        maxBuffer: MAX_ZIP_BUFFER,
-        timeout: MINUTE_IN_MILLISECONDS,
-      }, function (error, stdout, _stderr) {
+      exec(command, { timeout: MINUTE_IN_MILLISECONDS }, function (error, stdout, _stderr) {
         if (error) return reject(error);
-
         const parts = stdout.split(/[\r\n]+/);
-
-        let result = "", isSkipped = false;
-        for (let i = 0; i < parts.length; i++) {
-          if (!isSkipped) {
-            if (parts[i].includes(zipCommand)) isSkipped = true;
-            continue;
-          }
-          if (parts[i].length > result.length) result = parts[i];
-        }
-
-        resolve(result);
+        resolve(stdout.split(/[\r\n]+/)[parts[0].includes(zipCommand) ? 1 : 0]);
       });
     });
   }

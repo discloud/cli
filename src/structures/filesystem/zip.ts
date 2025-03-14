@@ -24,7 +24,7 @@ export default class Zip implements ZipInterface {
   }
 
   getBuffer() {
-    return this.zip.toBuffer();
+    return this.zip.toBufferPromise();
   }
 
   writeZip(targetFileName?: string) {
