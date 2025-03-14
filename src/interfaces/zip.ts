@@ -1,4 +1,5 @@
 export interface ZipInterface {
+  get fileCount(): number
   /**
    * @param cwd default `process.cwd()`
    */
