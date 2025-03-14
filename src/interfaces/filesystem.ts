@@ -1,4 +1,5 @@
 import { type Dirent } from "fs";
+import { type writeFile } from "fs/promises";
 
 export interface FileSystemReadDirWithFileTypesOptions {
   recursive?: boolean
@@ -29,6 +30,8 @@ export interface FileSystemInterface {
   readFile(path: string): Promise<Buffer>
   readFile(path: string, encoding: BufferEncoding): Promise<string>
   readFile(path: string, encoding?: BufferEncoding): Promise<Buffer | string>
+
+  writeFile(...args: Parameters<typeof writeFile>): Promise<void>
 
   /**
    * @param cwd default `process.cwd()`

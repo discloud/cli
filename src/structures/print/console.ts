@@ -36,6 +36,12 @@ export default class ConsolePrint implements PrintInterface {
     console.log(first, ...args);
   }
 
+  clear() {
+    this.#stopSpin();
+
+    console.clear();
+  }
+
   #debug(first: any, ...args: any) {
     this.#stopSpin();
 
@@ -96,6 +102,12 @@ export default class ConsolePrint implements PrintInterface {
 
     if (typeof first === "string") return console.warn(`%s ${first}`, chalk.yellow("[warn]"), ...args);
     console.warn(chalk.yellow("[warn]"), first, ...args);
+  }
+
+  write(text: string) {
+    this.#stopSpin();
+
+    process.stdout.write(text);
   }
 }
 

@@ -1,15 +1,19 @@
 import { exec } from "child_process";
 import { existsSync, type Dirent } from "fs";
-import { readdir, readFile } from "fs/promises";
+import { readdir, readFile, writeFile } from "fs/promises";
 import { glob } from "glob";
 import { type } from "os";
 import { join, relative } from "path";
+import type Core from "../../core";
 import { type FileSystemInterface, type FileSystemReadDirWithFileTypesOptions } from "../../interfaces/filesystem";
-import { MAX_ZIP_BUFFER } from "../../services/discloud/constants";
-import { MINUTE_IN_MILLISECONDS } from "../../utils/constants";
+import { MAX_STRING_LENGTH, MINUTE_IN_MILLISECONDS } from "../../utils/constants";
 import Ignore from "./ignore";
 
 export default class FileSystem implements FileSystemInterface {
+  constructor(
+    readonly core: Core,
+  ) { }
+
   asAbsolutePath(path: string, cwd: string = process.cwd()): string {
     return join(cwd, path);
   }
@@ -48,6 +52,10 @@ export default class FileSystem implements FileSystemInterface {
     return await readFile(path, encoding);
   }
 
+  async writeFile(...args: Parameters<typeof writeFile>) {
+    await writeFile(...args);
+  }
+
   async zip(glob: string | string[], cwd: string = process.cwd()) {
     if (Array.isArray(glob)) glob = glob.join(" ");
 
@@ -55,25 +63,14 @@ export default class FileSystem implements FileSystemInterface {
     const zipCommand = "discloud zip";
 
     const response = await new Promise<string>(function (resolve, reject) {
-      exec(`${zipCommand} -e=${encoding} -g=${glob ?? "**"}`, {
+      exec(`${zipCommand} -e=${encoding} -g=${glob || "**"}`, {
         cwd,
-        maxBuffer: MAX_ZIP_BUFFER,
+        maxBuffer: MAX_STRING_LENGTH,
         timeout: MINUTE_IN_MILLISECONDS,
       }, function (error, stdout, _stderr) {
         if (error) return reject(error);
-
         const parts = stdout.split(/[\r\n]+/);
-
-        let result = "", isSkipped = false;
-        for (let i = 0; i < parts.length; i++) {
-          if (!isSkipped) {
-            if (parts[i].includes(zipCommand)) isSkipped = true;
-            continue;
-          }
-          if (parts[i].length > result.length) result = parts[i];
-        }
-
-        resolve(result);
+        resolve(stdout.split(/[\r\n]+/)[parts[0].includes(zipCommand) ? 1 : 0]);
       });
     });
 

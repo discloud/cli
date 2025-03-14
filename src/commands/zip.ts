@@ -41,16 +41,19 @@ export default <CommandInterface<CommandArgs>>{
 
     core.print.debug("Found %o files:", files.length, files);
 
-    spinner.start(`Zipping ${files.length} files...`);
+    spinner.start(`Adding ${files.length} files...`);
 
     const zipper: ZipInterface = new Zip();
 
     await zipper.appendFiles(files, core.workspaceFolder);
 
-    core.print.debug("Zipped %o files", zipper.fileCount);
+    core.print.debug("Added %o files", zipper.fileCount);
 
-    if (args.encoding)
-      return core.print.log(zipper.getBuffer().toString(args.encoding));
+    if (args.encoding) {
+      spinner.start("Getting zip buffer...");
+      const buffer = await zipper.getBuffer();
+      return core.print.write(buffer.toString(args.encoding));
+    }
 
     spinner.start("Writting zip file...");
 
