@@ -17,7 +17,7 @@ suite("Testing zip command", async () => {
     t.assert.equal(responseBase64, expected);
   });
 
-  await test("Getting a zip with a file base64", async (t) => {
+  await test("Getting a zip base64 with a file", async (t) => {
     const encoding = "base64";
     const filePath = "test/mock/zip_tester.txt";
     /** @external adm-zip@^0.5.16 */
@@ -36,7 +36,7 @@ suite("Testing zip command", async () => {
     });
 
     const glob = `__not_expected_files__${Math.random()}`;
-    const out = `__empty__${Math.random()}.zip`;
+    const out = `test/__empty__${Math.random()}.zip`;
     /** @external adm-zip@^0.5.16 */
     const expectedFileSize = 22;
 
@@ -56,7 +56,7 @@ suite("Testing zip command", async () => {
     });
 
     const glob = "test/mock/zip_tester.txt";
-    const out = `__filled__${Math.random()}.zip`;
+    const out = `test/__filled__${Math.random()}.zip`;
     /** @external adm-zip@^0.5.16 */
     const expectedFileSize = 163;
 
