@@ -1,10 +1,11 @@
-import { type DiscloudConfigScopes } from "@discloudapp/api-types/v2";
+import { APTPackages, type DiscloudConfigScopes } from "@discloudapp/api-types/v2";
 import { existsSync } from "fs";
 import { type CommandInterface } from "../interfaces/command";
 import { promptAppApt, promptAppAutoRestart, promptAppMain, promptAppRam, promptAppType, promptAppVersion } from "../prompts/discloud/config";
 import { CONFIG_FILENAME } from "../services/discloud/constants";
 
 interface CommandArgs {
+  apt?: string[]
   autorestart?: boolean
   build?: string
   "engine-version"?: string
@@ -22,6 +23,12 @@ export default <CommandInterface<CommandArgs>>{
   description: `Init ${CONFIG_FILENAME} file`,
 
   options: {
+    apt: {
+      alias: "a",
+      type: "array",
+      choices: APTPackages,
+      description: "APTs",
+    },
     autorestart: {
       alias: "ar",
       type: "boolean",
@@ -90,7 +97,7 @@ export default <CommandInterface<CommandArgs>>{
     let minRam = args.type === "site" ? 512 : 100;
 
     const config: Record<DiscloudConfigScopes, unknown> = {
-      APT: void 0,
+      APT: args.apt,
       AUTORESTART: args.autorestart,
       AVATAR: void 0,
       BUILD: args.build,
@@ -114,17 +121,17 @@ export default <CommandInterface<CommandArgs>>{
 
     if (!config.TYPE) config.TYPE = await promptAppType();
 
-    if (!config.MAIN) config.MAIN = await promptAppMain();
-
-    if (!config.AUTORESTART) config.AUTORESTART = await promptAppAutoRestart();
-
     minRam = config.TYPE === "site" ? 512 : 100;
 
     if (!config.RAM) config.RAM = await promptAppRam(minRam);
 
+    if (!config.MAIN) config.MAIN = await promptAppMain();
+
     if (!config.APT) config.APT = await promptAppApt().then(v => v.join(","));
 
     if (!config.VERSION) config.VERSION = await promptAppVersion();
+
+    if (!config.AUTORESTART) config.AUTORESTART = await promptAppAutoRestart();
 
     await core.templater.generate(`${CONFIG_FILENAME}.${config.TYPE}`, CONFIG_FILENAME, config);
   },
