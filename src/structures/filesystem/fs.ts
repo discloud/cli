@@ -69,8 +69,8 @@ export default class FileSystem implements FileSystemInterface {
         timeout: MINUTE_IN_MILLISECONDS,
       }, function (error, stdout, _stderr) {
         if (error) return reject(error);
-        const parts = stdout.split(/[\r\n]+/);
-        resolve(stdout.split(/[\r\n]+/)[parts[0].includes(zipCommand) ? 1 : 0]);
+        const parts = stdout.split("\n");
+        resolve(parts[parts[0].includes(zipCommand) ? 1 : 0]);
       });
     });
 
