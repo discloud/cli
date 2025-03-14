@@ -34,7 +34,7 @@ export default class Core {
 
     this.print = new ConsolePrint(this);
 
-    this.fs = new FileSystem(this);
+    this.fs = new FileSystem();
 
     this.config = new ConfigStore();
 
