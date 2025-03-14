@@ -70,12 +70,19 @@ suite("Testing zip command", async () => {
   });
 
   /**
+   * @overload
    * @param {string} [glob]
-   * @param {Options} [options]
-   * @typedef Options
-   * @prop {BufferEncoding} [encoding]
-   * @prop {string} [out]
-   * @returns {Promise<string | void>}
+   * @param {OptionsWithEncoding} options
+   * @returns {Promise<string>}
+   * @typedef OptionsWithEncoding
+   * @prop {BufferEncoding} encoding
+   * 
+   * @overload
+   * @param {string} [glob]
+   * @param {OptionsWithOut} options
+   * @returns {Promise<void>}
+   * @typedef OptionsWithOut
+   * @prop {string} out
    */
   function executeZipCommand(glob, options) {
     /** `100MB` */
