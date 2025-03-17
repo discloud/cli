@@ -1,12 +1,10 @@
-import inquirer from "inquirer";
+import { input, password, select } from "@inquirer/prompts";
 import { API_LOCALES } from "../../services/discloud/constants";
 import { tokenIsDiscloudJwt } from "../../services/discloud/utils";
 import { promptTrier } from "../utils";
 
 export async function promptApiToken(): Promise<string> {
-  return promptTrier(() => inquirer.prompt({
-    type: "password",
-    name: "answer",
+  return promptTrier(() => password({
     message: "Your Discloud token:",
     mask: true,
     validate: tokenIsDiscloudJwt,
@@ -14,18 +12,14 @@ export async function promptApiToken(): Promise<string> {
 }
 
 export async function promptAppConsoleCommand(): Promise<string> {
-  return promptTrier(() => inquirer.prompt({
-    type: "input",
-    name: "answer",
+  return promptTrier(() => input({
     message: ">",
     required: true,
   }));
 }
 
 export async function promptUserLocale(): Promise<string> {
-  return promptTrier(() => inquirer.prompt({
-    type: "select",
-    name: "answer",
+  return promptTrier(() => select({
     message: "Choose your locale",
     choices: API_LOCALES,
   }));

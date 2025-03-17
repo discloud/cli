@@ -1,32 +1,26 @@
 import { APTPackages } from "@discloudapp/api-types/v2";
+import { checkbox, confirm, number, search, select } from "@inquirer/prompts";
 import { existsSync } from "fs";
 import { readdir, stat } from "fs/promises";
-import inquirer from "inquirer";
 import { dirname, join } from "path";
 import { promptTrier } from "../utils";
 
 export function promptAppApt(): Promise<string[]> {
-  return promptTrier(() => inquirer.prompt({
-    type: "checkbox",
-    name: "answer",
+  return promptTrier(() => checkbox({
     message: "Select APTs for your app",
     choices: APTPackages,
   }));
 }
 
 export function promptAppAutoRestart(): Promise<boolean> {
-  return promptTrier(() => inquirer.prompt({
-    type: "confirm",
-    name: "answer",
+  return promptTrier(() => confirm({
     message: "Auto restart?",
     default: false,
   }));
 }
 
 export function promptAppMain(): Promise<string> {
-  return promptTrier(() => inquirer.prompt({
-    type: "search",
-    name: "answer",
+  return promptTrier(() => search({
     message: "Input the main file path of your app",
     async source(term, _opt) {
       if (term) term = term.replace(/[\\]/g, "/");
@@ -63,21 +57,17 @@ export function promptAppMain(): Promise<string> {
 }
 
 export function promptAppRam(min?: number, max?: number): Promise<number> {
-  return promptTrier(() => inquirer.prompt({
-    type: "number",
-    name: "answer",
+  return promptTrier(() => number({
     message: "Input the amount of RAM for your app",
     min,
     max,
     required: true,
     default: min,
-  }));
+  }).then(v => v!));
 }
 
 export function promptAppType(type?: string): Promise<string> {
-  return promptTrier(() => inquirer.prompt({
-    type: "list",
-    name: "answer",
+  return promptTrier(() => select({
     message: "Input the type of your app",
     choices: ["bot", "site"],
     default: type,
@@ -85,9 +75,7 @@ export function promptAppType(type?: string): Promise<string> {
 }
 
 export function promptAppVersion(): Promise<string> {
-  return promptTrier(() => inquirer.prompt({
-    type: "list",
-    name: "answer",
+  return promptTrier(() => select({
     message: "Input the engine version of your app",
     choices: ["latest", "current", "suja"],
     default: "latest",
