@@ -1,13 +1,13 @@
 import { type RESTGetApiUserResult, RouteBases, Routes } from "@discloudapp/api-types/v2";
 import type Core from "../../core";
-import { type ApiInterface } from "../../interfaces/api";
+import { type IApi } from "../../interfaces/api";
 import { RequestMethod } from "./enum";
 import { DiscloudAPIError } from "./errors";
 import RateLimit from "./RateLimit";
 import { type InternalRequestData, type RequestData, type RequestOptions, type RESTOptions, type RouteLike } from "./types";
 import { tokenIsDiscloudJwt } from "./utils";
 
-export default class REST implements ApiInterface {
+export default class REST implements IApi {
   readonly options: Partial<RESTOptions>;
   readonly rateLimiter: RateLimit;
 

@@ -1,7 +1,7 @@
 import { type Options } from "yargs";
 import type Core from "../core";
 
-export interface CommandInterface<Args = any> {
+export interface ICommand<Args = any> {
   name: string | string[]
   description?: string
   aliases?: string | string[]

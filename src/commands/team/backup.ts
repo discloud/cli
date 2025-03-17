@@ -2,7 +2,7 @@ import { type ApiAppBackup, type ApiAppBackupAll, type RESTGetApiAppAllBackupRes
 import { existsSync } from "fs";
 import { mkdir, writeFile } from "fs/promises";
 import { join } from "path";
-import { type CommandInterface } from "../../interfaces/command";
+import { type ICommand } from "../../interfaces/command";
 import { BACKUPS_PATH } from "../../utils/constants";
 
 interface CommandArgs {
@@ -11,7 +11,7 @@ interface CommandArgs {
   save: boolean
 }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "backup [app] [path]",
   description: "Get backup of your team app code from Discloud",
   aliases: "bkp",

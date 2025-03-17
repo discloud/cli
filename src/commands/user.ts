@@ -1,8 +1,8 @@
-import { type CommandInterface } from "../interfaces/command";
+import { type ICommand } from "../interfaces/command";
 
 interface CommandArgs { }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "user [command]",
   description: "Manage your profile",
 };

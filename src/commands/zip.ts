@@ -1,5 +1,5 @@
-import { type CommandInterface } from "../interfaces/command";
-import { type ZipInterface } from "../interfaces/zip";
+import { type ICommand } from "../interfaces/command";
+import { type IZip } from "../interfaces/zip";
 import Zip from "../structures/filesystem/zip";
 
 interface CommandArgs {
@@ -8,7 +8,7 @@ interface CommandArgs {
   out: string
 }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "zip [glob..]",
   description: "Make zip",
 
@@ -43,7 +43,7 @@ export default <CommandInterface<CommandArgs>>{
 
     spinner.start(`Adding ${files.length} files...`);
 
-    const zipper: ZipInterface = new Zip();
+    const zipper: IZip = new Zip();
 
     await zipper.appendFiles(files, core.workspaceFolder);
 

@@ -1,6 +1,6 @@
 import { type RequestData, type RouteLike } from "../services/discloud/types";
 
-export interface ApiInterface {
+export interface IApi {
   get isLimited(): boolean
   get hasToken(): boolean
   get resetDateString(): string | void

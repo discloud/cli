@@ -1,10 +1,10 @@
 import { type RESTPutApiLocaleResult, Routes } from "@discloudapp/api-types/v2";
-import { type CommandInterface } from "../../interfaces/command";
+import { type ICommand } from "../../interfaces/command";
 import { promptUserLocale } from "../../prompts/discloud/api";
 
 interface CommandArgs { }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "locale",
   description: "Set your locale",
 

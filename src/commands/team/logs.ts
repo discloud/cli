@@ -2,7 +2,7 @@ import { type ApiAppLog, type RESTGetApiAppAllLogResult, type RESTGetApiAppLogRe
 import { existsSync } from "fs";
 import { appendFile, mkdir, writeFile } from "fs/promises";
 import { join } from "path";
-import { type CommandInterface } from "../../interfaces/command";
+import { type ICommand } from "../../interfaces/command";
 import { LOGS_PATH } from "../../utils/constants";
 
 interface CommandArgs {
@@ -11,7 +11,7 @@ interface CommandArgs {
   path: string
 }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "logs [app] [path]",
   description: "View the logs from your tean app in Discloud",
 

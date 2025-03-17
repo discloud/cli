@@ -1,14 +1,14 @@
 import { type RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
 import { DiscloudConfig, resolveFile } from "@discloudapp/util";
 import { join } from "path";
-import { type CommandInterface } from "../../interfaces/command";
+import { type ICommand } from "../../interfaces/command";
 import { CONFIG_FILENAME } from "../../services/discloud/constants";
 
 interface CommandArgs {
   glob: string[]
 }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "upload [glob..]",
   description: "Upload one app or site to Discloud",
   aliases: "up",

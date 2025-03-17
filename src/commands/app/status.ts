@@ -1,11 +1,11 @@
 import { type RESTGetApiAppAllStatusResult, type RESTGetApiAppStatusResult, Routes } from "@discloudapp/api-types/v2";
-import { type CommandInterface } from "../../interfaces/command";
+import { type ICommand } from "../../interfaces/command";
 
 interface CommandArgs {
   app: string
 }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "status [app]",
   description: "Get status of your apps",
 

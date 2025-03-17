@@ -1,12 +1,12 @@
 import { APTPackages, type RESTDeleteApiAppAptResult, Routes } from "@discloudapp/api-types/v2";
-import { type CommandInterface } from "../../../interfaces/command";
+import { type ICommand } from "../../../interfaces/command";
 
 interface CommandArgs {
   app: string
   apt: string[]
 }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "uninstall <app> [apt...]",
   description: "Uninstall APT from your app",
   aliases: "u",

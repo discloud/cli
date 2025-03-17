@@ -6,7 +6,7 @@ export interface FileSystemReadDirWithFileTypesOptions {
   withFileTypes: true
 }
 
-export interface FileSystemInterface {
+export interface IFileSystem {
   /**
    * @param cwd default `process.cwd()`
    */

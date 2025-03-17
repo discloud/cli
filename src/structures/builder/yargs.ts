@@ -2,12 +2,12 @@ import { existsSync } from "fs";
 import { basename, dirname, extname, join } from "path";
 import { type Argv, type CommandModule } from "yargs";
 import type Core from "../../core";
-import { type BuilderInterface } from "../../interfaces/builder";
-import { type CommandInterface } from "../../interfaces/command";
+import { type IBuilder } from "../../interfaces/builder";
+import { type ICommand } from "../../interfaces/command";
 import { DiscloudAPIError } from "../../services/discloud/errors";
 import { ERRORS_TO_IGNORE, ERRORS_TO_LOG } from "../../utils/constants";
 
-export default class YargsBuilder implements BuilderInterface {
+export default class YargsBuilder implements IBuilder {
   constructor(
     readonly core: Core,
     readonly yargs: Argv,
@@ -63,7 +63,7 @@ export default class YargsBuilder implements BuilderInterface {
   }
 
   #resolveCommand(commandObject: any, pathToFile?: string, _filename?: string, parentCommandName?: string) {
-    const command: CommandInterface = commandObject.default ?? commandObject;
+    const command: ICommand = commandObject.default ?? commandObject;
 
     return <CommandModule>{
       command: command.name,

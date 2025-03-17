@@ -1,11 +1,11 @@
 import { type RESTPutApiAppAllRestartResult, Routes } from "@discloudapp/api-types/v2";
-import { type CommandInterface } from "../../interfaces/command";
+import { type ICommand } from "../../interfaces/command";
 
 interface CommandArgs {
   app: string
 }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "restart [app]",
   description: "Restart one or all of your apps on Discloud",
 

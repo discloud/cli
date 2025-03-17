@@ -3,12 +3,12 @@ import updateNotifier from "update-notifier";
 import yargs, { locale } from "yargs";
 import { hideBin } from "yargs/helpers";
 import { type ConfigData } from "../@types";
-import { type ApiInterface } from "../interfaces/api";
-import { type BuilderInterface } from "../interfaces/builder";
-import { type FileSystemInterface } from "../interfaces/filesystem";
-import { type PrintInterface } from "../interfaces/print";
-import { type Store } from "../interfaces/store";
-import { type Templater } from "../interfaces/templater";
+import { type IApi } from "../interfaces/api";
+import { type IBuilder } from "../interfaces/builder";
+import { type IFileSystem } from "../interfaces/filesystem";
+import { type IPrint } from "../interfaces/print";
+import { type IStore } from "../interfaces/store";
+import { type ITemplater } from "../interfaces/templater";
 import REST from "../services/discloud/REST";
 import { UserAgent } from "../services/discloud/UserAgent";
 import ConfigStore from "../stores/Config";
@@ -21,13 +21,13 @@ import { joinWithBuildRoot } from "../utils/path";
 import { getPackageJSON } from "../utils/utils";
 
 export default class Core {
-  readonly api: ApiInterface;
-  readonly builder: BuilderInterface;
-  readonly config: Store<ConfigData>;
-  readonly fs: FileSystemInterface;
+  readonly api: IApi;
+  readonly builder: IBuilder;
+  readonly config: IStore<ConfigData>;
+  readonly fs: IFileSystem;
   readonly packageJSON: any;
-  readonly print: PrintInterface;
-  readonly templater: Templater;
+  readonly print: IPrint;
+  readonly templater: ITemplater;
 
   constructor(readonly argv: string[]) {
     this.packageJSON = getPackageJSON();

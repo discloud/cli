@@ -1,9 +1,9 @@
-import { type CommandInterface } from "../interfaces/command";
+import { type ICommand } from "../interfaces/command";
 import { promptApiToken } from "../prompts/discloud/api";
 
 interface CommandArgs { }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "login",
   description: "Login on Discloud API",
 

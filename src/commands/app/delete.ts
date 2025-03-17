@@ -1,5 +1,5 @@
 import { type RESTDeleteApiAppAllDeleteResult, Routes } from "@discloudapp/api-types/v2";
-import { type CommandInterface } from "../../interfaces/command";
+import { type ICommand } from "../../interfaces/command";
 import { promptConfirm } from "../../prompts/common";
 
 interface CommandArgs {
@@ -7,7 +7,7 @@ interface CommandArgs {
   yes: boolean
 }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "delete <app>",
   description: "Delete one or all of your apps on Discloud",
 

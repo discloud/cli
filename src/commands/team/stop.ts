@@ -1,11 +1,11 @@
 import { type RESTPutApiAppAllStopResult, Routes } from "@discloudapp/api-types/v2";
-import { type CommandInterface } from "../../interfaces/command";
+import { type ICommand } from "../../interfaces/command";
 
 interface CommandArgs {
   app: string
 }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "stop [app]",
   description: "Stop one or all of your team apps on Discloud",
 

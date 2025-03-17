@@ -1,12 +1,12 @@
 import { type RESTDeleteApiAppTeamResult, Routes } from "@discloudapp/api-types/v2";
-import { type CommandInterface } from "../../../interfaces/command";
+import { type ICommand } from "../../../interfaces/command";
 
 interface CommandArgs {
   app: string
   mod: string
 }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "delete <app> <mod>",
   description: "Delete MOD of your app",
 

@@ -1,13 +1,13 @@
 import { type RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
 import { resolveFile } from "@discloudapp/util";
-import { type CommandInterface } from "../../interfaces/command";
+import { type ICommand } from "../../interfaces/command";
 
 interface CommandArgs {
   app: string
   glob: string[]
 }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "commit <app> [glob..]",
   description: "Commit one app or site to Discloud",
   aliases: "c",

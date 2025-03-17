@@ -1,9 +1,9 @@
 import { type RESTGetApiTeamResult, Routes } from "@discloudapp/api-types/v2";
-import { type CommandInterface } from "../../interfaces/command";
+import { type ICommand } from "../../interfaces/command";
 
 interface CommandArgs { }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "info",
   description: "Get info of your team apps",
 

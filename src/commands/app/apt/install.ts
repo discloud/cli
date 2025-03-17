@@ -1,12 +1,12 @@
 import { APTPackages, type RESTPutApiAppAptResult, Routes } from "@discloudapp/api-types/v2";
-import { type CommandInterface } from "../../../interfaces/command";
+import { type ICommand } from "../../../interfaces/command";
 
 interface CommandArgs {
   app: string
   apt: string[]
 }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "install <app> [apt...]",
   description: "Install APT on your app",
   aliases: "i",

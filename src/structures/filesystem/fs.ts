@@ -5,11 +5,11 @@ import { glob } from "glob";
 import { type } from "os";
 import { join, relative } from "path";
 import type Core from "../../core";
-import { type FileSystemInterface, type FileSystemReadDirWithFileTypesOptions } from "../../interfaces/filesystem";
+import { type FileSystemReadDirWithFileTypesOptions, type IFileSystem } from "../../interfaces/filesystem";
 import { MAX_STRING_LENGTH, MINUTE_IN_MILLISECONDS } from "../../utils/constants";
 import Ignore from "./ignore";
 
-export default class FileSystem implements FileSystemInterface {
+export default class FileSystem implements IFileSystem {
   constructor(
     readonly core: Core,
   ) { }

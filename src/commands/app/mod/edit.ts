@@ -1,6 +1,6 @@
 import { type RESTPutApiAppTeamResult, Routes } from "@discloudapp/api-types/v2";
 import { ModPermissionsBF } from "@discloudapp/util";
-import { type CommandInterface } from "../../../interfaces/command";
+import { type ICommand } from "../../../interfaces/command";
 
 interface CommandArgs {
   app: string
@@ -8,7 +8,7 @@ interface CommandArgs {
   perms: string[]
 }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "edit <app> <mod> [perms...]",
   description: "Edit MOD perms of your app",
 

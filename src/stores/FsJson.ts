@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { dirname } from "path";
 import StoreError from "../errors/store";
-import { type DefaultNestChar, type NestedStoreData, type NestedStoreKeys, type Store } from "../interfaces/store";
+import { type DefaultNestChar, type IStore, type NestedStoreData, type NestedStoreKeys } from "../interfaces/store";
 
 export type Encoding = Exclude<BufferEncoding, "ucs-2" | "ucs2" | "utf16le">;
 
@@ -15,7 +15,7 @@ const defaultOptions: Options = {
 
 const defaultNestChar: DefaultNestChar = ".";
 
-export default class FsJsonStore<T extends Record<any, any>> implements Store<T> {
+export default class FsJsonStore<T extends Record<any, any>> implements IStore<T> {
   readonly #data: T;
   readonly options: Options;
   readonly #decoding: BufferEncoding = "utf8";

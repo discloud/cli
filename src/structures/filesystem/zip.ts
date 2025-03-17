@@ -1,8 +1,8 @@
 import AdmZip from "adm-zip";
 import { join } from "path";
-import { type ZipInterface } from "../../interfaces/zip";
+import { type IZip } from "../../interfaces/zip";
 
-export default class Zip implements ZipInterface {
+export default class Zip implements IZip {
   readonly zip: AdmZip;
 
   constructor() {

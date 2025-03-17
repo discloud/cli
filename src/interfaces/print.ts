@@ -1,6 +1,6 @@
 import { type Ora } from "ora";
 
-export interface PrintInterface {
+export interface IPrint {
   apiResponse(...args: any): void
   bold(...args: any): void
   clear(): void

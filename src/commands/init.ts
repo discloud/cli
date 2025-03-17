@@ -1,6 +1,6 @@
 import { APTPackages, type DiscloudConfigScopes } from "@discloudapp/api-types/v2";
 import { existsSync } from "fs";
-import { type CommandInterface } from "../interfaces/command";
+import { type ICommand } from "../interfaces/command";
 import { promptAppApt, promptAppAutoRestart, promptAppMain, promptAppRam, promptAppType, promptAppVersion } from "../prompts/discloud/config";
 import { CONFIG_FILENAME } from "../services/discloud/constants";
 
@@ -18,7 +18,7 @@ interface CommandArgs {
   yes?: boolean
 }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "init",
   description: `Init ${CONFIG_FILENAME} file`,
 

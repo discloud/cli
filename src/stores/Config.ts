@@ -1,12 +1,12 @@
 import { type ConfigData } from "../@types";
-import { type NestedStoreData, type NestedStoreKeys, type Store } from "../interfaces/store";
+import { type IStore, type NestedStoreData, type NestedStoreKeys } from "../interfaces/store";
 import { CLI_CONFIG_FILEPATH } from "../utils/constants";
 import FsJsonStore from "./FsJson";
 
 type T = ConfigData
 
-export default class ConfigStore implements Store<T> {
-  readonly #fs: Store<T> = new FsJsonStore<T>(CLI_CONFIG_FILEPATH, { encoding: "base64" });
+export default class ConfigStore implements IStore<T> {
+  readonly #fs: IStore<T> = new FsJsonStore<T>(CLI_CONFIG_FILEPATH, { encoding: "base64" });
 
   delete<K extends NestedStoreKeys<T>>(key: K): void
   delete(key: any): void {

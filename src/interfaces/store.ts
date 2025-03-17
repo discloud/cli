@@ -22,7 +22,7 @@ export type NestedStoreKeys<Obj, Key extends keyof Obj = keyof Obj, NestChar ext
   : Key
   : string
 
-export interface Store<T extends object> {
+export interface IStore<T extends object> {
   delete<K extends NestedStoreKeys<T>>(key: K): void
 
   get<K extends NestedStoreKeys<T>, V extends NestedStoreData<T, K>>(key: K): V | void
@@ -31,7 +31,7 @@ export interface Store<T extends object> {
   set<K extends NestedStoreKeys<T>, V extends NestedStoreData<T, K>>(key: K, value: V): void
 }
 
-export interface AsyncStore<T extends Record<any, any>> {
+export interface IAsyncStore<T extends Record<any, any>> {
   delete<K extends NestedStoreKeys<T>>(key: K): Promise<void>
 
   get<K extends NestedStoreKeys<T>, V extends NestedStoreData<T, K>>(key: K): Promise<V | void>

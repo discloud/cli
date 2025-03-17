@@ -1,5 +1,5 @@
 import { type RESTPutApiAppConsoleResult, Routes } from "@discloudapp/api-types/v2";
-import { type CommandInterface } from "../../interfaces/command";
+import { type ICommand } from "../../interfaces/command";
 import { promptAppConsoleCommand } from "../../prompts/discloud/api";
 import { DiscloudAPIError } from "../../services/discloud/errors";
 import { tokenIsDiscloudJwt } from "../../services/discloud/utils";
@@ -8,7 +8,7 @@ interface CommandArgs {
   app: string
 }
 
-export default <CommandInterface<CommandArgs>>{
+export default <ICommand<CommandArgs>>{
   name: "console <app>",
   description: "Use the app terminal",
   aliases: "terminal",

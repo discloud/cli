@@ -3,9 +3,9 @@ import chalk from "chalk";
 import Table from "easy-table";
 import ora, { type Ora } from "ora";
 import type Core from "../../core";
-import { type PrintInterface } from "../../interfaces/print";
+import { type IPrint } from "../../interfaces/print";
 
-export default class ConsolePrint implements PrintInterface {
+export default class ConsolePrint implements IPrint {
   constructor(
     readonly core: Core,
   ) {
@@ -15,7 +15,7 @@ export default class ConsolePrint implements PrintInterface {
   apiResponse(response: RESTApiBaseResult) {
     this.#stopSpin();
 
-    const method: keyof PrintInterface = response.status === "ok" ? "info" : "warn";
+    const method: keyof IPrint = response.status === "ok" ? "info" : "warn";
 
     const additional: unknown[] = [];
     if ("localeList" in response) additional.push("Supported locales:", response.localeList);
