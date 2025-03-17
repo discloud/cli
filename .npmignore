@@ -9,5 +9,6 @@ node_modules
 /.vscode
 /assets
 /discloud
+/test/**
 /test*.[j|t]s
 /test*.m[j|t]s
