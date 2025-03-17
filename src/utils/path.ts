@@ -10,5 +10,5 @@ export function joinWithRoot(...path: string[]) {
 }
 
 export function relativeFromBuildRoot(...path: string[]) {
-  return relative(ROOT_PATH, joinWithBuildRoot(...path));
+  return relative(BUILD_ROOT_PATH, joinWithBuildRoot(...path));
 }
