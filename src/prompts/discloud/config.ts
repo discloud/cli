@@ -2,7 +2,7 @@ import { APTPackages } from "@discloudapp/api-types/v2";
 import { checkbox, confirm, number, search, select } from "@inquirer/prompts";
 import { existsSync } from "fs";
 import { readdir, stat } from "fs/promises";
-import { dirname, join } from "path";
+import { dirname, join, sep } from "path/posix";
 import { promptTrier } from "../utils";
 
 export function promptAppApt(): Promise<string[]> {
@@ -23,26 +23,46 @@ export function promptAppMain(): Promise<string> {
   return promptTrier(() => search({
     message: "Input the main file path of your app",
     async source(term, _opt) {
-      if (term) term = term.replace(/[\\]/g, "/");
-
-      const dir = join(typeof term === "string" ? existsSync(term) ? term : dirname(term) : ".");
-
-      const files = await readdir(dir, { withFileTypes: true });
-
-      files.sort((a, b) => a.name.localeCompare(b.name) + (a.isDirectory() ? -2 : 2) + (b.isDirectory() ? 2 : -2));
-
       const result: string[] = [];
 
-      for (let i = 0; i < files.length; i++) {
-        const filename = join(dir, files[i].name).replace(/[\\]/g, "/");
-
-        if (term ? filename.includes(term) : true) {
-          result.push(filename);
-          continue;
+      if (term) {
+        let dir;
+        if (existsSync(term)) {
+          const fileStat = await stat(term);
+          if (fileStat.isFile()) return [term];
+          dir = term;
+        } else {
+          dir = dirname(term);
         }
+
+        const files = await readdir(dir, { withFileTypes: true });
+
+        files.sort((a, b) => a.name.localeCompare(b.name, void 0, { sensitivity: "accent" }) +
+          (a.isDirectory() ? -2 : 2) + (b.isDirectory() ? 2 : -2));
+
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+
+          const filename = join(dir, file.name);
+
+          if (filename.includes(term)) result.push(filename + (file.isDirectory() ? sep : ""));
+        }
+
+        result.sort((a, b) => a.indexOf(term) - b.indexOf(term));
+
+        return result;
       }
 
-      if (term) result.sort((a, b) => (a.startsWith(term) ? -1 : 1) + (b.startsWith(term) ? 1 : -1));
+      const files = await readdir(".", { withFileTypes: true });
+
+      files.sort((a, b) => a.name.localeCompare(b.name, void 0, { sensitivity: "accent" }) +
+        (a.isDirectory() ? -2 : 2) + (b.isDirectory() ? 2 : -2));
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+
+        result.push(file.name + (file.isDirectory() ? sep : ""));
+      }
 
       return result;
     },
