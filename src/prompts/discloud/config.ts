@@ -35,6 +35,8 @@ export function promptAppMain(): Promise<string> {
           dir = dirname(term);
         }
 
+        term = term.toLowerCase();
+
         const files = await readdir(dir, { withFileTypes: true });
 
         files.sort((a, b) => a.name.localeCompare(b.name, void 0, { sensitivity: "accent" }) +
@@ -45,10 +47,10 @@ export function promptAppMain(): Promise<string> {
 
           const filename = join(dir, file.name);
 
-          if (filename.includes(term)) result.push(filename + (file.isDirectory() ? sep : ""));
+          if (filename.toLowerCase().includes(term)) result.push(filename + (file.isDirectory() ? sep : ""));
         }
 
-        result.sort((a, b) => a.indexOf(term) - b.indexOf(term));
+        result.sort((a, b) => a.toLowerCase().indexOf(term!) - b.toLowerCase().indexOf(term!));
 
         return result;
       }
