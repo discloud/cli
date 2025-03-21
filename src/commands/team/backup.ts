@@ -51,7 +51,7 @@ export default <ICommand<CommandArgs>>{
         for (let i = 0; i < response.backups.length; i++) {
           const backup = response.backups[i];
 
-          spinner.text = `Saving ${i + 1}/${response.backups.length}: ${backup.id}`;
+          spinner.start(`Saving ${i + 1}/${response.backups.length}: ${backup.id}`);
 
           const responseStatus = await getBackup(backup, args.path);
 

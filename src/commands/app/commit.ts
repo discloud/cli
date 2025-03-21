@@ -34,7 +34,7 @@ export default <ICommand<CommandArgs>>{
 
     const file = await resolveFile(buffer);
 
-    spinner.text = "Commiting...";
+    spinner.start("Commiting...");
 
     const response = await core.api.put<RESTPutApiAppCommitResult>(Routes.appCommit(args.app), { files: [file] });
 
