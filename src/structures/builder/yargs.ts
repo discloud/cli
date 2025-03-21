@@ -92,7 +92,9 @@ export default class YargsBuilder implements IBuilder {
         if (typeof command.run !== "function") return this.yargs.showHelp();
 
         this.yargs.showVersion((message) => args._.length
-          ? this.core.print.bold("discloud %s %s v%s", parentCommandName, firstPartCommandName, message)
+          ? parentCommandName
+            ? this.core.print.bold("discloud %s %s v%s", parentCommandName, firstPartCommandName, message)
+            : this.core.print.bold("discloud %s v%s", firstPartCommandName, message)
           : this.core.print.bold("discloud v%s", message));
 
         if (command.requireAuth) {
