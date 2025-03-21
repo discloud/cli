@@ -1,3 +1,4 @@
+import AdmZip from "adm-zip";
 import { exec } from "child_process";
 import { existsSync, rmSync } from "fs";
 import { stat } from "fs/promises";
@@ -7,26 +8,41 @@ suite("Testing zip command", async () => {
   await test("Getting a empty zip base64", async (t) => {
     const encoding = "base64";
     const filePath = `__not_expected_files__${Math.random()}`;
-
-    /** @external adm-zip@^0.5.16 */
-    const expected = "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==";
+    const expectedEntryCount = 0;
 
     /** @type {string} */
     const responseBase64 = await executeZipCommand(filePath, { encoding });
 
-    t.assert.equal(responseBase64, expected);
+    const buffer = Buffer.from(responseBase64, encoding);
+
+    const zipper = new AdmZip(buffer);
+
+    t.assert.strictEqual(zipper.getEntryCount(), expectedEntryCount);
   });
 
   await test("Getting a zip base64 with a file", async (t) => {
     const encoding = "base64";
     const filePath = "test/mock/zip_tester.txt";
-    /** @external adm-zip@^0.5.16 */
-    const expected = "UEsDBBQAAAgIAMpYbVrDN2OMEQAAAA8AAAAYAAAAdGVzdC9tb2NrL3ppcF90ZXN0ZXIudHh0U1Zw8Vfw8w9RCHL19Q9zBQBQSwECFAoUAAAICADKWG1awzdjjBEAAAAPAAAAGAAAAAAAAAAAAAAAtoEAAAAAdGVzdC9tb2NrL3ppcF90ZXN0ZXIudHh0UEsFBgAAAAABAAEARgAAAEcAAAAAAA==";
+    const expectedEntryCount = 1;
+    const expectedEntryName = filePath;
+    const expectedContent = "# DO NOT REMOVE";
 
     /** @type {string} */
     const responseBase64 = await executeZipCommand(filePath, { encoding });
 
-    t.assert.equal(responseBase64, expected);
+    const buffer = Buffer.from(responseBase64, encoding);
+
+    const zipper = new AdmZip(buffer);
+
+    t.assert.strictEqual(zipper.getEntryCount(), expectedEntryCount);
+
+    const entries = zipper.getEntries();
+
+    const [firstEntry] = entries;
+
+    t.assert.strictEqual(firstEntry.entryName, expectedEntryName);
+
+    t.assert.equal(firstEntry.getData().toString(), expectedContent);
   });
 
   await test("Writting a empty zip", async (t) => {
