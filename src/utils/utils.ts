@@ -12,6 +12,6 @@ export function importJSON<T>(path: string): T
 export function importJSON<T>(path: string, async: true): Promise<T>
 export function importJSON<T>(path: string, async?: boolean): T {
   path = normalize(path);
-  if (async) return JSONs[path] ?? readFile(path, "utf8").then(content => JSONs[path] ??= JSON.parse(content));
+  if (async) return JSONs[path] ?? readFile(path, "utf8").then(content => JSONs[path] = JSON.parse(content));
   return JSONs[path] ??= JSON.parse(readFileSync(path, "utf8"));
 }

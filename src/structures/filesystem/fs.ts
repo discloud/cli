@@ -14,15 +14,15 @@ export default class FileSystem implements IFileSystem {
     readonly core: Core,
   ) { }
 
-  asAbsolutePath(path: string, cwd: string = process.cwd()): string {
+  asAbsolutePath(path: string, cwd: string = this.core.workspaceFolder): string {
     return join(cwd, path);
   }
 
-  asRelativePath(path: string, cwd: string = process.cwd()): string {
-    return relative(cwd, join(cwd, path));
+  asRelativePath(path: string, cwd: string = this.core.workspaceFolder): string {
+    return relative(cwd, path);
   }
 
-  exists(path: string, cwd: string = process.cwd()): boolean {
+  exists(path: string, cwd: string = this.core.workspaceFolder): boolean {
     return existsSync(join(cwd, path));
   }
 
@@ -56,7 +56,7 @@ export default class FileSystem implements IFileSystem {
     await writeFile(...args);
   }
 
-  async zip(glob: string | string[], cwd: string = process.cwd()) {
+  async zip(glob: string | string[], cwd: string = this.core.workspaceFolder) {
     if (Array.isArray(glob)) glob = glob.join(" ");
 
     const encoding = "base64";

@@ -5,7 +5,7 @@ import { joinWithRoot } from "../../utils/path";
 
 export default class EjsTemplater implements ITemplater {
   #readTemplateFile(inputFileName: string, props?: any) {
-    return renderFile(joinWithRoot("templates", `${inputFileName}.ejs`), { props });
+    return renderFile(joinWithRoot("templates", `${inputFileName}.ejs`), { props }, { async: true });
   }
 
   #writeFile(outputFilePath: string, content: string) {
