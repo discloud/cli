@@ -2,22 +2,24 @@
 # yarn lockfile v1
 
 
-"@discloudapp/api-types@^0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.7.2.tgz#6b56a915c80aa26182575ccd8b703d0915b67a52"
-  integrity sha512-CzagFrJ+2lhxLhbT7y/q/UtjWWBrNunCjDo8VNNRbLw7LJGyRKZmfLWbN6lfdbto3wlufZax0KdD+T5+y5xHCQ==
+"@discloudapp/api-types@^0.7.3":
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.7.3.tgz#17b567a1f3b216d5723efd8680ddcfb6ea0e4e9b"
+  integrity sha512-i2pjG3SlVMlueoYek/AiCIkGtsAKW13BalGp0kKfXPQoYGZkiXDQ9sF80ZZrX4CsJNU0knrbhpMqx6iwnXD8Ww==
   dependencies:
     tslib "^2.8.1"
 
-"@discloudapp/util@^0.7.14":
-  version "0.7.14"
-  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.7.14.tgz#197b8435e997d15ba4877b3fb8afb249708e0fdf"
-  integrity sha512-9DYogsFALuXVqXpdReoJ941nnJL/ZAi6Uq+aKfmsV3/5i+XNAc2ZnkUJXBrmc1lFMZ/EJ5wUmEblMcMMk746yg==
+"@discloudapp/util@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.8.1.tgz#333b3549079a3b975ca5a4ef68c26e1cf46c2e14"
+  integrity sha512-92rYKmI0zv8ZN1MUOOjhlNC4dY74P2+lJFD5xVILUvxthNygTnxtG/StsYqH+wTMdPTEAAtdfsRcUN/UC4rwuQ==
   dependencies:
-    "@discloudapp/api-types" "^0.7.2"
+    "@discloudapp/api-types" "^0.7.3"
     glob "^11.0.1"
     source-map-support "^0.5.21"
     tslib "^2.8.1"
+    zod "^3.24.2"
+    zod-validation-error "^3.4.0"
 
 "@eslint-community/eslint-utils@^4.2.0", "@eslint-community/eslint-utils@^4.4.0":
   version "4.4.1"
@@ -339,10 +341,17 @@
   resolved "https://registry.yarnpkg.com/@types/ms/-/ms-2.1.0.tgz#052aa67a48eccc4309d7f0191b7e41434b90bb78"
   integrity sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==
 
-"@types/node@*", "@types/node@^22.13.10":
+"@types/node@*":
   version "22.13.10"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-22.13.10.tgz#df9ea358c5ed991266becc3109dc2dc9125d77e4"
   integrity sha512-I6LPUvlRH+O6VRUqYOcMudhaIdUVWfsjnZavnsraHvpBwaEyMN29ry+0UVJhImYL16xsscu0aske3yA+uPOWfw==
+  dependencies:
+    undici-types "~6.20.0"
+
+"@types/node@^22.13.11":
+  version "22.13.11"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.13.11.tgz#f0ed6b302dcf0f4229d44ea707e77484ad46d234"
+  integrity sha512-iEUCUJoU0i3VnrCmgoWCXttklWcvoCIx4jzcP22fioIVSdTmjgoEvmAO/QPw6TcS9k5FrNgn4w7q5lGOd1CT5g==
   dependencies:
     undici-types "~6.20.0"
 
@@ -366,7 +375,7 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@typescript-eslint/eslint-plugin@8.27.0", "@typescript-eslint/eslint-plugin@^8.26.1":
+"@typescript-eslint/eslint-plugin@8.27.0", "@typescript-eslint/eslint-plugin@^8.27.0":
   version "8.27.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-8.27.0.tgz#fbef10802365832ee1d1bd5d2117dcec82727a72"
   integrity sha512-4henw4zkePi5p252c8ncBLzLce52SEUz2Ebj8faDnuUXz2UuHEONYcJ+G0oaCF+bYCWVZtrGzq3FD7YXetmnSA==
@@ -381,7 +390,7 @@
     natural-compare "^1.4.0"
     ts-api-utils "^2.0.1"
 
-"@typescript-eslint/parser@8.27.0", "@typescript-eslint/parser@^8.26.1":
+"@typescript-eslint/parser@8.27.0", "@typescript-eslint/parser@^8.27.0":
   version "8.27.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-8.27.0.tgz#3f6beaa83934467eda34ae82ef04090014df8227"
   integrity sha512-XGwIabPallYipmcOk45DpsBSgLC64A0yvdAkrwEzwZ2viqGqRUJ8eEYoPz0CWnutgAFbNMPdsGGvzjSmcWVlEA==
@@ -2580,7 +2589,7 @@ typedarray.prototype.slice@^1.0.5:
     typed-array-buffer "^1.0.3"
     typed-array-byte-offset "^1.0.4"
 
-typescript-eslint@^8.26.1:
+typescript-eslint@^8.27.0:
   version "8.27.0"
   resolved "https://registry.yarnpkg.com/typescript-eslint/-/typescript-eslint-8.27.0.tgz#96cc34213723ec41a0bcaffc808f04c8d3cd64fb"
   integrity sha512-ZZ/8+Y0rRUMuW1gJaPtLWe4ryHbsPLzzibk5Sq+IFa2aOH1Vo0gPr1fbA6pOnzBke7zC2Da4w8AyCgxKXo3lqA==
@@ -2805,3 +2814,13 @@ yoctocolors-cjs@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/yoctocolors-cjs/-/yoctocolors-cjs-2.1.2.tgz#f4b905a840a37506813a7acaa28febe97767a242"
   integrity sha512-cYVsTjKl8b+FrnidjibDWskAv7UKOfcwaVZdp/it9n1s9fU3IkgDbhdIRKCW4JDsAlECJY0ytoVPT3sK6kideA==
+
+zod-validation-error@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/zod-validation-error/-/zod-validation-error-3.4.0.tgz#3a8a1f55c65579822d7faa190b51336c61bee2a6"
+  integrity sha512-ZOPR9SVY6Pb2qqO5XHt+MkkTRxGXb4EVtnjc9JpXUOtUB1T9Ru7mZOT361AN3MsetVe7R0a1KZshJDZdgp9miQ==
+
+zod@^3.24.2:
+  version "3.24.2"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.24.2.tgz#8efa74126287c675e92f46871cfc8d15c34372b3"
+  integrity sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==

@@ -30,10 +30,7 @@ export default <ICommand<CommandArgs>>{
 
     const dConfig = new DiscloudConfig(join(core.workspaceFolder, CONFIG_FILENAME));
 
-    if (!dConfig.isValid) {
-      dConfig.dispose();
-      return core.print.error("%s file is invalid!", CONFIG_FILENAME);
-    }
+    if (!dConfig.validate(true)) return core.print.error("%s file is invalid!", CONFIG_FILENAME);
 
     const spinner = core.print.spin("Zipping files...");
 
@@ -41,7 +38,7 @@ export default <ICommand<CommandArgs>>{
 
     const file = await resolveFile(buffer);
 
-    spinner.text = "Uploading...";
+    spinner.start("Uploading...");
 
     const response = await core.api.post<RESTPostApiUploadResult>(Routes.upload(), { files: [file] });
 
@@ -49,7 +46,5 @@ export default <ICommand<CommandArgs>>{
 
     if (response.status === "ok" && response.app)
       dConfig.update({ AVATAR: response.app.avatarURL, ID: response.app.id });
-
-    dConfig.dispose();
   },
 };
