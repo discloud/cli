@@ -71,7 +71,7 @@ export default class Core {
 
     const commandsPath = joinWithBuildRoot("commands");
 
-    await this.builder.loadCommands(commandsPath);
+    await this.builder.load(commandsPath);
 
     this.#loading = false;
     this.#loaded = true;

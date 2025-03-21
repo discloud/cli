@@ -1,4 +1,4 @@
 export interface IBuilder {
-  loadCommands(path: string): Promise<void>
+  load(path: string): Promise<void>
   run(): Promise<void>
 }

@@ -13,7 +13,7 @@ export default class YargsBuilder implements IBuilder {
     readonly yargs: Argv,
   ) { }
 
-  async loadCommands(path: string) {
+  async load(path: string) {
     this.yargs
       .alias({
         h: "help",
@@ -62,18 +62,25 @@ export default class YargsBuilder implements IBuilder {
     }
   }
 
-  #resolveCommand(commandObject: any, pathToFile?: string, _filename?: string, parentCommandName?: string) {
-    const command: ICommand = commandObject.default ?? commandObject;
+  #resolveCommand(module: any, filePath?: string, filename?: string, parentCommandName?: string) {
+    const command: ICommand = module.default ?? module;
+
+    const maybeCommandName = command.name ||= filename && basename(filename, extname(filename));
+
+    if (!maybeCommandName) throw new Error("Missing command name");
+
+    const commandName = maybeCommandName.trim();
+
+    const firstPartCommandName = commandName.split(" ")[0];
 
     return <CommandModule>{
-      command: command.name,
+      command: commandName,
       describe: command.description,
       aliases: command.aliases,
-      builder: (yargs: Argv) => {
-        if (pathToFile) {
-          const commandName = basename(pathToFile, extname(pathToFile));
-          const arg = parentCommandName ? `${parentCommandName} ${commandName}` : commandName;
-          const path = join(dirname(pathToFile), commandName);
+      builder: (yargs) => {
+        if (filePath) {
+          const arg = parentCommandName ? `${parentCommandName} ${firstPartCommandName}` : firstPartCommandName;
+          const path = join(dirname(filePath), firstPartCommandName);
           if (existsSync(path)) yargs.commandDir(path, { visit: (...args) => this.#resolveCommand(...args, arg) });
         }
 
@@ -84,32 +91,8 @@ export default class YargsBuilder implements IBuilder {
       handler: (args) => {
         if (typeof command.run !== "function") return this.yargs.showHelp();
 
-        const commandName = args._.reduce<string[]>((acc, cur) => {
-          cur = `${cur}`;
-
-          if (parentCommandName) {
-            if (
-              parentCommandName === cur ||
-              parentCommandName.startsWith(`${cur} `) ||
-              parentCommandName.endsWith(` ${cur}`)
-            ) return acc.concat(cur);
-          }
-
-          if (Array.isArray(command.name)) {
-            if (command.name.includes(cur)) return acc;
-          } else {
-            if (
-              command.name === cur ||
-              command.name.startsWith(`${cur} `) ||
-              command.name.endsWith(` ${cur}`)
-            ) return acc.concat(cur);
-          }
-
-          return acc;
-        }, []).join(" ");
-
         this.yargs.showVersion((message) => args._.length
-          ? this.core.print.bold("discloud %s v%s", commandName, message)
+          ? this.core.print.bold("discloud %s %s v%s", parentCommandName, firstPartCommandName, message)
           : this.core.print.bold("discloud v%s", message));
 
         if (command.requireAuth) {

@@ -2,7 +2,7 @@ import { type Options } from "yargs";
 import type Core from "../core";
 
 export interface ICommand<Args = any> {
-  name: string | string[]
+  name?: string
   description?: string
   aliases?: string | string[]
   /** Always `true` if `requiresApiToken` is `true` */
