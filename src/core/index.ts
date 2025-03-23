@@ -18,7 +18,7 @@ import ConsolePrint from "../structures/print/console";
 import EjsTemplater from "../structures/templater/ejs";
 import { DAY_IN_MILLISECONDS } from "../utils/constants";
 import { joinWithBuildRoot } from "../utils/path";
-import { getPackageJSON } from "../utils/utils";
+import { getPackageJSON } from "../utils/json";
 
 export default class Core {
   readonly api: IApi;
