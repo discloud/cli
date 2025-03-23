@@ -23,7 +23,7 @@ export default <ICommand<CommandArgs>>{
       alias: "g",
       type: "array",
       description: "Directories/files with glob pattern to zip",
-      default: "**",
+      default: ["**"],
     },
   },
 

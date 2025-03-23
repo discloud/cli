@@ -1,11 +1,11 @@
-import { APTPackages, type DiscloudConfigScopes } from "@discloudapp/api-types/v2";
+import { APTPackages, type APTString, type DiscloudConfigScopes } from "@discloudapp/api-types/v2";
 import { existsSync } from "fs";
 import { type ICommand } from "../interfaces/command";
 import { promptAppApt, promptAppAutoRestart, promptAppMain, promptAppRam, promptAppType, promptAppVersion } from "../prompts/discloud/config";
 import { CONFIG_FILENAME } from "../services/discloud/constants";
 
 interface CommandArgs {
-  apt?: string[]
+  apt?: APTString[]
   autorestart?: boolean
   build?: string
   "engine-version"?: string
