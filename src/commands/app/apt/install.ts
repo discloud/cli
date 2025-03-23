@@ -1,9 +1,9 @@
-import { APTPackages, type RESTPutApiAppAptResult, Routes } from "@discloudapp/api-types/v2";
+import { APTPackages, type APTString, type RESTPutApiAppAptResult, Routes } from "@discloudapp/api-types/v2";
 import { type ICommand } from "../../../interfaces/command";
 
 interface CommandArgs {
   app: string
-  apt: string[]
+  apt: APTString[]
 }
 
 export default <ICommand<CommandArgs>>{
