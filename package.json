@@ -24,7 +24,7 @@
   "homepage": "https://github.com/discloud/cli#readme",
   "dependencies": {
     "@discloudapp/api-types": "^0.7.3",
-    "@discloudapp/util": "^0.8.1",
+    "@discloudapp/util": "^0.8.2",
     "@inquirer/prompts": "^7.4.0",
     "adm-zip": "^0.5.16",
     "chalk": "^5.4.1",
