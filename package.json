@@ -43,14 +43,14 @@
     "@types/adm-zip": "^0.5.7",
     "@types/ejs": "^3.1.5",
     "@types/jsonwebtoken": "^9.0.9",
-    "@types/node": "^22.13.11",
+    "@types/node": "^22.13.13",
     "@types/update-notifier": "^6.0.8",
     "@types/yargs": "^17.0.33",
-    "@typescript-eslint/eslint-plugin": "^8.27.0",
-    "@typescript-eslint/parser": "^8.27.0",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
     "eslint": "^9.23.0",
     "globals": "^16.0.0",
     "typescript": "^5.8.2",
-    "typescript-eslint": "^8.27.0"
+    "typescript-eslint": "^8.28.0"
   }
 }
