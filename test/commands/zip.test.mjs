@@ -48,7 +48,7 @@ suite("Testing zip command", async () => {
   await test("Writting a empty zip", async (t) => {
     t.after((t) => {
       rmSync(out);
-      t.assert.ok(!existsSync(out))
+      t.assert.ok(!existsSync(out));
     });
 
     const glob = `__not_expected_files__${Math.random()}`;
@@ -62,13 +62,13 @@ suite("Testing zip command", async () => {
 
     const fileStat = await stat(out);
 
-    t.assert.strictEqual(fileStat.size, expectedFileSize)
+    t.assert.strictEqual(fileStat.size, expectedFileSize);
   });
 
   await test("Writting a zip with a file", async (t) => {
     t.after((t) => {
       rmSync(out);
-      t.assert.ok(!existsSync(out))
+      t.assert.ok(!existsSync(out));
     });
 
     const glob = "test/mock/zip_tester.txt";
@@ -82,7 +82,7 @@ suite("Testing zip command", async () => {
 
     const fileStat = await stat(out);
 
-    t.assert.strictEqual(fileStat.size, expectedFileSize)
+    t.assert.strictEqual(fileStat.size, expectedFileSize);
   });
 
   /**
