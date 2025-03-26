@@ -2,6 +2,7 @@ import { basename } from "path";
 import updateNotifier from "update-notifier";
 import yargs, { locale } from "yargs";
 import { hideBin } from "yargs/helpers";
+import { version } from "..";
 import { type ConfigData } from "../@types";
 import { type IApi } from "../interfaces/api";
 import { type IBuilder } from "../interfaces/builder";
@@ -16,29 +17,25 @@ import YargsBuilder from "../structures/builder/yargs";
 import FileSystem from "../structures/filesystem/fs";
 import ConsolePrint from "../structures/print/console";
 import EjsTemplater from "../structures/templater/ejs";
-import { DAY_IN_MILLISECONDS } from "../utils/constants";
+import { CLI_PACKAGE_NAME, DAY_IN_MILLISECONDS } from "../utils/constants";
 import { joinWithBuildRoot } from "../utils/path";
-import { getPackageJSON } from "../utils/json";
 
 export default class Core {
   readonly api: IApi;
   readonly builder: IBuilder;
   readonly config: IStore<ConfigData>;
   readonly fs: IFileSystem;
-  readonly packageJSON: any;
   readonly print: IPrint;
   readonly templater: ITemplater;
 
   constructor(readonly argv: string[]) {
-    this.packageJSON = getPackageJSON();
-
     this.print = new ConsolePrint(this);
 
     this.fs = new FileSystem(this);
 
     this.config = new ConfigStore();
 
-    const userAgent = new UserAgent(this.packageJSON.version);
+    const userAgent = new UserAgent(version);
 
     this.api = new REST(this, { userAgent });
 
@@ -81,7 +78,10 @@ export default class Core {
     if (!this.#loaded && !this.#loading) await this.load();
 
     updateNotifier({
-      pkg: this.packageJSON,
+      pkg: {
+        name: CLI_PACKAGE_NAME,
+        version,
+      },
       updateCheckInterval: DAY_IN_MILLISECONDS,
     }).notify({ defer: false });
 

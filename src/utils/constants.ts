@@ -10,6 +10,7 @@ export const MAX_STRING_LENGTH = 0x1fffffe8;
 
 export const IGNORE_FILENAME = ".discloudignore";
 
+export const CLI_PACKAGE_NAME = "discloud-cli";
 export const CLI_CONFIG_DIR = join(homedir(), ".discloud");
 export const CLI_CONFIG_FILENAME = ".cli";
 export const CLI_CONFIG_FILEPATH = join(CLI_CONFIG_DIR, CLI_CONFIG_FILENAME);
