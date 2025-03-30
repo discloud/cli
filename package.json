@@ -6,10 +6,12 @@
     "discloud": "bin/discloud"
   },
   "scripts": {
-    "watch": "node esbuild.mjs --watch",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.mjs --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
     "build": "node esbuild.mjs",
     "prepublish": "node esbuild.mjs --production",
-    "test": "npm run test:ts && npm run build && npm run test:node",
+    "test": "npm run test:ts && tsc --outDir out && npm run test:node",
     "test:node": "node --test \"**/test/**/*.test.?(c|m)js\"",
     "test:ts": "tsc --noEmit"
   },
@@ -24,7 +26,7 @@
   "homepage": "https://github.com/discloud/cli#readme",
   "dependencies": {
     "@discloudapp/api-types": "^0.7.3",
-    "@discloudapp/util": "^0.9.0",
+    "@discloudapp/util": "^0.9.1",
     "@inquirer/prompts": "^7.4.0",
     "adm-zip": "^0.5.16",
     "chalk": "^5.4.1",
@@ -48,10 +50,11 @@
     "@types/yargs": "^17.0.33",
     "@typescript-eslint/eslint-plugin": "^8.28.0",
     "@typescript-eslint/parser": "^8.28.0",
-    "esbuild": "^0.25.1",
+    "esbuild": "^0.25.2",
     "esbuild-plugin-version-injector": "^1.2.1",
     "eslint": "^9.23.0",
     "globals": "^16.0.0",
+    "npm-run-all": "^4.1.5",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.28.0"
   }

@@ -11,6 +11,7 @@ async function main() {
     format: "cjs",
     minify: production,
     sourcemap: "inline",
+    sourcesContent: false,
     platform: "node",
     outdir: "build",
     keepNames: true,
@@ -18,7 +19,6 @@ async function main() {
     packages: "external",
     plugins: [
       esbuildPluginVersionInjector(),
-      esbuildProblemMatcherPlugin,
     ],
   });
 
@@ -29,30 +29,6 @@ async function main() {
     await ctx.dispose();
   }
 }
-
-/** @type {import("esbuild").Plugin} */
-const esbuildProblemMatcherPlugin = {
-  name: "esbuild-problem-matcher",
-
-  setup(build) {
-    const logPrefix = process.argv.includes("--watch") ? "watch" : "build";
-
-    build.onStart(() => console.log("[%s] build started", logPrefix));
-
-    build.onEnd(result => {
-      for (let i = 0; i < result.errors.length; i++) {
-        const error = result.errors[i];
-
-        console.error("✘ [ERROR] %s", error.text);
-
-        if (error.location)
-          console.error("    %s:%s:%s:", error.location.file, error.location.line, error.location.column);
-      }
-
-      console.log("[%s] build finished", logPrefix);
-    });
-  },
-};
 
 try {
   await main();

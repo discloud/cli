@@ -10,6 +10,7 @@ node_modules
 /assets
 /discloud
 /docs
+/out
 /test
 /test*.[j|t]s
 /test*.m[j|t]s
