@@ -27,7 +27,7 @@
   "dependencies": {
     "@discloudapp/api-types": "^0.7.3",
     "@discloudapp/util": "^0.9.1",
-    "@inquirer/prompts": "^7.4.0",
+    "@inquirer/prompts": "^7.4.1",
     "adm-zip": "^0.5.16",
     "chalk": "^5.4.1",
     "easy-table": "^1.2.0",
@@ -45,17 +45,17 @@
     "@types/adm-zip": "^0.5.7",
     "@types/ejs": "^3.1.5",
     "@types/jsonwebtoken": "^9.0.9",
-    "@types/node": "^22.13.14",
+    "@types/node": "^22.14.0",
     "@types/update-notifier": "^6.0.8",
     "@types/yargs": "^17.0.33",
-    "@typescript-eslint/eslint-plugin": "^8.28.0",
-    "@typescript-eslint/parser": "^8.28.0",
+    "@typescript-eslint/eslint-plugin": "^8.29.0",
+    "@typescript-eslint/parser": "^8.29.0",
     "esbuild": "^0.25.2",
     "esbuild-plugin-version-injector": "^1.2.1",
     "eslint": "^9.23.0",
     "globals": "^16.0.0",
     "npm-run-all": "^4.1.5",
     "typescript": "^5.8.2",
-    "typescript-eslint": "^8.28.0"
+    "typescript-eslint": "^8.29.0"
   }
 }
