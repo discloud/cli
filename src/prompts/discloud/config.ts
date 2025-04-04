@@ -85,7 +85,7 @@ export function promptAppRam(min?: number, max?: number): Promise<number> {
     max,
     required: true,
     default: min,
-  }) as Promise<number>);
+  }));
 }
 
 export function promptAppType(type?: string): Promise<string> {
