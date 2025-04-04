@@ -16,7 +16,6 @@ jobs:
         with:
           node-version: lts/*
       - run: yarn
-      - run: npm run build
       - run: npm run test
 
   publish-npm:

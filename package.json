@@ -8,8 +8,7 @@
   "scripts": {
     "watch": "npm-run-all -p watch:*",
     "watch:esbuild": "node esbuild.mjs --watch",
-    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "build": "node esbuild.mjs",
+    "watch:tsc": "tsc --noEmit --watch",
     "prepublish": "node esbuild.mjs --production",
     "test": "npm run test:ts && tsc --outDir out && npm run test:node",
     "test:node": "node --test \"**/test/**/*.test.?(c|m)js\"",
