@@ -30,7 +30,7 @@ export default <ICommand<CommandArgs>>{
 
     const dConfig = new DiscloudConfig(join(core.workspaceFolder, CONFIG_FILENAME));
 
-    if (!dConfig.validate(true)) return core.print.error("%s file is invalid!", CONFIG_FILENAME);
+    dConfig.validate();
 
     const spinner = core.print.spin("Zipping files...");
 
