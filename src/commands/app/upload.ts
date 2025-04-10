@@ -36,7 +36,7 @@ export default <ICommand<CommandArgs>>{
 
     const buffer = await core.fs.zip(args.glob, core.workspaceFolder);
 
-    const file = await resolveFile(buffer);
+    const file = await resolveFile(buffer, "file.zip");
 
     spinner.start("Uploading...");
 
