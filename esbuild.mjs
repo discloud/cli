@@ -14,7 +14,6 @@ async function main() {
     sourcesContent: false,
     platform: "node",
     outdir: "build",
-    keepNames: true,
     logLevel: "warning",
     packages: "external",
     plugins: [
