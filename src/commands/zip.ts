@@ -39,7 +39,7 @@ export default <ICommand<CommandArgs>>{
 
     const files = await core.fs.glob(args.glob);
 
-    core.print.debug("Found %o files:", files.length, files);
+    core.print.debug("Found %o files: $o", files.length, files);
 
     spinner.start(`Adding ${files.length} files...`);
 
