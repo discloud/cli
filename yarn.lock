@@ -9,16 +9,16 @@
   dependencies:
     tslib "^2.8.1"
 
-"@discloudapp/util@^0.9.4":
-  version "0.9.4"
-  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.9.4.tgz#88d35e7101211e9de01010a2b3449fbb287eacbe"
-  integrity sha512-1WVCYbpBj+WUrVYJCGn9s1Y2AbNKmPFTZxlnwIYbN0aNJiGIIk1ML6xk7/VwULWcnb5viDVyGp6XTp2k3wlU7w==
+"@discloudapp/util@^0.9.6":
+  version "0.9.6"
+  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.9.6.tgz#67d0ed5efbc8ec73b46be70703c2c87774e4eec6"
+  integrity sha512-xmVK13wxbsPKWzjHdqSRNzgGDjMl6jqvpi7n8C8Ck/MELq5Nmt8gZi01fJU4PPv0whdWJFwxsirG45VwbkD+jA==
   dependencies:
     "@discloudapp/api-types" "^0.7.3"
     glob "^11.0.1"
     source-map-support "^0.5.21"
     tslib "^2.8.1"
-    zod "^3.24.2"
+    zod "^3.24.3"
     zod-validation-error "^3.4.0"
 
 "@esbuild/aix-ppc64@0.25.2":
@@ -471,7 +471,7 @@
   resolved "https://registry.yarnpkg.com/@types/ms/-/ms-2.1.0.tgz#052aa67a48eccc4309d7f0191b7e41434b90bb78"
   integrity sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==
 
-"@types/node@*", "@types/node@^22.14.0":
+"@types/node@*", "@types/node@^22.14.1":
   version "22.14.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-22.14.1.tgz#53b54585cec81c21eee3697521e31312d6ca1e6f"
   integrity sha512-u0HuPQwe/dHrItgHHpmw3N2fYCR6x4ivMNbPHRkBVP4CvN+kiRrKHWk3i8tXiO/joPwXLMYvF9TTF0eqgHIuOw==
@@ -498,7 +498,7 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@typescript-eslint/eslint-plugin@8.30.1", "@typescript-eslint/eslint-plugin@^8.29.1":
+"@typescript-eslint/eslint-plugin@8.30.1", "@typescript-eslint/eslint-plugin@^8.30.1":
   version "8.30.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-8.30.1.tgz#9beb9e4fbfdde40410e96587cc56dded1942cdf1"
   integrity sha512-v+VWphxMjn+1t48/jO4t950D6KR8JaJuNXzi33Ve6P8sEmPr5k6CEXjdGwT6+LodVnEa91EQCtwjWNUCPweo+Q==
@@ -513,7 +513,7 @@
     natural-compare "^1.4.0"
     ts-api-utils "^2.0.1"
 
-"@typescript-eslint/parser@8.30.1", "@typescript-eslint/parser@^8.29.1":
+"@typescript-eslint/parser@8.30.1", "@typescript-eslint/parser@^8.30.1":
   version "8.30.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-8.30.1.tgz#8a9fa650b046e64656e21d4fdff86535b6a084b6"
   integrity sha512-H+vqmWwT5xoNrXqWs/fesmssOW70gxFlgcMlYcBaWNPIEWDgLa4W9nkSPmhuOgLnXq9QYgkZ31fhDyLhleCsAg==
@@ -3001,7 +3001,7 @@ typedarray.prototype.slice@^1.0.5:
     typed-array-buffer "^1.0.3"
     typed-array-byte-offset "^1.0.4"
 
-typescript-eslint@^8.29.1:
+typescript-eslint@^8.30.1:
   version "8.30.1"
   resolved "https://registry.yarnpkg.com/typescript-eslint/-/typescript-eslint-8.30.1.tgz#c9ed49b459bd98e325fb78e2c86943dce7bb1cc0"
   integrity sha512-D7lC0kcehVH7Mb26MRQi64LMyRJsj3dToJxM1+JVTl53DQSV5/7oUGWQLcKl1C1KnoVHxMMU2FNQMffr7F3Row==
@@ -3247,7 +3247,7 @@ zod-validation-error@^3.4.0:
   resolved "https://registry.yarnpkg.com/zod-validation-error/-/zod-validation-error-3.4.0.tgz#3a8a1f55c65579822d7faa190b51336c61bee2a6"
   integrity sha512-ZOPR9SVY6Pb2qqO5XHt+MkkTRxGXb4EVtnjc9JpXUOtUB1T9Ru7mZOT361AN3MsetVe7R0a1KZshJDZdgp9miQ==
 
-zod@^3.24.2:
-  version "3.24.2"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-3.24.2.tgz#8efa74126287c675e92f46871cfc8d15c34372b3"
-  integrity sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==
+zod@^3.24.3:
+  version "3.24.3"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.24.3.tgz#1f40f750a05e477396da64438e0e1c0995dafd87"
+  integrity sha512-HhY1oqzWCQWuUqvBFnsyrtZRhyPeR7SUGv+C4+MsisMuVfSPx8HpwWqH8tRahSlt6M3PiFAcoeFhZAqIXTxoSg==
