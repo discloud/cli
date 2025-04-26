@@ -1,15 +1,13 @@
-import pluginJs from "@eslint/js";
+import js from "@eslint/js";
+import { defineConfig } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
-/** @type {import("eslint").Linter.Config[]} */
-export default [
-  { files: ["**/*.?(c|m)ts", "**/esbuild.mjs"] },
-  { ignores: ["**/*.js", "**/*.d.?(c|m)ts"] },
-  { languageOptions: { globals: globals.node } },
-  { languageOptions: { sourceType: "script" } },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
+export default defineConfig([
+  { files: ["**/*.{js,mjs,cjs,ts}"], plugins: { js }, extends: ["js/recommended"] },
+  { files: ["**/*.js"], languageOptions: { sourceType: "script" } },
+  { files: ["**/*.{js,mjs,cjs,ts}"], languageOptions: { globals: globals.node } },
+  tseslint.configs.recommended,
   {
     rules: {
       "@typescript-eslint/consistent-type-imports": ["warn", { fixStyle: "inline-type-imports" }],
@@ -38,4 +36,4 @@ export default [
       semi: ["warn", "always"],
     },
   },
-];
+]);
