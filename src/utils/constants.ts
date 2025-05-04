@@ -22,22 +22,6 @@ export const ERRORS_TO_LOG = new Set<string>(["MissingRequiredOption", "Prompt",
 export const BACKUPS_PATH = join("discloud", "backups");
 export const LOGS_PATH = join("discloud", "logs");
 
-/* export enum FileExt {
-  cjs = "js",
-  cts = "ts",
-  go = "go",
-  js = "js",
-  jsx = "js",
-  mjs = "js",
-  mts = "ts",
-  py = "py",
-  rb = "rb",
-  rlib = "rs",
-  rs = "rs",
-  ts = "ts",
-  tsx = "ts",
-} */
-
 export const APP_VERSION: Record<AppLanguages, AppVersion[]> = {
   go: ["latest"],
   java: ["latest"],
