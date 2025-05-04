@@ -24,8 +24,8 @@
   },
   "homepage": "https://github.com/discloud/cli#readme",
   "dependencies": {
-    "@discloudapp/api-types": "^0.7.3",
-    "@discloudapp/util": "^0.10.2",
+    "@discloudapp/api-types": "^0.7.5",
+    "@discloudapp/util": "^0.10.5",
     "@inquirer/prompts": "^7.5.0",
     "adm-zip": "^0.5.16",
     "chalk": "^5.4.1",

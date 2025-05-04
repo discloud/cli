@@ -2,19 +2,19 @@
 # yarn lockfile v1
 
 
-"@discloudapp/api-types@^0.7.3":
-  version "0.7.3"
-  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.7.3.tgz#17b567a1f3b216d5723efd8680ddcfb6ea0e4e9b"
-  integrity sha512-i2pjG3SlVMlueoYek/AiCIkGtsAKW13BalGp0kKfXPQoYGZkiXDQ9sF80ZZrX4CsJNU0knrbhpMqx6iwnXD8Ww==
+"@discloudapp/api-types@^0.7.5":
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-0.7.5.tgz#6040e2965482ef173b5be7082dfe5cebb2bed01a"
+  integrity sha512-2MRZM5PcvXqRYDeh3mZJEHKg9Od3DjudRtS/oMRRlIVhn/r+qlQZyTMGBEs9ruErCxbKv/pxMAf906iRrYykEQ==
   dependencies:
     tslib "^2.8.1"
 
-"@discloudapp/util@^0.10.2":
-  version "0.10.2"
-  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.10.2.tgz#69b65ac12736ff71734953667af036cf868f8861"
-  integrity sha512-Wc4Zvy4WkPFpZ7cgOdWlKmBmFjfn/kJS/HCbpVu0jUAXGhGU6UVVLIhU2TkNrvRNOhWYyWT65ILfwpsy1S6sZA==
+"@discloudapp/util@^0.10.5":
+  version "0.10.5"
+  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-0.10.5.tgz#d194573b178e31daf93872861b417711511e3881"
+  integrity sha512-8L183FGKqu0CD2eacvUIIV2hroOsGGY3NJADWtbBF4EOqJOT3zi7nsTTQ/CxqypTHw0HVEaQijnwrNWrRbwKxQ==
   dependencies:
-    "@discloudapp/api-types" "^0.7.3"
+    "@discloudapp/api-types" "^0.7.5"
     file-type "^20.5.0"
     glob "^11.0.2"
     globify-gitignore "^1.0.3"
