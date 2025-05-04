@@ -3,7 +3,7 @@ import { join } from "path";
 import { type IZip } from "../../interfaces/zip";
 
 export default class Zip implements IZip {
-  readonly zip: AdmZip;
+  declare readonly zip: AdmZip;
 
   constructor() {
     this.zip = new AdmZip();
