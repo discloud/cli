@@ -10,6 +10,7 @@ export interface IPrint {
   log(...args: any): void
   spin(text?: string): Ora
   success(...args: any): void
+  table<T>(array: T[], excludeKeys?: (keyof T)[]): void
   table(obj: unknown, excludeKeys?: any[]): void
   warn(...args: any): void
   write(text: string): void
