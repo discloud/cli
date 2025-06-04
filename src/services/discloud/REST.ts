@@ -16,7 +16,7 @@ export default class REST implements IApi {
   }
 
   get token() {
-    return this.core.config.get("token", true);
+    return this.core.config.get("token");
   }
 
   constructor(readonly core: Core, options?: Partial<RESTOptions>) {
@@ -25,17 +25,17 @@ export default class REST implements IApi {
   }
 
   get isLimited() {
-    const token = this.core.config.get("token");
+    const token = this.token;
     if (token) try { this.rateLimiter.verify(token); } catch { return true; }
     return false;
   }
 
   get hasToken() {
-    return Boolean(this.core.config.get("token"));
+    return Boolean(this.token);
   }
 
   get resetDateString() {
-    const token = this.core.config.get("token");
+    const token = this.token;
     return token && this.rateLimiter.getResetDateString(token);
   }
 
