@@ -13,11 +13,12 @@ import { type ITemplater } from "../interfaces/templater";
 import REST from "../services/discloud/REST";
 import { UserAgent } from "../services/discloud/UserAgent";
 import ConfigStore from "../stores/Config";
+import FsJsonStore from "../stores/FsJson";
 import YargsBuilder from "../structures/builder/yargs";
 import FileSystem from "../structures/filesystem/fs";
 import ConsolePrint from "../structures/print/console";
 import EjsTemplater from "../structures/templater/ejs";
-import { CLI_PACKAGE_NAME, DAY_IN_MILLISECONDS } from "../utils/constants";
+import { CLI_CONFIG_FILEPATH, CLI_PACKAGE_NAME, DAY_IN_MILLISECONDS } from "../utils/constants";
 import { joinWithBuildRoot } from "../utils/path";
 
 export default class Core {
@@ -33,7 +34,9 @@ export default class Core {
 
     this.fs = new FileSystem(this);
 
-    this.config = new ConfigStore();
+    const configStore: IStore<ConfigData> = new FsJsonStore<ConfigData>(CLI_CONFIG_FILEPATH, { encoding: "base64" });
+
+    this.config = new ConfigStore<ConfigData>(configStore);
 
     const userAgent = new UserAgent(version);
 
