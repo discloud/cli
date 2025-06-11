@@ -1,6 +1,6 @@
 import { basename } from "path";
 import updateNotifier from "update-notifier";
-import yargs, { locale } from "yargs";
+import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { version } from "..";
 import { type ConfigData } from "../@types";
@@ -59,8 +59,9 @@ export default class Core {
     return this.#workspaceName ??= basename(this.workspaceFolder);
   }
 
+  #locale!: string;
   get locale(): string {
-    return locale();
+    return this.#locale ??= Intl.DateTimeFormat().resolvedOptions().locale;
   }
 
   #loaded!: boolean;
