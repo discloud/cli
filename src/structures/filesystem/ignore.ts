@@ -3,6 +3,7 @@ import { readFile } from "fs/promises";
 import { glob } from "glob";
 import { globifyGitIgnore } from "globify-gitignore";
 import { dirname } from "path";
+import { setTimeout as sleep } from "timers/promises";
 import { IGNORE_FILENAME } from "../../utils/constants";
 import { joinWithRoot } from "../../utils/path";
 
@@ -14,6 +15,7 @@ export default class Ignore {
 
     for (let i = 0; i < result.length; i++) {
       patterns.push(result[i].glob);
+      await sleep();
     }
 
     return patterns;

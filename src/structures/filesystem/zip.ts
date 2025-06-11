@@ -1,5 +1,6 @@
 import AdmZip from "adm-zip";
 import { join } from "path";
+import { setTimeout as sleep } from "timers/promises";
 import { type IZip } from "../../interfaces/zip";
 
 export default class Zip implements IZip {
@@ -20,6 +21,8 @@ export default class Zip implements IZip {
       const file = files[i];
 
       this.zip.addLocalFile(join(cwd, file), void 0, file);
+
+      await sleep();
     }
   }
 
