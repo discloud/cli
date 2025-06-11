@@ -1,7 +1,7 @@
 {
   "name": "discloud-cli",
   "description": "A fast option to manage your apps on Discloud.",
-  "version": "2.3.16",
+  "version": "2.3.17",
   "bin": {
     "discloud": "bin/discloud"
   },
