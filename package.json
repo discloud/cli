@@ -5,6 +5,9 @@
   "bin": {
     "discloud": "bin/discloud"
   },
+  "engines": {
+    "node": ">=20.12"
+  },
   "scripts": {
     "watch": "npm-run-all -p watch:*",
     "watch:esbuild": "node esbuild.mjs --watch",
