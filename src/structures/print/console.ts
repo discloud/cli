@@ -1,7 +1,7 @@
 import { type RESTApiBaseResult } from "@discloudapp/api-types/v2";
-import chalk from "chalk";
 import Table from "easy-table";
 import ora, { type Ora } from "ora";
+import { styleText } from "util";
 import type Core from "../../core";
 import { type IPrint } from "../../interfaces/print";
 
@@ -32,7 +32,7 @@ export default class ConsolePrint implements IPrint {
   bold(first: any, ...args: any) {
     this.#stopSpin();
 
-    if (typeof first === "string") return console.log(chalk.bold(first), ...args);
+    if (typeof first === "string") return console.log(styleText("bold", first), ...args);
     console.log(first, ...args);
   }
 
@@ -54,15 +54,15 @@ export default class ConsolePrint implements IPrint {
   error(first: any, ...args: any) {
     this.#stopSpin();
 
-    if (typeof first === "string") return console.error(`%s ${first}`, chalk.red("[error]"), ...args);
-    console.error(chalk.red("[error]"), first, ...args);
+    if (typeof first === "string") return console.error(`%s ${first}`, styleText("red", "[error]"), ...args);
+    console.error(styleText("red", "[error]"), first, ...args);
   }
 
   info(first: any, ...args: any) {
     this.#stopSpin();
 
-    if (typeof first === "string") return console.info(`%s ${first}`, chalk.blue("[info]"), ...args);
-    console.info(chalk.blue("[info]"), first, ...args);
+    if (typeof first === "string") return console.info(`%s ${first}`, styleText("blue", "[info]"), ...args);
+    console.info(styleText("blue", "[info]"), first, ...args);
   }
 
   log(...args: any) {
@@ -85,8 +85,8 @@ export default class ConsolePrint implements IPrint {
   success(first: any, ...args: any): void {
     this.#stopSpin();
 
-    if (typeof first === "string") return console.log(`%s ${first}`, chalk.green("[success]"), ...args);
-    console.log(chalk.green("[success]"), first, ...args);
+    if (typeof first === "string") return console.log(`%s ${first}`, styleText("green", "[success]"), ...args);
+    console.log(styleText("green", "[success]"), first, ...args);
   }
 
   table<T>(objOrArray: T, excludeKeys?: any[]) {
@@ -100,8 +100,8 @@ export default class ConsolePrint implements IPrint {
   warn(first: any, ...args: any): void {
     this.#stopSpin();
 
-    if (typeof first === "string") return console.warn(`%s ${first}`, chalk.yellow("[warn]"), ...args);
-    console.warn(chalk.yellow("[warn]"), first, ...args);
+    if (typeof first === "string") return console.warn(`%s ${first}`, styleText("yellow", "[warn]"), ...args);
+    console.warn(styleText("yellow", "[warn]"), first, ...args);
   }
 
   write(text: string) {
