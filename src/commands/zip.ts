@@ -2,8 +2,10 @@ import { type ICommand } from "../interfaces/command";
 import { type IZip } from "../interfaces/zip";
 import Zip from "../structures/filesystem/zip";
 
+type BufferOrEncoding = BufferEncoding | "buffer"
+
 interface CommandArgs {
-  encoding?: BufferEncoding
+  encoding?: BufferOrEncoding
   glob: string[]
   out: string
 }
@@ -16,7 +18,7 @@ export default <ICommand<CommandArgs>>{
     encoding: {
       alias: "e",
       type: "string",
-      choices: ["base64", "base64url", "hex"] as BufferEncoding[],
+      choices: ["base64", "base64url", "buffer", "hex"] as BufferOrEncoding[],
       description: "Response encoding (This option doesn't create the zip file)",
       conflicts: "out",
     },
@@ -52,7 +54,10 @@ export default <ICommand<CommandArgs>>{
     if (args.encoding) {
       spinner.start("Getting zip buffer...");
       const buffer = await zipper.getBuffer();
-      return core.print.write(buffer.toString(args.encoding));
+      switch (args.encoding) {
+        case "buffer": return core.print.write(buffer);
+        default: return core.print.write(buffer.toString(args.encoding));
+      }
     }
 
     spinner.start("Writting zip file...");

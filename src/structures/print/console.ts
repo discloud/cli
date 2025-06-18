@@ -104,10 +104,10 @@ export default class ConsolePrint implements IPrint {
     console.warn(styleText("yellow", "[warn]"), first, ...args);
   }
 
-  write(text: string) {
+  write(buffer: Uint8Array | string) {
     this.#stopSpin();
 
-    process.stdout.write(text);
+    process.stdout.write(buffer);
   }
 }
 

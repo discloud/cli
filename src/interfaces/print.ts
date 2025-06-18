@@ -13,5 +13,5 @@ export interface IPrint {
   table<T>(array: T[], excludeKeys?: (keyof T)[]): void
   table(obj: unknown, excludeKeys?: any[]): void
   warn(...args: any): void
-  write(text: string): void
+  write(buffer: Uint8Array | string): void
 }
