@@ -28,8 +28,8 @@
   },
   "homepage": "https://github.com/discloud/cli#readme",
   "dependencies": {
-    "@discloudapp/api-types": "^0.7.5",
-    "@discloudapp/util": "^0.10.5",
+    "@discloudapp/api-types": "^1.0.0",
+    "@discloudapp/util": "^1.0.0",
     "@inquirer/prompts": "^7.5.3",
     "adm-zip": "^0.5.16",
     "easy-table": "^1.2.0",
