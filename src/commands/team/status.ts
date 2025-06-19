@@ -7,7 +7,7 @@ interface CommandArgs {
 
 export default <ICommand<CommandArgs>>{
   name: "status <app>",
-  description: "Get status of your app",
+  description: "Get status of your team app",
 
   requireAuth: true,
 
@@ -21,7 +21,7 @@ export default <ICommand<CommandArgs>>{
   async run(core, args) {
     core.print.spin(`Fetching ${args.app} status...`);
 
-    const response = await core.api.get<RESTGetApiAppStatusResult>(Routes.appStatus(args.app));
+    const response = await core.api.get<RESTGetApiAppStatusResult>(Routes.teamStatus(args.app));
 
     if (!response.apps) return core.print.apiResponse(response);
 
