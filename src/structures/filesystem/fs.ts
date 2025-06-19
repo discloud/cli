@@ -1,4 +1,5 @@
-import { exec } from "child_process";
+import { spawn } from "child_process";
+import { on } from "events";
 import { existsSync, type Dirent } from "fs";
 import { readdir, readFile, writeFile } from "fs/promises";
 import { glob } from "glob";
@@ -6,7 +7,7 @@ import { type } from "os";
 import { join, relative } from "path";
 import type Core from "../../core";
 import { type FileSystemReadDirWithFileTypesOptions, type IFileSystem } from "../../interfaces/filesystem";
-import { MAX_STRING_LENGTH, MINUTE_IN_MILLISECONDS } from "../../utils/constants";
+import { MINUTE_IN_MILLISECONDS } from "../../utils/constants";
 import Ignore from "./ignore";
 
 export default class FileSystem implements IFileSystem {
@@ -57,23 +58,31 @@ export default class FileSystem implements IFileSystem {
   }
 
   async zip(glob: string | string[], cwd: string = this.core.workspaceFolder) {
+    return Buffer.concat(await Array.fromAsync(this.zipGenerator(glob, cwd)));
+  }
+
+  zipGenerator(glob: string | string[], cwd?: string): AsyncGenerator<Buffer>
+  async* zipGenerator(glob: string | string[], cwd: string = this.core.workspaceFolder) {
     if (Array.isArray(glob)) glob = glob.join(" ");
 
-    const encoding = "base64";
+    const encoding = "buffer";
     const zipCommand = "discloud zip";
 
-    const response = await new Promise<string>(function (resolve, reject) {
-      exec(`${zipCommand} -e=${encoding} -g=${glob || "**"}`, {
-        cwd,
-        maxBuffer: MAX_STRING_LENGTH,
-        timeout: MINUTE_IN_MILLISECONDS,
-      }, function (error, stdout, _stderr) {
-        if (error) return reject(error);
-        const parts = stdout.split("\n");
-        resolve(parts[parts[0].includes(zipCommand) ? 1 : 0]);
-      });
+    const child = spawn(zipCommand, ["-e", encoding, "-g", glob], {
+      cwd,
+      shell: true,
+      stdio: "pipe",
+      timeout: MINUTE_IN_MILLISECONDS,
     });
 
-    return Buffer.from(response, encoding);
+    let notSkippedFirstLine = true;
+    for await (const [chunk] of on(child.stdout, "data", { close: ["end"] })) {
+      if (notSkippedFirstLine) {
+        notSkippedFirstLine = false;
+        if (`${chunk}`.includes(zipCommand)) continue;
+      }
+
+      yield chunk;
+    }
   }
 }
