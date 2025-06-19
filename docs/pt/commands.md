@@ -23,7 +23,7 @@ discloud app <comando>                         Gerencie seus aplicativos
   discloud app ram <app> <amount>              Defina a quantidade de RAM para seu aplicativo                   
   discloud app restart [app]                   Reinicie um ou todos os seus aplicativos de equipe no Discloud   
   discloud app start [app]                     Inicie um ou todos os seus aplicativos no Discloud               
-  discloud app status [app]                    Obtenha o status dos seus aplicativos                            
+  discloud app status <app>                    Obtenha o status de sua aplicação                                
   discloud app stop [app]                      Pare um ou todos os seus aplicativos no Discloud                 
   discloud app upload [glob..]                 Carregue um aplicativo ou site para o Discloud                   [aliases: up]
 discloud init                                  Inicie o arquivo discloud.config                                 
@@ -36,6 +36,7 @@ discloud team <comando>                        Gerencie aplicativos de equipe
   discloud team ram <app> <amount>             Defina a quantidade de RAM para seu aplicativo                   
   discloud team restart [app]                  Reinicie um ou todos os seus aplicativos no Discloud             
   discloud team start [app]                    Inicie um ou todos os seus aplicativos da equipe no Discloud     
+  discloud team status <app>                   Obtenha o status de sua aplicação de equipe                      
   discloud team stop [app]                     Pare um ou todos os seus aplicativos da equipe no Discloud       
 discloud user <comando>                        Gerencie seu perfil                                              
   discloud user info                           Obtenha suas informações                                         
