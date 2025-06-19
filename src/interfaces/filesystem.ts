@@ -37,4 +37,9 @@ export interface IFileSystem {
    * @param cwd default `process.cwd()`
    */
   zip(glob: string | string[], cwd?: string): Promise<Buffer>
+
+  /**
+   * @param cwd default `process.cwd()`
+   */
+  zipGenerator(glob: string | string[], cwd?: string): AsyncGenerator<Buffer, void, unknown>
 }

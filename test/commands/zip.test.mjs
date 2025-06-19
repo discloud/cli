@@ -1,36 +1,31 @@
 import AdmZip from "adm-zip";
-import { exec } from "child_process";
+import { spawn } from "child_process";
+import { on } from "events";
 import { existsSync, rmSync } from "fs";
 import { stat } from "fs/promises";
 import { suite, test } from "node:test";
 
 suite("Testing zip command", async () => {
-  await test("Getting a empty zip base64", async (t) => {
-    const encoding = "base64";
+  await test("Getting a empty zip buffer", async (t) => {
+    const encoding = "buffer";
     const filePath = `__not_expected_files__${Math.random()}`;
     const expectedEntryCount = 0;
 
-    /** @type {string} */
-    const responseBase64 = await executeZipCommand(filePath, { encoding });
-
-    const buffer = Buffer.from(responseBase64, encoding);
+    const buffer = await executeZipCommand(filePath, { encoding });
 
     const zipper = new AdmZip(buffer);
 
     t.assert.strictEqual(zipper.getEntryCount(), expectedEntryCount);
   });
 
-  await test("Getting a zip base64 with a file", async (t) => {
-    const encoding = "base64";
+  await test("Getting a zip buffer with a file", async (t) => {
+    const encoding = "buffer";
     const filePath = "test/mock/zip_tester.txt";
     const expectedEntryCount = 1;
     const expectedEntryName = filePath;
     const expectedContent = "# DO NOT REMOVE";
 
-    /** @type {string} */
-    const responseBase64 = await executeZipCommand(filePath, { encoding });
-
-    const buffer = Buffer.from(responseBase64, encoding);
+    const buffer = await executeZipCommand(filePath, { encoding });
 
     const zipper = new AdmZip(buffer);
 
@@ -89,7 +84,7 @@ suite("Testing zip command", async () => {
    * @overload
    * @param {string} [glob]
    * @param {OptionsWithEncoding} options
-   * @returns {Promise<string>}
+   * @returns {Promise<Buffer>}
    * @typedef OptionsWithEncoding
    * @prop {BufferEncoding} encoding
    * @prop {number} [maxBuffer]
@@ -101,25 +96,43 @@ suite("Testing zip command", async () => {
    * @typedef OptionsWithOut
    * @prop {string} out
    */
-  function executeZipCommand(glob, options) {
+  async function executeZipCommand(glob, options) {
+    return Buffer.concat(await Array.fromAsync(zipGenerator(glob, options)));
+  }
+
+  /**
+   * @param {string} [glob]
+   * @param {OptionsWithEncoding} [options]
+   * @returns {AsyncGenerator<Buffer>}
+   * 
+   * @typedef OptionsWithEncoding
+   * @prop {BufferEncoding | "buffer"} encoding
+   */
+  async function* zipGenerator(glob, options) {
     const MINUTE_IN_MILLISECONDS = 60_000;
+
     const zipCommand = "discloud zip";
     const localBinCommand = "bin/" + zipCommand;
 
-    const command = [
-      "node",
+    const child = spawn("node", [
       localBinCommand,
       ...options?.encoding ? ["--encoding", options.encoding] : [],
       ...options?.out ? ["--out", options.out] : [],
       glob,
-    ].join(" ");
-
-    return new Promise(function (resolve, reject) {
-      exec(command, { timeout: MINUTE_IN_MILLISECONDS }, function (error, stdout, _stderr) {
-        if (error) return reject(error);
-        const parts = stdout.split("\n");
-        resolve(parts[parts[0].includes(zipCommand) ? 1 : 0]);
-      });
+    ], {
+      shell: true,
+      stdio: "pipe",
+      timeout: MINUTE_IN_MILLISECONDS,
     });
+
+    let notSkippedFirstLine = true;
+    for await (const [chunk] of on(child.stdout, "data", { close: ["end"] })) {
+      if (notSkippedFirstLine) {
+        notSkippedFirstLine = false;
+        if (`${chunk}`.includes(zipCommand)) continue;
+      }
+
+      yield chunk;
+    }
   }
 });
