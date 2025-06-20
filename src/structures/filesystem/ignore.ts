@@ -21,12 +21,13 @@ export default class Ignore {
     return patterns;
   }
 
-  async findIgnoreFiles() {
+  async findIgnoreFiles(cwd: string = process.cwd()) {
     const path = joinWithRoot(IGNORE_FILENAME);
 
     const patterns = await this.#getGlobfiedIgnore(path);
 
     const files = await glob(`**/${IGNORE_FILENAME}`, {
+      cwd,
       dot: true,
       ignore: patterns,
       nodir: true,
