@@ -1,5 +1,5 @@
 import AdmZip from "adm-zip";
-import { readFile, stat } from "fs/promises";
+import { stat } from "fs/promises";
 import { globIterate } from "glob";
 import { type } from "os";
 import { join } from "path";
@@ -21,19 +21,23 @@ export default class Zip implements IZip {
     if (!files?.length) return;
 
     for (let i = 0; i < files.length; i++) {
-      const file = files[i];
+      const zipName = files[i];
 
-      const filePath = join(cwd, file);
+      const filePath = join(cwd, zipName);
 
-      let stats;
-      try { stats = await stat(filePath); }
+      let fileStat;
+      try { fileStat = await stat(filePath); }
       catch { continue; }
 
-      if (!stats.isFile()) continue;
+      if (!fileStat.isFile()) continue;
 
-      const buffer = await readFile(filePath);
-
-      this.zip.addFile(file, buffer);
+      await new Promise<void>((resolve, reject) => {
+        // @ts-expect-error ts(2551)
+        this.zip.addLocalFileAsync({ localPath, zipName }, (err) => {
+          if (err) return reject(err);
+          resolve();
+        });
+      });
     }
   }
 
@@ -54,13 +58,17 @@ export default class Zip implements IZip {
     });
 
     for await (const file of globIterator) {
-      const filePath = file.fullpath();
+      const localPath = file.fullpath();
 
-      const buffer = await readFile(filePath);
+      const zipName = file.relative();
 
-      const fileRelativeName = file.relative();
-
-      this.zip.addFile(fileRelativeName, buffer);
+      await new Promise<void>((resolve, reject) => {
+        // @ts-expect-error ts(2551)
+        this.zip.addLocalFileAsync({ localPath, zipName }, (err) => {
+          if (err) return reject(err);
+          resolve();
+        });
+      });
     }
   }
 
