@@ -22,7 +22,10 @@ export interface IFileSystem {
    */
   exists(path: string, cwd?: string): boolean
 
-  glob(pattern: string | string[]): Promise<string[]>
+  /**
+   * @param cwd default `process.cwd()`
+   */
+  glob(pattern: string | string[], cwd?: string): Promise<string[]>
 
   readdir(path: string, recursive?: boolean): Promise<string[]>
   readdir(path: string, options: FileSystemReadDirWithFileTypesOptions): Promise<Dirent[]>
@@ -41,5 +44,5 @@ export interface IFileSystem {
   /**
    * @param cwd default `process.cwd()`
    */
-  zipGenerator(glob: string | string[], cwd?: string): AsyncGenerator<Buffer, void, unknown>
+  zipIterate(glob: string | string[], cwd?: string): AsyncGenerator<Buffer, void, unknown>
 }

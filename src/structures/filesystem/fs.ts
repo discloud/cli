@@ -12,7 +12,7 @@ import Ignore from "./ignore";
 
 export default class FileSystem implements IFileSystem {
   constructor(
-    readonly core: Core,
+    protected readonly core: Core,
   ) { }
 
   asAbsolutePath(path: string, cwd: string = this.core.workspaceFolder): string {
@@ -27,16 +27,18 @@ export default class FileSystem implements IFileSystem {
     return existsSync(join(cwd, path));
   }
 
-  async glob(pattern: string | string[]): Promise<string[]> {
+  async glob(pattern: string | string[], cwd: string = this.core.workspaceFolder): Promise<string[]> {
     const ignoreModule = new Ignore();
-    const ignoreFiles = await ignoreModule.findIgnoreFiles();
+    const ignoreFiles = await ignoreModule.findIgnoreFiles(cwd);
     const ignore = await ignoreModule.resolveIgnoreFiles(ignoreFiles);
 
+    const windowsPathsNoEscape = type() === "Windows_NT";
+
     return glob(pattern, {
-      nodir: true,
       dot: true,
       ignore,
-      windowsPathsNoEscape: type() === "Windows_NT",
+      nodir: true,
+      windowsPathsNoEscape,
     });
   }
 
@@ -58,11 +60,11 @@ export default class FileSystem implements IFileSystem {
   }
 
   async zip(glob: string | string[], cwd: string = this.core.workspaceFolder) {
-    return Buffer.concat(await Array.fromAsync(this.zipGenerator(glob, cwd)));
+    return Buffer.concat(await Array.fromAsync(this.zipIterate(glob, cwd)));
   }
 
-  zipGenerator(glob: string | string[], cwd?: string): AsyncGenerator<Buffer>
-  async* zipGenerator(glob: string | string[], cwd: string = this.core.workspaceFolder) {
+  zipIterate(glob: string | string[], cwd?: string): AsyncGenerator<Buffer>
+  async* zipIterate(glob: string | string[], cwd: string = this.core.workspaceFolder) {
     if (Array.isArray(glob)) glob = glob.join(" ");
 
     const encoding = "buffer";

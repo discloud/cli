@@ -39,15 +39,9 @@ export default <ICommand<CommandArgs>>{
   async run(core, args) {
     const spinner = core.print.spin("Searching files...");
 
-    const files = await core.fs.glob(args.glob);
-
-    core.print.debug("Found %o files: $o", files.length, files);
-
-    spinner.start(`Adding ${files.length} files...`);
-
     const zipper: IZip = new Zip();
 
-    await zipper.appendFiles(files, core.workspaceFolder);
+    await zipper.glob(args.glob, core.workspaceFolder);
 
     core.print.debug("Added %o files", zipper.fileCount);
 
