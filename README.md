@@ -65,7 +65,7 @@ discloud app [command]                         Manage your apps
   discloud app ram <app> <amount>              Set amount of ram for your app                   
   discloud app restart [app]                   Restart one or all of your team apps on Discloud 
   discloud app start [app]                     Start one or all of your apps on Discloud        
-  discloud app status [app]                    Get status of your apps                          
+  discloud app status <app>                    Get status of your app                           
   discloud app stop [app]                      Stop one or all of your apps on Discloud         
   discloud app upload [glob..]                 Upload one app or site to Discloud               [aliases: up]
 discloud init                                  Init discloud.config file                        
@@ -78,6 +78,7 @@ discloud team [command]                        Manage team apps
   discloud team ram <app> <amount>             Set amount of ram for your app                   
   discloud team restart [app]                  Restart one or all of your apps on Discloud      
   discloud team start [app]                    Start one or all of your team apps on Discloud   
+  discloud team status <app>                   Get status of your team app                      
   discloud team stop [app]                     Stop one or all of your team apps on Discloud    
 discloud user [command]                        Manage your profile                              
   discloud user info                           Get your information                             
