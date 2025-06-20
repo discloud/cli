@@ -43,7 +43,7 @@ export default <ICommand<CommandArgs>>{
 
     await zipper.glob(args.glob, core.workspaceFolder);
 
-    core.print.debug("Added %o files", zipper.fileCount);
+    core.print.debug("%o files found", zipper.fileCount);
 
     if (args.encoding) {
       spinner.start("Getting zip buffer...");
