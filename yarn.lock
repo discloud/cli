@@ -2,26 +2,26 @@
 # yarn lockfile v1
 
 
-"@discloudapp/api-types@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-1.0.0.tgz#108e0f78fe3d6e85ac2b33f9bae6655ca97a8643"
-  integrity sha512-uyuHLjIntfFfjHaF8YbB0VjVYCXvTmXHxbWwbvgRM588X2OfOLXFuFizJ9/dUSYylJaVVJLuSmut+2HxqZNR2A==
+"@discloudapp/api-types@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-1.0.1.tgz#e098d37fe7c4c688fd244b6190461e7975ac3122"
+  integrity sha512-7aGGFlz9hu9hfDSqphYJgexdjJGZDIQsEaaXHls+Q0ZEpN9I2HeprrpmeZiLhzyYCxT/gladpQAIDFNM26FwSg==
   dependencies:
     tslib "^2.8.1"
 
-"@discloudapp/util@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-1.0.0.tgz#eab3a18ea1687b9c29b3fea0a09e2fe36568e683"
-  integrity sha512-4+DB9qcgkthzsUjILgYPQSDSyngN0gGOh3k3p/CIo+yr0DKe2oalCsXFAElje43AmXV8JGvyti04jRXuSOZ7aQ==
+"@discloudapp/util@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-1.1.2.tgz#55be161835066464542a546db36ee85cd937fd14"
+  integrity sha512-kzpxd4X1ECehryDNR6jjb04s1zjsVzJRCVjPXEuLN4EnIIgHNLS47q3/qXLlNzCTjDKRuBWE4ussnOyjaPvACQ==
   dependencies:
-    "@discloudapp/api-types" "^1.0.0"
+    "@discloudapp/api-types" "^1.0.1"
     file-type "^21.0.0"
     glob "^11.0.3"
     globify-gitignore "^1.0.3"
     source-map-support "^0.5.21"
     tslib "^2.8.1"
     zod "^3.25.67"
-    zod-validation-error "^3.5.1"
+    zod-validation-error "^3.5.2"
 
 "@esbuild/aix-ppc64@0.25.5":
   version "0.25.5"
@@ -3266,10 +3266,10 @@ yoctocolors-cjs@^2.1.2:
   resolved "https://registry.yarnpkg.com/yoctocolors-cjs/-/yoctocolors-cjs-2.1.2.tgz#f4b905a840a37506813a7acaa28febe97767a242"
   integrity sha512-cYVsTjKl8b+FrnidjibDWskAv7UKOfcwaVZdp/it9n1s9fU3IkgDbhdIRKCW4JDsAlECJY0ytoVPT3sK6kideA==
 
-zod-validation-error@^3.5.1:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/zod-validation-error/-/zod-validation-error-3.5.1.tgz#5d6044a2ecad74202d155ca58e4fa0eebbe143bb"
-  integrity sha512-ozT8jy2nHaeKjaRIEThwgRXBwm16hAy0BaTRx1I2IY1xrezPegmlFmYKb5tcvYqZDQm0sfZtDr2IR7CdCJzTGw==
+zod-validation-error@^3.5.2:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/zod-validation-error/-/zod-validation-error-3.5.2.tgz#5af463c1acd4662e6b2610a75260931dbcb43a56"
+  integrity sha512-mdi7YOLtram5dzJ5aDtm1AG9+mxRma1iaMrZdYIpFO7epdKBUwLHIxTF8CPDeCQ828zAXYtizrKlEJAtzgfgrw==
 
 zod@^3.25.67:
   version "3.25.67"
