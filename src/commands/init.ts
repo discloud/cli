@@ -35,11 +35,6 @@ export default <ICommand<CommandArgs>>{
       defaultDescription: "false",
       description: "Auto restart switch",
     },
-    build: {
-      alias: "b",
-      type: "string",
-      description: "App build",
-    },
     "engine-version": {
       alias: "ev",
       type: "string",
@@ -99,15 +94,17 @@ export default <ICommand<CommandArgs>>{
     const config: Record<DiscloudConfigScopes, unknown> = {
       APT: args.apt,
       AUTORESTART: args.autorestart,
-      AVATAR: void 0,
-      BUILD: args.build,
-      ID: void 0,
+      AVATAR: undefined,
+      HOSTNAME: undefined,
+      ID: undefined,
       MAIN: args.main,
       NAME: args.name,
       RAM: args.ram ? Math.min(args.ram, minRam) : null,
       START: args.start,
+      STORAGE: undefined,
       TYPE: args.type,
       VERSION: args["engine-version"],
+      VLAN: undefined,
     };
 
     if (args.yes) {
@@ -115,6 +112,7 @@ export default <ICommand<CommandArgs>>{
       config.TYPE ??= "bot";
       config.RAM ??= minRam;
       config.VERSION ??= "latest";
+      config.VLAN ??= false;
 
       return await core.templater.generate(`${CONFIG_FILENAME}.${config.TYPE}`, CONFIG_FILENAME, config);
     }
