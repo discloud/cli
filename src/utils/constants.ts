@@ -5,9 +5,6 @@ import { join } from "path";
 export const MINUTE_IN_MILLISECONDS = 60_000;
 export const DAY_IN_MILLISECONDS = 86_400_000;
 
-/** `536_870_888` | `2^29-24` | `511.99998 MB` */
-export const MAX_STRING_LENGTH = 0x1fffffe8;
-
 export const IGNORE_FILENAME = ".discloudignore";
 
 export const CLI_PACKAGE_NAME = "discloud-cli";
