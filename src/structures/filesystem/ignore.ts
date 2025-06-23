@@ -2,6 +2,7 @@ import { existsSync } from "fs";
 import { readFile } from "fs/promises";
 import { glob } from "glob";
 import { globifyGitIgnore } from "globify-gitignore";
+import { type } from "os";
 import { dirname } from "path";
 import { setTimeout as sleep } from "timers/promises";
 import { IGNORE_FILENAME } from "../../utils/constants";
@@ -11,10 +12,10 @@ export default class Ignore {
   async globify(content: string, directory?: string, absolute?: boolean) {
     const patterns = [];
 
-    const result = await globifyGitIgnore(content, directory, absolute);
+    const entry = await globifyGitIgnore(content, directory, absolute);
 
-    for (let i = 0; i < result.length; i++) {
-      patterns.push(result[i].glob);
+    for (let i = 0; i < entry.length; i++) {
+      if (!entry[i].included) patterns.push(entry[i].glob);
       await sleep();
     }
 
@@ -24,23 +25,26 @@ export default class Ignore {
   async findIgnoreFiles(cwd: string = process.cwd()) {
     const path = joinWithRoot(IGNORE_FILENAME);
 
-    const patterns = await this.#getGlobfiedIgnore(path);
+    const ignore = await this.#getGlobfiedIgnore(path);
+
+    const windowsPathsNoEscape = type() === "Windows_NT";
 
     const files = await glob(`**/${IGNORE_FILENAME}`, {
       cwd,
       dot: true,
-      ignore: patterns,
+      ignore,
       nodir: true,
+      windowsPathsNoEscape,
     });
 
     return files.concat(path);
   }
 
-  async resolveIgnoreFiles(files: string[]) {
-    return this.#getGlobfiedIgnores(files);
+  resolveIgnoreFiles(files: string[]) {
+    return this.#getGlobfiedIgnoreFiles(files);
   }
 
-  async #getGlobfiedIgnores(files: string[]) {
+  async #getGlobfiedIgnoreFiles(files: string[]) {
     const promises = [];
 
     for (let i = 0; i < files.length; i++) {
