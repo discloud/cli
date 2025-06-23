@@ -23,10 +23,10 @@ export default class Zip implements IZip {
     for (let i = 0; i < files.length; i++) {
       const zipName = files[i];
 
-      const filePath = join(cwd, zipName);
+      const localPath = join(cwd, zipName);
 
       let fileStat;
-      try { fileStat = await stat(filePath); }
+      try { fileStat = await stat(localPath); }
       catch { continue; }
 
       if (!fileStat.isFile()) continue;
@@ -54,13 +54,10 @@ export default class Zip implements IZip {
       ignore,
       nodir: true,
       windowsPathsNoEscape,
-      withFileTypes: true,
     });
 
-    for await (const file of globIterator) {
-      const localPath = file.fullpath();
-
-      const zipName = file.relative();
+    for await (const zipName of globIterator) {
+      const localPath = join(cwd, zipName);
 
       await new Promise<void>((resolve, reject) => {
         // @ts-expect-error ts(2551)

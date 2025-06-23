@@ -2,7 +2,7 @@ import { spawn } from "child_process";
 import { on } from "events";
 import { existsSync, type Dirent } from "fs";
 import { readdir, readFile, writeFile } from "fs/promises";
-import { glob } from "glob";
+import { globIterate } from "glob";
 import { type } from "os";
 import { join, relative } from "path";
 import type Core from "../../core";
@@ -28,13 +28,18 @@ export default class FileSystem implements IFileSystem {
   }
 
   async glob(pattern: string | string[], cwd: string = this.core.workspaceFolder): Promise<string[]> {
+    return Array.fromAsync(this.globIterate(pattern, cwd));
+  }
+
+  async *globIterate(pattern: string | string[], cwd: string = this.core.workspaceFolder) {
     const ignoreModule = new Ignore();
     const ignoreFiles = await ignoreModule.findIgnoreFiles(cwd);
     const ignore = await ignoreModule.resolveIgnoreFiles(ignoreFiles);
 
     const windowsPathsNoEscape = type() === "Windows_NT";
 
-    return glob(pattern, {
+    yield* globIterate(pattern, {
+      cwd,
       dot: true,
       ignore,
       nodir: true,
