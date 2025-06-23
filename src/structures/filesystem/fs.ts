@@ -1,14 +1,15 @@
+import { Ignore } from "@discloudapp/util";
 import { spawn } from "child_process";
 import { on } from "events";
 import { existsSync, type Dirent } from "fs";
-import { readdir, readFile, writeFile } from "fs/promises";
+import { glob, readdir, readFile, writeFile } from "fs/promises";
 import { globIterate } from "glob";
 import { type } from "os";
 import { join, relative } from "path";
 import type Core from "../../core";
 import { type FileSystemReadDirWithFileTypesOptions, type IFileSystem } from "../../interfaces/filesystem";
+import { CONFIG_FILENAME } from "../../services/discloud/constants";
 import { MINUTE_IN_MILLISECONDS } from "../../utils/constants";
-import Ignore from "./ignore";
 
 export default class FileSystem implements IFileSystem {
   constructor(
@@ -32,18 +33,25 @@ export default class FileSystem implements IFileSystem {
   }
 
   async *globIterate(pattern: string | string[], cwd: string = this.core.workspaceFolder) {
-    const ignoreModule = new Ignore();
-    const ignoreFiles = await ignoreModule.findIgnoreFiles(cwd);
-    const ignore = await ignoreModule.resolveIgnoreFiles(ignoreFiles);
-
-    const windowsPathsNoEscape = type() === "Windows_NT";
+    const ignoreModule = new Ignore(CONFIG_FILENAME);
+    const ignore = await ignoreModule.getIgnorePatterns(cwd);
 
     yield* globIterate(pattern, {
       cwd,
       dot: true,
       ignore,
       nodir: true,
-      windowsPathsNoEscape,
+      windowsPathsNoEscape: type() === "Windows_NT",
+    });
+  }
+
+  protected async *_fsGlobIterate(pattern: string | string[], cwd: string = this.core.workspaceFolder) {
+    const ignoreModule = new Ignore(CONFIG_FILENAME);
+    const exclude = await ignoreModule.getIgnorePatterns(cwd);
+
+    yield* glob(pattern, {
+      cwd,
+      exclude,
     });
   }
 

@@ -1,10 +1,8 @@
+import { fsGlobIterate, globIterate } from "@discloudapp/util";
 import AdmZip from "adm-zip";
 import { stat } from "fs/promises";
-import { globIterate } from "glob";
-import { type } from "os";
-import { join } from "path";
+import { join, relative } from "path";
 import { type IZip } from "../../interfaces/zip";
-import Ignore from "./ignore";
 
 export default class Zip implements IZip {
   declare readonly zip: AdmZip;
@@ -42,22 +40,24 @@ export default class Zip implements IZip {
   }
 
   async glob(pattern: string | string[], cwd: string = process.cwd()) {
-    const ignoreModule = new Ignore();
-    const ignoreFiles = await ignoreModule.findIgnoreFiles(cwd);
-    const ignore = await ignoreModule.resolveIgnoreFiles(ignoreFiles);
-
-    const windowsPathsNoEscape = type() === "Windows_NT";
-
-    const globIterator = globIterate(pattern, {
-      cwd,
-      dot: true,
-      ignore,
-      nodir: true,
-      windowsPathsNoEscape,
-    });
-
-    for await (const zipName of globIterator) {
+    for await (const zipName of globIterate(pattern, cwd)) {
       const localPath = join(cwd, zipName);
+
+      await new Promise<void>((resolve, reject) => {
+        // @ts-expect-error ts(2551)
+        this.zip.addLocalFileAsync({ localPath, zipName }, (err) => {
+          if (err) return reject(err);
+          resolve();
+        });
+      });
+    }
+  }
+
+  protected async _fsGlob(pattern: string | string[], cwd: string = process.cwd()) {
+    for await (const dirent of fsGlobIterate(pattern, { cwd, withFileTypes: true })) {
+      const localPath = join(dirent.parentPath, dirent.name);
+
+      const zipName = relative(cwd, localPath);
 
       await new Promise<void>((resolve, reject) => {
         // @ts-expect-error ts(2551)
