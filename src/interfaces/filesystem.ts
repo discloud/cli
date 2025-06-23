@@ -27,6 +27,11 @@ export interface IFileSystem {
    */
   glob(pattern: string | string[], cwd?: string): Promise<string[]>
 
+  /**
+   * @param cwd default `process.cwd()`
+   */
+  globIterate(pattern: string | string[], cwd?: string): AsyncGenerator<string>
+
   readdir(path: string, recursive?: boolean): Promise<string[]>
   readdir(path: string, options: FileSystemReadDirWithFileTypesOptions): Promise<Dirent[]>
 
