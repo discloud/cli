@@ -108,13 +108,12 @@ export default <ICommand<CommandArgs>>{
     };
 
     if (args.yes) {
-      config.AUTORESTART ??= false;
+      config.ID ??= "";
+      config.MAIN ??= "";
       config.TYPE ??= "bot";
       config.RAM ??= minRam;
-      config.VERSION ??= "latest";
-      config.VLAN ??= false;
 
-      return await core.templater.generate(`${CONFIG_FILENAME}.${config.TYPE}`, CONFIG_FILENAME, config);
+      return await core.templater.generate(CONFIG_FILENAME, CONFIG_FILENAME, config);
     }
 
     if (!config.TYPE) config.TYPE = await promptAppType();
@@ -131,6 +130,6 @@ export default <ICommand<CommandArgs>>{
 
     if (!config.AUTORESTART) config.AUTORESTART = await promptAppAutoRestart();
 
-    await core.templater.generate(`${CONFIG_FILENAME}.${config.TYPE}`, CONFIG_FILENAME, config);
+    await core.templater.generate(CONFIG_FILENAME, CONFIG_FILENAME, config);
   },
 };
