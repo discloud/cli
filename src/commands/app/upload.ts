@@ -28,9 +28,9 @@ export default <ICommand<CommandArgs>>{
     if (!core.fs.exists(CONFIG_FILENAME))
       return core.print.error("%s file is missing.", CONFIG_FILENAME);
 
-    const dConfig = new DiscloudConfig(join(core.workspaceFolder, CONFIG_FILENAME));
+    const dConfig = await DiscloudConfig.fromPath(join(core.workspaceFolder, CONFIG_FILENAME));
 
-    dConfig.validate();
+    await dConfig.validate();
 
     const spinner = core.print.spin("Zipping files...");
 
