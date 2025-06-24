@@ -45,8 +45,10 @@ export default class ConsolePrint implements IPrint {
   #debug(first: any, ...args: any) {
     this.#stopSpin();
 
-    if (typeof first === "string") return console.debug(`[debug] ${first}`, ...args);
-    console.debug("[debug]", first, ...args);
+    const prefix = "[debug]";
+
+    if (typeof first === "string") return console.debug(`%s ${first}`, prefix, ...args);
+    console.debug(prefix, first, ...args);
   }
 
   debug(..._args: any) { }
@@ -54,15 +56,19 @@ export default class ConsolePrint implements IPrint {
   error(first: any, ...args: any) {
     this.#stopSpin();
 
-    if (typeof first === "string") return console.error(`%s ${first}`, styleText("red", "[error]"), ...args);
-    console.error(styleText("red", "[error]"), first, ...args);
+    const prefix = styleText("red", "[error]");
+
+    if (typeof first === "string") return console.error(`%s ${first}`, prefix, ...args);
+    console.error(prefix, first, ...args);
   }
 
   info(first: any, ...args: any) {
     this.#stopSpin();
 
-    if (typeof first === "string") return console.info(`%s ${first}`, styleText("blue", "[info]"), ...args);
-    console.info(styleText("blue", "[info]"), first, ...args);
+    const prefix = styleText("blue", "[info]");
+
+    if (typeof first === "string") return console.info(`%s ${first}`, prefix, ...args);
+    console.info(prefix, first, ...args);
   }
 
   log(...args: any) {
@@ -85,8 +91,10 @@ export default class ConsolePrint implements IPrint {
   success(first: any, ...args: any): void {
     this.#stopSpin();
 
-    if (typeof first === "string") return console.log(`%s ${first}`, styleText("green", "[success]"), ...args);
-    console.log(styleText("green", "[success]"), first, ...args);
+    const prefix = styleText("green", "[success]");
+
+    if (typeof first === "string") return console.log(`%s ${first}`, prefix, ...args);
+    console.log(prefix, first, ...args);
   }
 
   table<T>(objOrArray: T, excludeKeys?: any[]) {
@@ -100,8 +108,10 @@ export default class ConsolePrint implements IPrint {
   warn(first: any, ...args: any): void {
     this.#stopSpin();
 
-    if (typeof first === "string") return console.warn(`%s ${first}`, styleText("yellow", "[warn]"), ...args);
-    console.warn(styleText("yellow", "[warn]"), first, ...args);
+    const prefix = styleText("yellow", "[warn]");
+
+    if (typeof first === "string") return console.warn(`%s ${first}`, prefix, ...args);
+    console.warn(prefix, first, ...args);
   }
 
   write(buffer: Uint8Array | string) {

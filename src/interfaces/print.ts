@@ -11,6 +11,7 @@ export interface IPrint {
   spin(text?: string): Ora
   success(...args: any): void
   table<T>(array: T[], excludeKeys?: (keyof T)[]): void
+  table<T>(array: T, excludeKeys?: (keyof T)[]): void
   table(obj: unknown, excludeKeys?: any[]): void
   warn(...args: any): void
   write(buffer: Uint8Array | string): void
