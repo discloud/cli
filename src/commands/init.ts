@@ -89,7 +89,7 @@ export default <ICommand<CommandArgs>>{
     if (!args.overwrite && existsSync(CONFIG_FILENAME))
       return core.print.error("%s file already exists!", CONFIG_FILENAME);
 
-    let minRam = args.type === "site" ? 512 : 100;
+    let minRAM = args.type === "site" ? 512 : 100;
 
     const config: Record<DiscloudConfigScopes, unknown> = {
       APT: args.apt,
@@ -99,7 +99,7 @@ export default <ICommand<CommandArgs>>{
       ID: undefined,
       MAIN: args.main,
       NAME: args.name,
-      RAM: args.ram ? Math.min(args.ram, minRam) : null,
+      RAM: args.ram ? Math.min(args.ram, minRAM) : null,
       START: args.start,
       STORAGE: undefined,
       TYPE: args.type,
@@ -108,27 +108,24 @@ export default <ICommand<CommandArgs>>{
     };
 
     if (args.yes) {
-      config.ID ??= "";
       config.MAIN ??= "";
-      config.TYPE ??= "bot";
-      config.RAM ??= minRam;
 
       return await core.templater.generate(CONFIG_FILENAME, CONFIG_FILENAME, config);
     }
 
+    if (!config.MAIN) config.MAIN = await promptAppMain();
+
     if (!config.TYPE) config.TYPE = await promptAppType();
 
-    minRam = config.TYPE === "site" ? 512 : 100;
+    minRAM = config.TYPE === "site" ? 512 : 100;
 
-    if (!config.RAM) config.RAM = await promptAppRam(minRam);
-
-    if (!config.MAIN) config.MAIN = await promptAppMain();
+    if (!config.RAM) config.RAM = await promptAppRam(minRAM);
 
     if (!config.APT) config.APT = await promptAppApt().then(v => v.join(","));
 
     if (!config.VERSION) config.VERSION = await promptAppVersion();
 
-    if (!config.AUTORESTART) config.AUTORESTART = await promptAppAutoRestart();
+    if (config.AUTORESTART === undefined) config.AUTORESTART = await promptAppAutoRestart();
 
     await core.templater.generate(CONFIG_FILENAME, CONFIG_FILENAME, config);
   },
