@@ -16,6 +16,6 @@ export default <ICommand<CommandArgs>>{
 
     if (!response.user) return core.print.apiResponse(response);
 
-    core.print.table([response.user], ["apps", "customdomains", "subdomains"]);
+    core.print.table(response.user, ["apps", "avatar", "customdomains", "lastDataLeft", "subdomains"]);
   },
 };
