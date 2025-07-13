@@ -4,6 +4,7 @@ import { on } from "events";
 import { existsSync, rmSync } from "fs";
 import { stat } from "fs/promises";
 import { suite, test } from "node:test";
+import { asyncGeneratorToArray } from "../utils/array.mjs";
 
 suite("Testing zip command", async () => {
   await test("Getting a empty zip buffer", async (t) => {
@@ -97,7 +98,7 @@ suite("Testing zip command", async () => {
    * @prop {string} out
    */
   async function executeZipCommand(glob, options) {
-    return Buffer.concat(await Array.fromAsync(zipGenerator(glob, options)));
+    return Buffer.concat(await asyncGeneratorToArray(zipGenerator(glob, options)));
   }
 
   /**
@@ -125,14 +126,6 @@ suite("Testing zip command", async () => {
       timeout: MINUTE_IN_MILLISECONDS,
     });
 
-    let notSkippedFirstLine = true;
-    for await (const [chunk] of on(child.stdout, "data", { close: ["end"] })) {
-      if (notSkippedFirstLine) {
-        notSkippedFirstLine = false;
-        if (`${chunk}`.includes(zipCommand)) continue;
-      }
-
-      yield chunk;
-    }
+    for await (const [chunk] of on(child.stdout, "data", { close: ["end"] })) yield chunk;
   }
 });

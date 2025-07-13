@@ -1,7 +1,7 @@
 import { type RESTApiBaseResult } from "@discloudapp/api-types/v2";
 import Table from "easy-table";
 import ora, { type Ora } from "ora";
-import { styleText } from "util";
+import { format, styleText } from "util";
 import type Core from "../../core";
 import { type IPrint } from "../../interfaces/print";
 
@@ -118,6 +118,12 @@ export default class ConsolePrint implements IPrint {
     this.#stopSpin();
 
     process.stdout.write(buffer);
+  }
+
+  writeBoldErr(buffer: Uint8Array | string, ...args: any) {
+    if (typeof buffer === "string") buffer = format(styleText("bold", buffer), ...args);
+
+    console.error(buffer);
   }
 }
 

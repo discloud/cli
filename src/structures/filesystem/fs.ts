@@ -87,18 +87,9 @@ export default class FileSystem implements IFileSystem {
     const child = spawn(zipCommand, ["-e", encoding, "-g", glob], {
       cwd,
       shell: true,
-      stdio: "pipe",
       timeout: MINUTE_IN_MILLISECONDS,
     });
 
-    let notSkippedFirstLine = true;
-    for await (const [chunk] of on(child.stdout, "data", { close: ["end"] })) {
-      if (notSkippedFirstLine) {
-        notSkippedFirstLine = false;
-        if (`${chunk}`.includes(zipCommand)) continue;
-      }
-
-      yield chunk;
-    }
+    for await (const [chunk] of on(child.stdout, "data", { close: ["end"] })) yield chunk;
   }
 }

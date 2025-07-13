@@ -15,4 +15,5 @@ export interface IPrint {
   table(obj: unknown, excludeKeys?: any[]): void
   warn(...args: any): void
   write(buffer: Uint8Array | string): void
+  writeBoldErr(buffer: Uint8Array | string, ...args: any): void
 }
