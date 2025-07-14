@@ -74,17 +74,14 @@ export default class FileSystem implements IFileSystem {
   }
 
   async zip(glob: string | string[], cwd: string = this.core.workspaceFolder) {
-    return Buffer.concat(await asyncGeneratorToArray(this.zipIterate(glob, cwd)));
+    return await asyncGeneratorToArray(this.zipIterate(glob, cwd));
   }
 
   zipIterate(glob: string | string[], cwd?: string): AsyncGenerator<Buffer>
   async* zipIterate(glob: string | string[], cwd: string = this.core.workspaceFolder) {
     if (Array.isArray(glob)) glob = glob.join(" ");
 
-    const encoding = "buffer";
-    const zipCommand = "discloud zip";
-
-    const child = spawn(zipCommand, ["-e", encoding, "-g", glob], {
+    const child = spawn("discloud", ["zip", "-e", "buffer", "-g", glob], {
       cwd,
       shell: true,
       timeout: MINUTE_IN_MILLISECONDS,

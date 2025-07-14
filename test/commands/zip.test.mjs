@@ -87,7 +87,7 @@ suite("Testing zip command", async () => {
    * @param {OptionsWithEncoding} options
    * @returns {Promise<Buffer>}
    * @typedef OptionsWithEncoding
-   * @prop {BufferEncoding} encoding
+   * @prop {BufferEncoding | "buffer"} encoding
    * @prop {number} [maxBuffer]
    * 
    * @overload
