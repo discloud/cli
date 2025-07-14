@@ -1,5 +1,4 @@
 import { type RESTPutApiAppCommitResult, Routes } from "@discloudapp/api-types/v2";
-import { resolveFile } from "@discloudapp/util";
 import { type ICommand } from "../../interfaces/command";
 
 interface CommandArgs {
@@ -30,9 +29,9 @@ export default <ICommand<CommandArgs>>{
   async run(core, args) {
     const spinner = core.print.spin("Zipping files...");
 
-    const buffer = await core.fs.zip(args.glob, core.workspaceFolder);
+    const arrayBuffer = await core.fs.zip(args.glob, core.workspaceFolder);
 
-    const file = await resolveFile(buffer, "file.zip");
+    const file = new File(arrayBuffer, "file.zip");
 
     spinner.start("Commiting...");
 

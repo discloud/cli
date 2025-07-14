@@ -1,5 +1,5 @@
 import { type RESTPostApiUploadResult, Routes } from "@discloudapp/api-types/v2";
-import { DiscloudConfig, resolveFile } from "@discloudapp/util";
+import { DiscloudConfig } from "@discloudapp/util";
 import { join } from "path";
 import { type ICommand } from "../../interfaces/command";
 import { CONFIG_FILENAME } from "../../services/discloud/constants";
@@ -34,9 +34,9 @@ export default <ICommand<CommandArgs>>{
 
     const spinner = core.print.spin("Zipping files...");
 
-    const buffer = await core.fs.zip(args.glob, core.workspaceFolder);
+    const arrayBuffer = await core.fs.zip(args.glob, core.workspaceFolder);
 
-    const file = await resolveFile(buffer, "file.zip");
+    const file = new File(arrayBuffer, "file.zip");
 
     spinner.start("Uploading...");
 
