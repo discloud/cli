@@ -1,6 +1,6 @@
 import { fsGlobIterate, globIterate } from "@discloudapp/util";
 import AdmZip from "adm-zip";
-import { stat } from "fs/promises";
+import { readFile, stat } from "fs/promises";
 import { join, relative } from "path";
 import { type IZip } from "../../interfaces/zip";
 
@@ -29,13 +29,9 @@ export default class Zip implements IZip {
 
       if (!fileStat.isFile()) continue;
 
-      await new Promise<void>((resolve, reject) => {
-        // @ts-expect-error ts(2551)
-        this.zip.addLocalFileAsync({ localPath, zipName }, (err) => {
-          if (err) return reject(err);
-          resolve();
-        });
-      });
+      const buffer = await readFile(localPath);
+
+      this.zip.addFile(zipName, buffer, undefined, fileStat.mode);
     }
   }
 
@@ -43,13 +39,15 @@ export default class Zip implements IZip {
     for await (const zipName of globIterate(pattern, cwd)) {
       const localPath = join(cwd, zipName);
 
-      await new Promise<void>((resolve, reject) => {
-        // @ts-expect-error ts(2551)
-        this.zip.addLocalFileAsync({ localPath, zipName }, (err) => {
-          if (err) return reject(err);
-          resolve();
-        });
-      });
+      let fileStat;
+      try { fileStat = await stat(localPath); }
+      catch { continue; }
+
+      if (!fileStat.isFile()) continue;
+
+      const buffer = await readFile(localPath);
+
+      this.zip.addFile(zipName, buffer, undefined, fileStat.mode);
     }
   }
 
@@ -57,15 +55,17 @@ export default class Zip implements IZip {
     for await (const dirent of fsGlobIterate(pattern, { cwd, withFileTypes: true })) {
       const localPath = join(dirent.parentPath, dirent.name);
 
+      let fileStat;
+      try { fileStat = await stat(localPath); }
+      catch { continue; }
+
+      if (!fileStat.isFile()) continue;
+
+      const buffer = await readFile(localPath);
+
       const zipName = relative(cwd, localPath);
 
-      await new Promise<void>((resolve, reject) => {
-        // @ts-expect-error ts(2551)
-        this.zip.addLocalFileAsync({ localPath, zipName }, (err) => {
-          if (err) return reject(err);
-          resolve();
-        });
-      });
+      this.zip.addFile(zipName, buffer, undefined, fileStat.mode);
     }
   }
 
