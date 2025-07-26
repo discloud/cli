@@ -3,6 +3,7 @@ import AdmZip from "adm-zip";
 import { readFile, stat } from "fs/promises";
 import { join, relative } from "path";
 import { type IZip } from "../../interfaces/zip";
+import { normalizeGlobPattern } from "../../utils/glob";
 
 export default class Zip implements IZip {
   declare readonly zip: AdmZip;
@@ -36,6 +37,8 @@ export default class Zip implements IZip {
   }
 
   async glob(pattern: string | string[], cwd: string = process.cwd()) {
+    pattern = normalizeGlobPattern(pattern);
+
     for await (const zipName of globIterate(pattern, cwd)) {
       const localPath = join(cwd, zipName);
 
