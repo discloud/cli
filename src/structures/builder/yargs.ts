@@ -112,6 +112,7 @@ export default class YargsBuilder implements IBuilder {
       },
     };
 
+    // fix yargs v18 issue where no command is loaded
     return Object.assign(module, commandModule);
   }
 }
