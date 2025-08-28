@@ -73,7 +73,7 @@ export default class YargsBuilder implements IBuilder {
 
     const firstPartCommandName = commandName.split(" ")[0];
 
-    return <CommandModule>{
+    const commandModule = <CommandModule>{
       command: commandName,
       describe: command.description,
       aliases: command.aliases,
@@ -111,5 +111,7 @@ export default class YargsBuilder implements IBuilder {
         return command.run(this.core, args);
       },
     };
+
+    return Object.assign(module, commandModule);
   }
 }
