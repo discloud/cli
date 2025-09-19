@@ -37,7 +37,7 @@
     "glob": "^11.0.3",
     "globify-gitignore": "^1.0.3",
     "jose": "^6.1.0",
-    "ora": "^8.2.0",
+    "ora": "^9.0.0",
     "tslib": "^2.8.1",
     "update-notifier": "^7.3.1",
     "yargs": "^18.0.0"
