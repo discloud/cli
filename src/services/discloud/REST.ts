@@ -16,7 +16,7 @@ export default class REST implements IApi {
   }
 
   get token() {
-    return this.core.config.get("token");
+    return process.env.DISCLOUD_TOKEN || this.core.config.get("token");
   }
 
   constructor(readonly core: Core, options?: Partial<RESTOptions>) {

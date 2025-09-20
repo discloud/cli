@@ -2,7 +2,6 @@ import { type RESTPutApiAppConsoleResult, Routes } from "@discloudapp/api-types/
 import { type ICommand } from "../../interfaces/command";
 import { promptAppConsoleCommand } from "../../prompts/discloud/api";
 import { DiscloudAPIError } from "../../services/discloud/errors";
-import { tokenIsDiscloudJwt } from "../../services/discloud/utils";
 
 interface CommandArgs {
   app: string
@@ -21,15 +20,7 @@ export default <ICommand<CommandArgs>>{
   },
 
   async run(core, args) {
-    const token = process.env.DISCLOUD_TOKEN;
-
-    if (typeof token === "string") {
-      if (!tokenIsDiscloudJwt(token)) {
-        return core.print.error("Please use a valid token");
-      }
-    } else if (!core.api.hasToken) {
-      return core.print.error("Missing Discloud token! Please use login command");
-    }
+    core.print.info("Enter 'exit' to stop.");
 
     while (true) {
       const command = await promptAppConsoleCommand();
@@ -39,10 +30,8 @@ export default <ICommand<CommandArgs>>{
       const spinner = core.print.spin();
 
       try {
-        const response = await core.api.put<RESTPutApiAppConsoleResult>(Routes.appConsole(args.app), {
-          body: { command },
-          headers: token ? { "api-token": token } : {},
-        });
+        const response = await core.api.put<RESTPutApiAppConsoleResult>(Routes.appConsole(args.app),
+          { body: { command } });
 
         spinner.stop();
 
