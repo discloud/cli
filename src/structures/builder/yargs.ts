@@ -1,6 +1,7 @@
 import { existsSync } from "fs";
 import { basename, dirname, extname, join } from "path";
 import { type Argv, type CommandModule } from "yargs";
+import { version } from "../..";
 import type Core from "../../core";
 import { type IBuilder } from "../../interfaces/builder";
 import { type ICommand } from "../../interfaces/command";
@@ -24,13 +25,12 @@ export default class YargsBuilder implements IBuilder {
       .fail((msg, _err, _yargs) => {
         if (msg) throw msg;
       })
-      .help()
       .locale("en") // TODO: multi-locale
       .middleware((args) => {
         if (!args._.length && Object.keys(args).length < 3) this.yargs.showHelp();
       })
-      .showHelpOnFail(false)
-      .version();
+      .strict()
+      .version(version);
   }
 
   async run() {
@@ -51,7 +51,7 @@ export default class YargsBuilder implements IBuilder {
         }
 
         this.core.print.error(error);
-        this.yargs.showVersion((v) => this.core.print.log("discloud -v v%s\nnode -v %s", v, process.version));
+        this.yargs.showVersion((v) => this.core.print.error("discloud -v v%s\nnode -v %s", v, process.version));
         this.yargs.exit(1, error);
       }
 
@@ -89,13 +89,13 @@ export default class YargsBuilder implements IBuilder {
         return yargs;
       },
       handler: (args) => {
-        if (typeof command.run !== "function") return this.yargs.showHelp();
-
         this.yargs.showVersion((message) => args._.length
           ? parentCommandName
             ? this.core.print.writeBoldErr("discloud %s %s v%s", parentCommandName, firstPartCommandName, message)
             : this.core.print.writeBoldErr("discloud %s v%s", firstPartCommandName, message)
           : this.core.print.writeBoldErr("discloud v%s", message));
+
+        if (typeof command.run !== "function") return this.yargs.showHelp();
 
         if (command.requireAuth) {
           if (!this.core.api.hasToken)
