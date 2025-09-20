@@ -2680,9 +2680,9 @@ signal-exit@^4.0.1, signal-exit@^4.1.0:
   integrity sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==
 
 sort-es@^1.6.4:
-  version "1.7.16"
-  resolved "https://registry.yarnpkg.com/sort-es/-/sort-es-1.7.16.tgz#f11b07de1fa47be17fb5c55fffac9157db5401af"
-  integrity sha512-OYPyk1iYNnoYs6VvA4RzeBjhFNrDkxwkvJrfxjL7aqHfWWQmQ95sMuMu+23yfET45WgF5B7I2KE3Vr/hAsVmkw==
+  version "1.7.17"
+  resolved "https://registry.yarnpkg.com/sort-es/-/sort-es-1.7.17.tgz#6ffac28412ebfebe2dab915a0c4809d4ba96a269"
+  integrity sha512-lJ9fvFwP3h9OAYmL6Boxj/6vOZCLw5WvVuarSV5g8AQ8xmmMfTEvkWgbquO9lBYlCj/jIoJj7Hx/qvkZmSQy4Q==
 
 source-map-support@^0.5.21:
   version "0.5.21"
