@@ -10,12 +10,19 @@ export class DiscloudAPIError<T = any> extends Error {
   ) {
     let message: string;
 
-    if (typeof body === "string") {
-      message = body.match(/<title>(.*)<\/title>/)?.[1] ?? body;
-    } else if (typeof body === "object" && body !== null) {
-      message = "message" in body ? body.message as string : "Unknown error";
-    } else {
-      message = "Unknown error";
+    switch (typeof body) {
+      case "string":
+        message = body.match(/<title>(.*)<\/title>/)?.[1] ?? body;
+        break;
+      case "object":
+        if (body !== null) {
+          message = "message" in body ? body.message as string : "Unknown error";
+          break;
+        }
+      // eslint-disable-next-line no-fallthrough
+      default:
+        message = "Unknown error";
+        break;
     }
 
     super(message);

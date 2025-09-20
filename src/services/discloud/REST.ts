@@ -137,10 +137,9 @@ export default class REST implements IApi {
     const url = new URL(this.baseURL + request.fullRoute);
     const formData = new FormData();
 
-    const headers = new Headers(Object.assign({}, {
-      "api-token": this.token,
-      ...this.options.userAgent ? { "User-Agent": this.options.userAgent.toString() } : {},
-    }, request.headers));
+    const headers = new Headers(Object.assign({ "api-token": this.token },
+      this.options.userAgent ? { "User-Agent": this.options.userAgent.toString() } : {},
+      request.headers));
 
     if (request.query) url.search = new URLSearchParams(request.query).toString();
 

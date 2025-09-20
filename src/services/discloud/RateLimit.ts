@@ -13,13 +13,14 @@ export default class RateLimit {
   }
 
   getResetDateString(context: string) {
+    const rateLimit = this.core.config.get(`limited.${this.#encode(context)}`, true);
     return Intl.DateTimeFormat([this.core.locale], { dateStyle: "short", timeStyle: "medium" })
-      .format(new Date(this.core.config.get(`limited.${this.#encode(context)}`, true)));
+      .format(new Date(rateLimit));
   }
 
   verify(context: string) {
-    if (Date.now() < (this.core.config.get(`limited.${this.#encode(context)}`) ?? 0))
-      throw new RateLimitError();
+    const rateLimit = this.core.config.get(`limited.${this.#encode(context)}`) ?? 0;
+    if (Date.now() < rateLimit) throw new RateLimitError();
   }
 
   limit(headers: Headers, context: string) {

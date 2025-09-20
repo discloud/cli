@@ -6,7 +6,7 @@ export class UserAgent {
   }
 
   #getUserAgent() {
-    const osRelease = release().split?.(".").slice(0, 2).join(".") ?? release();
+    const osRelease = release().split(".").slice(0, 2).join(".");
     return `${this.prefix}/${this.version} (${type()} ${osRelease}; ${platform()}; ${arch()})`;
   }
 
