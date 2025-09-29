@@ -7,7 +7,7 @@
   resolved "https://registry.yarnpkg.com/@borewit/text-codec/-/text-codec-0.1.1.tgz#7e7f27092473d5eabcffef693a849f2cc48431da"
   integrity sha512-5L/uBxmjaCIX5h8Z+uu+kA9BQLkc/Wl06UGR5ajNRxu+/XjonB5i8JpgFMrPj3LXTCPA0pv8yxUvbUi+QthGGA==
 
-"@discloudapp/api-types@^1.0.2":
+"@discloudapp/api-types@^1.0.2", "@discloudapp/api-types@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-1.0.3.tgz#a6c585bd826170835c241cbeacaff41479cbf3ec"
   integrity sha512-8QZbw7HCMdQTv6N72GAPWdbjyxpj3PIUcMvAJoCbQ1jYSI13C+NlMg//wjWOAnjlgxAMtY9sqc4klNRGx8qf8w==
@@ -15,18 +15,18 @@
     tslib "^2.8.1"
 
 "@discloudapp/util@^1.2.3":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-1.2.3.tgz#e35b1b2c96e39971f5d4aac782d51e6753e47334"
-  integrity sha512-UF0Qk0xZLa5yhvspt7Cl/Z4khaQ1qaFMhaPvHz01TTj3WoZhndP+OAolst8CSCFhYWEVxZGTfBg1LyI0md9Wmg==
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-1.2.4.tgz#0fba1605bd24d5a338c369e37dadef2b1517b277"
+  integrity sha512-J+kJN2XpVTP5YbXqJnTWD0vhbfaM6lNl+/Y/LgZro03hH88cefuvHaeQN+byfx1CxT2VWfVm8NJ26LpkpdmPtQ==
   dependencies:
-    "@discloudapp/api-types" "^1.0.2"
+    "@discloudapp/api-types" "^1.0.3"
     file-type "^21.0.0"
     glob "^11.0.3"
     globify-gitignore "^1.0.3"
     source-map-support "^0.5.21"
     tslib "^2.8.1"
-    zod "^3.25.67"
-    zod-validation-error "^3.5.2"
+    zod "^4.1.11"
+    zod-validation-error "^4.0.2"
 
 "@esbuild/aix-ppc64@0.25.10":
   version "0.25.10"
@@ -3252,12 +3252,12 @@ yoctocolors@^2.1.1:
   resolved "https://registry.yarnpkg.com/yoctocolors/-/yoctocolors-2.1.2.tgz#d795f54d173494e7d8db93150cec0ed7f678c83a"
   integrity sha512-CzhO+pFNo8ajLM2d2IW/R93ipy99LWjtwblvC1RsoSUMZgyLbYFr221TnSNT7GjGdYui6P459mw9JH/g/zW2ug==
 
-zod-validation-error@^3.5.2:
-  version "3.5.3"
-  resolved "https://registry.yarnpkg.com/zod-validation-error/-/zod-validation-error-3.5.3.tgz#85ba33290200d8db9f043621e284f40dddefb7e5"
-  integrity sha512-OT5Y8lbUadqVZCsnyFaTQ4/O2mys4tj7PqhdbBCp7McPwvIEKfPtdA6QfPeFQK2/Rz5LgwmAXRJTugBNBi0btw==
+zod-validation-error@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/zod-validation-error/-/zod-validation-error-4.0.2.tgz#bc605eba49ce0fcd598c127fee1c236be3f22918"
+  integrity sha512-Q6/nZLe6jxuU80qb/4uJ4t5v2VEZ44lzQjPDhYJNztRQ4wyWc6VF3D3Kb/fAuPetZQnhS3hnajCf9CsWesghLQ==
 
-zod@^3.25.67:
-  version "3.25.76"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-3.25.76.tgz#26841c3f6fd22a6a2760e7ccb719179768471e34"
-  integrity sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==
+zod@^4.1.11:
+  version "4.1.11"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-4.1.11.tgz#4aab62f76cfd45e6c6166519ba31b2ea019f75f5"
+  integrity sha512-WPsqwxITS2tzx1bzhIKsEs19ABD5vmCVa4xBo2tq/SrV4RNZtfws1EnCWQXM6yh8bD08a1idvkB5MZSBiZsjwg==
