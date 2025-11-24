@@ -63,7 +63,7 @@ export default class FileSystem implements IFileSystem {
     return await readdir(path, recursive!);
   }
 
-  readFile(path: string): Promise<Buffer>;
+  readFile(path: string): Promise<Buffer<ArrayBuffer>>;
   readFile(path: string, encoding: BufferEncoding): Promise<string>;
   async readFile(path: string, encoding?: BufferEncoding) {
     return await readFile(path, encoding);
