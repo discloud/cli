@@ -12,4 +12,4 @@ export default async function (argv: string[]) {
 export const BUILD_ROOT_PATH = __dirname;
 export const ROOT_PATH = dirname(BUILD_ROOT_PATH);
 
-export const version: string = "[VI]{{inject}}[/VI]";
+export const version: string = "__PACKAGE_VERSION__";
