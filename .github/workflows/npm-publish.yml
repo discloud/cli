@@ -38,6 +38,7 @@ jobs:
       - if: github.event.release.prerelease
         run: |
           npm version pre --preid=${{ steps.short_github_sha.outputs.id }} --no-git-tag-version
+          npm run build
           npm publish --tag=beta
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
