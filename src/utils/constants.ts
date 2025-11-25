@@ -12,6 +12,8 @@ export const CLI_CONFIG_DIR = join(homedir(), ".discloud");
 export const CLI_CONFIG_FILENAME = ".cli";
 export const CLI_CONFIG_FILEPATH = join(CLI_CONFIG_DIR, CLI_CONFIG_FILENAME);
 
+export const CLI_TEMPLATES_DIRNAME = "templates";
+
 export const ERRORS_TO_IGNORE = new Set<string>([]);
 
 export const ERRORS_TO_LOG = new Set<string>(["MissingRequiredOption", "Prompt", "Store", "ZodValidationError"]);
