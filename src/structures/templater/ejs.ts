@@ -1,11 +1,13 @@
 import { type Data, renderFile } from "ejs";
 import { writeFile } from "fs/promises";
-import { join } from "path";
 import { type ITemplater } from "../../interfaces/templater";
+import { CLI_TEMPLATES_DIRNAME } from "../../utils/constants";
+import { joinWithRoot } from "../../utils/path";
 
 export default class EjsTemplater implements ITemplater {
   #readTemplateFile(inputFileName: string, props?: any) {
-    return renderFile(join("templates", `${inputFileName}.ejs`), { props }, { async: true });
+    return renderFile(joinWithRoot(CLI_TEMPLATES_DIRNAME, `${inputFileName}.ejs`),
+      { props }, { async: true });
   }
 
   #writeFile(outputFilePath: string, content: string) {
