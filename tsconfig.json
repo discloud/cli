@@ -9,7 +9,8 @@
     "lib": ["ESNext"],
 
     /* Modules */
-    "module": "nodenext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "rootDir": "src",
     // "types": [],
 

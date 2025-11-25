@@ -44,12 +44,13 @@ async function main() {
   const ctx = await context({
     entryPoints: ["src/index.ts", "src/commands/**"],
     bundle: true,
-    format: "cjs",
+    format: "esm",
     minify: production,
     sourcemap: "inline",
     sourcesContent: false,
     platform: "node",
     outdir: "build",
+    outExtension: { ".js": ".mjs" },
     logLevel: "warning",
     packages: "external",
     plugins: [

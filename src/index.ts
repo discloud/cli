@@ -9,7 +9,7 @@ export default async function (argv: string[]) {
   await core.run();
 }
 
-export const BUILD_ROOT_PATH = __dirname;
+export const BUILD_ROOT_PATH = import.meta.dirname;
 export const ROOT_PATH = dirname(BUILD_ROOT_PATH);
 
 export const version: string = "__PACKAGE_VERSION__";
