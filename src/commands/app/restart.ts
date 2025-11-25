@@ -25,7 +25,7 @@ export default <ICommand<CommandArgs>>{
     const response = await core.api.put<
       // | RESTPutApiAppRestartResult
       | RESTPutApiAppAllRestartResult
-    >(Routes.teamRestart(args.app));
+    >(Routes.appRestart(args.app));
 
     if (!response.apps) return core.print.apiResponse(response);
 
