@@ -81,7 +81,7 @@ export default class FileSystem implements IFileSystem {
   async* zipIterate(glob: string | string[], cwd: string = this.core.workspaceFolder) {
     if (Array.isArray(glob)) glob = glob.join(" ");
 
-    const child = spawn("discloud", ["zip", "-e", "buffer", "-g", glob], {
+    const child = spawn(`discloud zip -e buffer -g ${glob}`, {
       cwd,
       shell: true,
       timeout: MINUTE_IN_MILLISECONDS,

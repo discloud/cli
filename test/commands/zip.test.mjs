@@ -115,12 +115,15 @@ suite("Testing zip command", async () => {
     const zipCommand = "discloud zip";
     const localBinCommand = "bin/" + zipCommand;
 
-    const child = spawn("node", [
+    const args = [
+      "node",
       localBinCommand,
       ...options?.encoding ? ["--encoding", options.encoding] : [],
       ...options?.out ? ["--out", options.out] : [],
       glob,
-    ], {
+    ];
+
+    const child = spawn(args.join(" "), {
       shell: true,
       stdio: "pipe",
       timeout: MINUTE_IN_MILLISECONDS,

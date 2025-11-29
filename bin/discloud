@@ -1,2 +1,3 @@
 #!/usr/bin/env node
-require("../build").default(process.argv);
+import cli from "../build/index.mjs";
+await cli(process.argv);

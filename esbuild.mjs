@@ -3,15 +3,13 @@ import { readFileSync } from "fs";
 import Replace from "unplugin-replace/esbuild";
 
 export function versionInjector() {
-  /** @type {import("type-fest").PackageJson} */
-  let pkg;
-
   return Replace({
     include: [/\.(js|ts)$/],
     values: [{
       find: "__PACKAGE_VERSION__",
       replacement() {
-        pkg ??= JSON.parse(readFileSync("./package.json", "utf8"));
+        /** @type {import("type-fest").PackageJson} */
+        const pkg = JSON.parse(readFileSync("./package.json", "utf8"));
         return pkg.version;
       },
     }],
@@ -46,12 +44,13 @@ async function main() {
   const ctx = await context({
     entryPoints: ["src/index.ts", "src/commands/**"],
     bundle: true,
-    format: "cjs",
+    format: "esm",
     minify: production,
     sourcemap: "inline",
     sourcesContent: false,
     platform: "node",
     outdir: "build",
+    outExtension: { ".js": ".mjs" },
     logLevel: "warning",
     packages: "external",
     plugins: [
