@@ -50,7 +50,7 @@ async function main() {
     sourcesContent: false,
     platform: "node",
     outdir: "build",
-    outExtension: { ".js": ".mjs" },
+    outExtension: { ".js": ".mjs", ".ts": ".mts" },
     logLevel: "warning",
     packages: "external",
     plugins: [
