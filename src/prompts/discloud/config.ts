@@ -2,7 +2,7 @@ import { APTPackages } from "@discloudapp/api-types/v2";
 import { checkbox, confirm, number, search, select } from "@inquirer/prompts";
 import { open, readdir } from "fs/promises";
 import { dirname, join, sep } from "path/posix";
-import { promptTrier } from "../utils";
+import { filesSort, promptTrier } from "../utils";
 
 export function promptAppApt(): Promise<string[]> {
   return promptTrier(() => checkbox({
@@ -18,7 +18,6 @@ export function promptAppAutoRestart(): Promise<boolean> {
   }));
 }
 
-const localeOptions: Intl.CollatorOptions = { sensitivity: "accent" };
 const dot = ".";
 
 export function promptAppMain(): Promise<string> {
@@ -40,8 +39,7 @@ export function promptAppMain(): Promise<string> {
 
         const files = await readdir(dir, { withFileTypes: true });
 
-        files.sort((a, b) => a.name.localeCompare(b.name, undefined, localeOptions) +
-          (a.isDirectory() ? -2 : 2) + (b.isDirectory() ? 2 : -2));
+        files.sort(filesSort);
 
         const result: string[] = [];
 
@@ -61,8 +59,7 @@ export function promptAppMain(): Promise<string> {
 
       const files = await readdir(dot, { withFileTypes: true });
 
-      files.sort((a, b) => a.name.localeCompare(b.name, undefined, localeOptions) +
-        (a.isDirectory() ? -2 : 2) + (b.isDirectory() ? 2 : -2));
+      files.sort(filesSort);
 
       const result: string[] = [];
 
