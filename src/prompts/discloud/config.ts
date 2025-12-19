@@ -1,7 +1,6 @@
 import { APTPackages } from "@discloudapp/api-types/v2";
 import { checkbox, confirm, number, search, select } from "@inquirer/prompts";
-import { existsSync } from "fs";
-import { readdir, stat } from "fs/promises";
+import { open, readdir } from "fs/promises";
 import { dirname, join, sep } from "path/posix";
 import { promptTrier } from "../utils";
 
@@ -19,19 +18,21 @@ export function promptAppAutoRestart(): Promise<boolean> {
   }));
 }
 
+const localeOptions: Intl.CollatorOptions = { sensitivity: "accent" };
+const dot = ".";
+
 export function promptAppMain(): Promise<string> {
   return promptTrier(() => search({
     message: "Input the main file path of your app",
     async source(term, _opt) {
-      const result: string[] = [];
-
       if (term) {
         let dir;
-        if (existsSync(term)) {
-          const fileStat = await stat(term);
+        try {
+          const fileHandle = await open(term);
+          const fileStat = await fileHandle.stat();
           if (fileStat.isFile()) return [term];
           dir = term;
-        } else {
+        } catch (_) {
           dir = dirname(term);
         }
 
@@ -39,15 +40,18 @@ export function promptAppMain(): Promise<string> {
 
         const files = await readdir(dir, { withFileTypes: true });
 
-        files.sort((a, b) => a.name.localeCompare(b.name, void 0, { sensitivity: "accent" }) +
+        files.sort((a, b) => a.name.localeCompare(b.name, undefined, localeOptions) +
           (a.isDirectory() ? -2 : 2) + (b.isDirectory() ? 2 : -2));
+
+        const result: string[] = [];
 
         for (let i = 0; i < files.length; i++) {
           const file = files[i];
 
           const filename = join(dir, file.name);
 
-          if (filename.toLowerCase().includes(term)) result.push(filename + (file.isDirectory() ? sep : ""));
+          if (filename.toLowerCase().includes(term))
+            result.push(filename + (file.isDirectory() ? sep : ""));
         }
 
         result.sort((a, b) => a.toLowerCase().indexOf(term!) - b.toLowerCase().indexOf(term!));
@@ -55,10 +59,12 @@ export function promptAppMain(): Promise<string> {
         return result;
       }
 
-      const files = await readdir(".", { withFileTypes: true });
+      const files = await readdir(dot, { withFileTypes: true });
 
-      files.sort((a, b) => a.name.localeCompare(b.name, void 0, { sensitivity: "accent" }) +
+      files.sort((a, b) => a.name.localeCompare(b.name, undefined, localeOptions) +
         (a.isDirectory() ? -2 : 2) + (b.isDirectory() ? 2 : -2));
+
+      const result: string[] = [];
 
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
@@ -69,10 +75,11 @@ export function promptAppMain(): Promise<string> {
       return result;
     },
     async validate(value) {
-      if (typeof value === "string" && existsSync(value)) {
-        const fileStat = await stat(value);
+      try {
+        const fileHandle = await open(value);
+        const fileStat = await fileHandle.stat();
         if (fileStat.isFile()) return true;
-      }
+      } catch (_) { }
       return false;
     },
   }));
