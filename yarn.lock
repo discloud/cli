@@ -7,7 +7,7 @@
   resolved "https://registry.yarnpkg.com/@borewit/text-codec/-/text-codec-0.1.1.tgz#7e7f27092473d5eabcffef693a849f2cc48431da"
   integrity sha512-5L/uBxmjaCIX5h8Z+uu+kA9BQLkc/Wl06UGR5ajNRxu+/XjonB5i8JpgFMrPj3LXTCPA0pv8yxUvbUi+QthGGA==
 
-"@discloudapp/api-types@^1.0.4":
+"@discloudapp/api-types@^1.0.4", "@discloudapp/api-types@^1.0.5":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-1.0.5.tgz#2abede1e83bebe87cf20fbd2d42789e224ca6eef"
   integrity sha512-2bfmaImwYjAWEm2jb9s0e+gaZ3WhM0vF2xURdbWcgPO/nUivGH+86QieVmmIASE49DDZ1q/B1uc8eeR0r++Ftg==
@@ -15,17 +15,17 @@
     tslib "^2.8.1"
 
 "@discloudapp/util@^1.2.6":
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-1.2.6.tgz#e639a9307a18932ee5d21bdf046113083a09ff5a"
-  integrity sha512-r0KbxYc74YkER5id79+5u4pnR8CLjW5BHAhIag/Cqek2FF8sculz7oLMa+sFaRtkMMt6Z+737S5Mtvths0901w==
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/@discloudapp/util/-/util-1.2.7.tgz#2312998f8224a854946c36cdbcc39ff4b56a392d"
+  integrity sha512-+VRBoigzKTDxldLs3tqXkW5GflzI3pum6lFreLxThjhZWwdChKpZ7dFWaz8Fu9bBDhF8zCznZBNcbY75S7vemg==
   dependencies:
-    "@discloudapp/api-types" "^1.0.4"
-    file-type "^21.1.1"
+    "@discloudapp/api-types" "^1.0.5"
+    file-type "^21.3.0"
     glob "^13.0.0"
     globify-gitignore "^1.0.3"
     source-map-support "^0.5.21"
     tslib "^2.8.1"
-    zod "^4.1.13"
+    zod "^4.3.5"
     zod-validation-error "^5.0.0"
 
 "@esbuild/aix-ppc64@0.27.2":
@@ -1379,10 +1379,10 @@ file-entry-cache@^8.0.0:
   dependencies:
     flat-cache "^4.0.0"
 
-file-type@^21.1.1:
-  version "21.1.1"
-  resolved "https://registry.yarnpkg.com/file-type/-/file-type-21.1.1.tgz#79be659d9a29e72bd32bdaf9ac2c83d203a58ca0"
-  integrity sha512-ifJXo8zUqbQ/bLbl9sFoqHNTNWbnPY1COImFfM6CCy7z+E+jC1eY9YfOKkx0fckIg+VljAy2/87T61fp0+eEkg==
+file-type@^21.3.0:
+  version "21.3.0"
+  resolved "https://registry.yarnpkg.com/file-type/-/file-type-21.3.0.tgz#03334acfe59cc22f72fce2a1327c5a1190f0b7de"
+  integrity sha512-8kPJMIGz1Yt/aPEwOsrR97ZyZaD1Iqm8PClb1nYFclUCkBi0Ma5IsYNQzvSFS9ib51lWyIw5mIT9rWzI/xjpzA==
   dependencies:
     "@tokenizer/inflate" "^0.4.1"
     strtok3 "^10.3.4"
@@ -3149,7 +3149,7 @@ zod-validation-error@^5.0.0:
   resolved "https://registry.yarnpkg.com/zod-validation-error/-/zod-validation-error-5.0.0.tgz#96db948070b7bfcb13bfec5134113e580f9eee38"
   integrity sha512-hmk+pkyKq7Q71PiWVSDUc3VfpzpvcRHZ3QPw9yEMVvmtCekaMeOHnbr3WbxfrgEnQTv6haGP4cmv0Ojmihzsxw==
 
-zod@^4.1.13:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-4.2.1.tgz#07f0388c7edbfd5f5a2466181cb4adf5b5dbd57b"
-  integrity sha512-0wZ1IRqGGhMP76gLqz8EyfBXKk0J2qo2+H3fi4mcUP/KtTocoX08nmIAHl1Z2kJIZbZee8KOpBCSNPRgauucjw==
+zod@^4.3.5:
+  version "4.3.5"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-4.3.5.tgz#aeb269a6f9fc259b1212c348c7c5432aaa474d2a"
+  integrity sha512-k7Nwx6vuWx1IJ9Bjuf4Zt1PEllcwe7cls3VNzm4CQ1/hgtFUK2bRNG3rvnpPUhFjmqJKAKtjV576KnUkHocg/g==
