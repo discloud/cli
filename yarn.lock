@@ -2183,9 +2183,9 @@ optionator@^0.9.3:
     word-wrap "^1.2.5"
 
 ora@^9.1.0:
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/ora/-/ora-9.2.0.tgz#e093ab051455157ec5210577ea20811013d4d0bb"
-  integrity sha512-4sGT6oNDbqIuciDfD2aCkoPgHLmOe+g+xpFK2WDO0aQuD/bNHNwfdFosWP+DXmcxRyXeF8vnki6kXnOOHTuRSA==
+  version "9.3.0"
+  resolved "https://registry.yarnpkg.com/ora/-/ora-9.3.0.tgz#187c87cc1062350f549f481de32bf91424c2b0e3"
+  integrity sha512-lBX72MWFduWEf7v7uWf5DHp9Jn5BI8bNPGuFgtXMmr2uDz2Gz2749y3am3agSDdkhHPHYmmxEGSKH85ZLGzgXw==
   dependencies:
     chalk "^5.6.2"
     cli-cursor "^5.0.0"
