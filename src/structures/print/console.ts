@@ -10,6 +10,7 @@ export default class ConsolePrint implements IPrint {
     readonly core: Core,
   ) {
     if (process.argv.includes("--debug")) this.debug = this.#debug;
+    this.debug("Initalized ConsolePrint");
   }
 
   apiResponse(response: RESTApiBaseResult) {

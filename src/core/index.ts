@@ -32,21 +32,35 @@ export default class Core {
   constructor(readonly argv: string[]) {
     this.print = new ConsolePrint(this);
 
+    this.print.debug("Initializing FileSystem");
     this.fs = new FileSystem(this);
+    this.print.debug("Initialized FileSystem");
 
+    this.print.debug("Initializing JSONStore");
     const configStore: IStore<ConfigData> = new FsJsonStore<ConfigData>(CLI_CONFIG_FILEPATH, { encoding: "base64" });
+    this.print.debug("Initialized JSONStore");
 
+    this.print.debug("Initializing ConfigStore");
     this.config = new ConfigStore<ConfigData>(configStore);
+    this.print.debug("Initialized ConfigStore");
 
+    this.print.debug("Initializing UserAgent");
     const userAgent = new UserAgent(version);
+    this.print.debug("Initialized UserAgent");
 
+    this.print.debug("Initializing REST");
     this.api = new REST(this, { userAgent });
+    this.print.debug("Initialized REST");
 
+    this.print.debug("Initializing EJS");
     this.templater = new EjsTemplater();
+    this.print.debug("Initialized EJS");
 
+    this.print.debug("Initializing Builder");
     const _yargs = yargs(hideBin(argv));
 
     this.builder = new YargsBuilder(this, _yargs);
+    this.print.debug("Initialized Builder");
   }
 
   #cwd!: string;
@@ -70,12 +84,16 @@ export default class Core {
     if (this.#loaded || this.#loading) return;
     this.#loading = true;
 
+    this.print.debug("Loading commands...");
+
     const commandsPath = joinWithBuildRoot("commands");
 
     await this.builder.load(commandsPath);
 
     this.#loading = false;
     this.#loaded = true;
+
+    this.print.debug("Loaded commands.");
   }
 
   async run() {
@@ -89,6 +107,7 @@ export default class Core {
       updateCheckInterval: DAY_IN_MILLISECONDS,
     }).notify({ defer: false });
 
+    this.print.debug("Running...");
     await this.builder.run();
   }
 }
