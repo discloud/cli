@@ -47,8 +47,8 @@ export default class ConsolePrint implements IPrint {
 
     const prefix = "[debug]";
 
-    if (typeof first === "string") return console.debug(`%s ${first}`, prefix, ...args);
-    console.debug(prefix, first, ...args);
+    if (typeof first === "string") return console.error(`%s ${first}`, prefix, ...args);
+    console.error(prefix, first, ...args);
   }
 
   debug(..._args: any) { }
