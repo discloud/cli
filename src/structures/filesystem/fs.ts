@@ -2,7 +2,7 @@ import { Ignore } from "@discloudapp/util";
 import { spawn } from "child_process";
 import { on } from "events";
 import { existsSync, type Dirent } from "fs";
-import { glob, readdir, readFile, writeFile } from "fs/promises";
+import { readdir, readFile, writeFile } from "fs/promises";
 import { globIterate } from "glob";
 import { type } from "os";
 import { join, relative } from "path";
@@ -46,7 +46,7 @@ export default class FileSystem implements IFileSystem {
     });
   }
 
-  protected async *_fsGlobIterate(pattern: string | string[], cwd: string = this.core.workspaceFolder) {
+  /* protected async *_fsGlobIterate(pattern: string | string[], cwd: string = this.core.workspaceFolder) {
     const ignoreModule = new Ignore(CONFIG_FILENAME);
     const exclude = await ignoreModule.getIgnorePatterns(cwd);
 
@@ -54,7 +54,7 @@ export default class FileSystem implements IFileSystem {
       cwd,
       exclude,
     });
-  }
+  } */
 
   readdir(path: string, recursive?: boolean): Promise<string[]>
   readdir(path: string, options: FileSystemReadDirWithFileTypesOptions): Promise<Dirent[]>
