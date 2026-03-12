@@ -112,7 +112,7 @@ suite("Testing zip command", async () => {
   async function* zipGenerator(glob, options) {
     const MINUTE_IN_MILLISECONDS = 60_000;
 
-    const zipCommand = "discloud zip";
+    const zipCommand = "discloud.mjs zip";
     const localBinCommand = "bin/" + zipCommand;
 
     const args = [
