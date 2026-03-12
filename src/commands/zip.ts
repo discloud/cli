@@ -39,7 +39,7 @@ export default <ICommand<CommandArgs>>{
   async run(core, args) {
     const spinner = core.print.spin("Searching files...");
 
-    const zipper: IZip = new Zip();
+    const zipper: IZip = new Zip(core);
 
     await zipper.glob(args.glob, core.workspaceFolder);
 

@@ -1,5 +1,6 @@
 import { existsSync } from "fs";
 import { basename, dirname, extname, join } from "path";
+import { inspect } from "util";
 import { type Argv, type CommandModule } from "yargs";
 import { version } from "../..";
 import type Core from "../../core";
@@ -108,6 +109,9 @@ export default class YargsBuilder implements IBuilder {
         if (command.checkRateLimit)
           if (this.core.api.isLimited)
             return this.core.print.error("Rate limited until: %s", this.core.api.resetDateString);
+
+        this.core.print.debug("Running with args:");
+        this.core.print.debug(inspect(args));
 
         return command.run(this.core, args);
       },

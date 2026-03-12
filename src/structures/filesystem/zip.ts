@@ -2,13 +2,14 @@ import { fsGlobIterate, globIterate } from "@discloudapp/util";
 import AdmZip from "adm-zip";
 import { readFile, stat } from "fs/promises";
 import { join, relative } from "path";
+import type Core from "../../core";
 import { type IZip } from "../../interfaces/zip";
 import { normalizeGlobPattern } from "../../utils/glob";
 
 export default class Zip implements IZip {
   declare readonly zip: AdmZip;
 
-  constructor() {
+  constructor(readonly core: Core) {
     this.zip = new AdmZip();
   }
 
@@ -37,7 +38,11 @@ export default class Zip implements IZip {
   }
 
   async glob(pattern: string | string[], cwd: string = process.cwd()) {
+    this.core.print.debug("Normalizing glob pattern: %s", pattern);
+
     pattern = normalizeGlobPattern(pattern);
+
+    this.core.print.debug("Normalized glob pattern: %s", pattern);
 
     for await (const zipName of globIterate(pattern, cwd)) {
       const localPath = join(cwd, zipName);
@@ -48,10 +53,14 @@ export default class Zip implements IZip {
 
       if (!fileStat.isFile()) continue;
 
+      this.core.print.debug("File found: %s", zipName);
+
       const buffer = await readFile(localPath);
 
       this.zip.addFile(zipName, buffer, undefined, fileStat.mode);
     }
+
+    this.core.print.debug("Successfully zipped");
   }
 
   protected async _fsGlob(pattern: string | string[], cwd: string = process.cwd()) {
