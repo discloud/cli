@@ -1,9 +1,9 @@
 {
   "name": "discloud-cli",
   "description": "A fast option to manage your apps on Discloud.",
-  "version": "2.9.5",
+  "version": "2.9.6",
   "bin": {
-    "discloud": "bin/discloud"
+    "discloud": "bin/discloud.mjs"
   },
   "engines": {
     "node": ">=20.12"
