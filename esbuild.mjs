@@ -45,7 +45,7 @@ async function main() {
     entryPoints: ["src/index.ts", "src/commands/**"],
     bundle: true,
     format: "esm",
-    minify: production,
+    minify: false,
     sourcemap: "inline",
     sourcesContent: false,
     platform: "node",
