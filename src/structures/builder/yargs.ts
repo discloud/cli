@@ -20,6 +20,7 @@ export default class YargsBuilder implements IBuilder {
         h: "help",
         v: "version",
       })
+      .options({ debug: { type: "boolean" } })
       .commandDir(path, { visit: (...args) => this.#resolveCommand(...args) })
       .completion()
       .fail((msg, _err, _yargs) => {
