@@ -38,7 +38,7 @@ const esbuildProblemMatcherPlugin = {
 };
 
 async function main() {
-  const production = process.argv.includes("--production");
+  // const production = process.argv.includes("--production");
   const watch = process.argv.includes("--watch");
 
   const ctx = await context({
