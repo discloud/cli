@@ -38,14 +38,14 @@ const esbuildProblemMatcherPlugin = {
 };
 
 async function main() {
-  // const production = process.argv.includes("--production");
+  const production = process.argv.includes("--production");
   const watch = process.argv.includes("--watch");
 
   const ctx = await context({
     entryPoints: ["src/index.ts", "src/commands/**"],
     bundle: true,
     format: "esm",
-    minify: false,
+    minify: production,
     sourcemap: "inline",
     sourcesContent: false,
     platform: "node",
