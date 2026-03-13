@@ -46,7 +46,9 @@ export default class FileSystem implements IFileSystem {
     });
   }
 
-  /* protected async *_fsGlobIterate(pattern: string | string[], cwd: string = this.core.workspaceFolder) {
+  protected async *_fsGlobIterate(pattern: string | string[], cwd: string = this.core.workspaceFolder) {
+    const { glob } = await import("fs/promises");
+
     const ignoreModule = new Ignore(CONFIG_FILENAME);
     const exclude = await ignoreModule.getIgnorePatterns(cwd);
 
@@ -54,7 +56,7 @@ export default class FileSystem implements IFileSystem {
       cwd,
       exclude,
     });
-  } */
+  }
 
   readdir(path: string, recursive?: boolean): Promise<string[]>
   readdir(path: string, options: FileSystemReadDirWithFileTypesOptions): Promise<Dirent[]>

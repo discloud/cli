@@ -1,4 +1,4 @@
-import { fsGlobIterate, globIterate } from "@discloudapp/util";
+import { globIterate } from "@discloudapp/util";
 import AdmZip from "adm-zip";
 import { readFile, stat } from "fs/promises";
 import { join, relative } from "path";
@@ -64,6 +64,8 @@ export default class Zip implements IZip {
   }
 
   protected async _fsGlob(pattern: string | string[], cwd: string = process.cwd()) {
+    const { fsGlobIterate } = await import("@discloudapp/util");
+
     for await (const dirent of fsGlobIterate(pattern, { cwd, withFileTypes: true })) {
       const localPath = join(dirent.parentPath, dirent.name);
 
