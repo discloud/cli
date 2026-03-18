@@ -54,7 +54,7 @@ discloud app [command]                         Manage your apps
   discloud app backup [app] [path]             Get backup of your app code from Discloud        [aliases: bkp]
   discloud app commit <app> [glob..]           Commit one app or site to Discloud               [aliases: c]
   discloud app console <app>                   Use the app terminal                             [aliases: terminal]
-  discloud app delete <app>                    Delete one or all of your apps on Discloud       
+  discloud app delete <app>                    Delete one of your apps on Discloud       
   discloud app info [app]                      Get information of your apps                     
   discloud app logs [app] [path]               View the logs from application in Discloud       
   discloud app mod [command]                   Manager your app team                            

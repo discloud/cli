@@ -12,7 +12,7 @@ discloud app <comando>                         Gerencie seus aplicativos
   discloud app backup [app] [path]             Obtenha backup do código do seu aplicativo do Discloud           [aliases: bkp]
   discloud app commit <app> [glob..]           Envie um aplicativo ou site para o Discloud                      [aliases: c]
   discloud app console <app>                   Use o terminal do aplicativo                                     [aliases: terminal]
-  discloud app delete <app>                    Exclua um ou todos os seus aplicativos no Discloud               
+  discloud app delete <app>                    Exclua um dos seus aplicativos no Discloud               
   discloud app info [app]                      Obtenha informações sobre seus aplicativos                       
   discloud app logs [app] [path]               Visualize os logs do aplicativo no Discloud                      
   discloud app mod <comando>                   Gerencie sua equipe de aplicativos                               
