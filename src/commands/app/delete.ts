@@ -9,7 +9,7 @@ interface CommandArgs {
 
 export default <ICommand<CommandArgs>>{
   name: "delete <app>",
-  description: "Delete one or all of your apps on Discloud",
+  description: "Delete one of your apps on Discloud",
 
   requireAuth: true,
 
