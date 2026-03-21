@@ -26,7 +26,7 @@ export default <ICommand<CommandArgs>>{
   async run(core, args) {
     core.print.spin(`Deleting MOD ${args.mod} from ${args.app}...`);
 
-    const response = await core.api.delete<RESTDeleteApiAppTeamResult>(Routes.appTeam(args.app));
+    const response = await core.api.delete<RESTDeleteApiAppTeamResult>(Routes.appTeam(args.app, args.mod));
 
     core.print.apiResponse(response);
   },
