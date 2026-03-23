@@ -13,7 +13,7 @@ interface CommandArgs {
 
 export default <ICommand<CommandArgs>>{
   name: "logs [app] [path]",
-  description: "View the logs from your tean app in Discloud",
+  description: "View the logs from your team app in Discloud",
 
   requireAuth: true,
 
