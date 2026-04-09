@@ -1,7 +1,7 @@
 import { type ApiAppBackup, type ApiAppBackupAll, type RESTGetApiAppAllBackupResult, type RESTGetApiAppBackupResult, Routes } from "@discloudapp/api-types/v2";
 import { existsSync } from "fs";
 import { mkdir, writeFile } from "fs/promises";
-import { join } from "path";
+import { basename, join } from "path";
 import { type ICommand } from "../../interfaces/command";
 import { BACKUPS_PATH } from "../../utils/constants";
 
@@ -71,10 +71,13 @@ async function getBackup(backup: ApiAppBackup | ApiAppBackupAll, path: string) {
   try {
     if (!existsSync(path)) await mkdir(path, { recursive: true });
 
-    const response = await fetch(backup.url);
+    const url = new URL(backup.url);
+    const filename = basename(url.pathname);
+
+    const response = await fetch(url);
 
     if (response.ok) {
-      const backupPath = join(path, `${backup.id}.zip`);
+      const backupPath = join(path, filename);
 
       await writeFile(backupPath, Buffer.from(await response.arrayBuffer()));
 
