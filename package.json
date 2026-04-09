@@ -54,7 +54,7 @@
     "eslint": "^10.2.0",
     "globals": "^17.4.0",
     "npm-run-all": "^4.1.5",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.2",
     "typescript-eslint": "^8.58.1",
     "unplugin-replace": "^0.8.0"
   }
