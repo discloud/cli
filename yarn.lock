@@ -8,9 +8,9 @@
   integrity sha512-DDaRehssg1aNrH4+2hnj1B7vnUGEjU6OIlyRdkMd0aUdIUvKXrJfXsy8LVtXAy7DRvYVluWbMspsRhz2lcW0mQ==
 
 "@discloudapp/api-types@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-1.0.5.tgz#2abede1e83bebe87cf20fbd2d42789e224ca6eef"
-  integrity sha512-2bfmaImwYjAWEm2jb9s0e+gaZ3WhM0vF2xURdbWcgPO/nUivGH+86QieVmmIASE49DDZ1q/B1uc8eeR0r++Ftg==
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@discloudapp/api-types/-/api-types-1.1.0.tgz#cb2108c5e29d34c545bad3c852594ed0a9548426"
+  integrity sha512-WXMZrK7V7SY7O1Ckt9BO2wBqXugOnEET2vzB2ha3tywpQDYfj59R0dBWW1hqnEbuBEmO14sXyAOkAkrz6j5tRA==
   dependencies:
     tslib "^2.8.1"
 
