@@ -48,7 +48,7 @@ export default defineConfig([
       "@typescript-eslint/require-await": "off",
       "@typescript-eslint/restrict-template-expressions": "off",
       "@typescript-eslint/return-await": "off",
-      "@typescript-eslint/sort-type-constituents": "warn",
+      "@typescript-eslint/sort-type-constituents": "off",
       "comma-dangle": ["warn", "always-multiline"],
       "func-style": ["warn", "declaration"],
       indent: ["warn", 2, { SwitchCase: 1 }],
