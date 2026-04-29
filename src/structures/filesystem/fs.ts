@@ -9,7 +9,6 @@ import { join, relative } from "path";
 import type Core from "../../core";
 import { type FileSystemReadDirWithFileTypesOptions, type IFileSystem } from "../../interfaces/filesystem";
 import { CONFIG_FILENAME } from "../../services/discloud/constants";
-import { asyncGeneratorToArray } from "../../utils/array";
 import { MINUTE_IN_MILLISECONDS } from "../../utils/constants";
 
 export default class FileSystem implements IFileSystem {
@@ -30,7 +29,7 @@ export default class FileSystem implements IFileSystem {
   }
 
   async glob(pattern: string | string[], cwd: string = this.core.workspaceFolder): Promise<string[]> {
-    return asyncGeneratorToArray(this.globIterate(pattern, cwd));
+    return Array.fromAsync(this.globIterate(pattern, cwd));
   }
 
   async *globIterate(pattern: string | string[], cwd: string = this.core.workspaceFolder) {
@@ -75,8 +74,8 @@ export default class FileSystem implements IFileSystem {
     await writeFile(...args);
   }
 
-  async zip(glob: string | string[], cwd: string = this.core.workspaceFolder) {
-    return await asyncGeneratorToArray(this.zipIterate(glob, cwd));
+  zip(glob: string | string[], cwd: string = this.core.workspaceFolder) {
+    return Array.fromAsync(this.zipIterate(glob, cwd));
   }
 
   zipIterate(glob: string | string[], cwd?: string): AsyncGenerator<Buffer>
