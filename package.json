@@ -6,7 +6,7 @@
     "discloud": "bin/discloud"
   },
   "engines": {
-    "node": ">=20.12"
+    "node": ">=22"
   },
   "type": "module",
   "scripts": {
