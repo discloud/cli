@@ -22,7 +22,7 @@ export interface PathsOptions {
 
 export type NestedStoreKeys<O, Options extends PathsOptions = {}> = _NestedStoreKeys<Required<O>, Options>
 
-type Primitive = string | number | bigint | boolean | symbol | null | undefined
+type Primitive = bigint | boolean | number | string | symbol | null | undefined
 
 type _NestedStoreKeys<O, Options extends PathsOptions> = {
   [K in keyof O]:
@@ -33,21 +33,16 @@ type _NestedStoreKeys<O, Options extends PathsOptions> = {
   ? Options["leavesOnly"] extends true
   ? `${K & string}[${number}].${NestedStoreKeys<V, Options>}`
   :
-  | K & string
-  | `${K & string}[${number}]`
-  | `${K & string}[${number}].${NestedStoreKeys<V, Options>}`
+  `${K & string}[${number}].${NestedStoreKeys<V, Options>}` | `${K & string}[${number}]` | K & string
   : Options["leavesOnly"] extends true
   ? `${K & string}.${number}.${NestedStoreKeys<V, Options>}`
   :
-  | K & string
-  | `${K & string}.${number}`
-  | `${K & string}.${number}.${NestedStoreKeys<V, Options>}`
+  `${K & string}.${number}.${NestedStoreKeys<V, Options>}` | `${K & string}.${number}` | K & string
   : O extends object
   ? Options["leavesOnly"] extends true
   ? `${K & string}.${NestedStoreKeys<O[K], Options>}`
   :
-  | K & string
-  | `${K & string}.${NestedStoreKeys<O[K], Options>}`
+  `${K & string}.${NestedStoreKeys<O[K], Options>}` | K & string
   : never
 }[keyof O];
 

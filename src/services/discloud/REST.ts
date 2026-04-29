@@ -157,8 +157,8 @@ export default class REST implements IApi {
         if (typeof request.body === "string")
           try { request.body = JSON.parse(request.body); } catch { }
 
-        if (request.body !== null)
-          for (const key in request.body)
+        if (request.body != null)
+          for (const key in (request.body as Record<string, unknown>))
             formData.append(key, request.body[key as keyof InternalRequestData["body"]]);
       } else {
         headers.set("Content-Type", "application/json");
@@ -185,8 +185,7 @@ export default class REST implements IApi {
     if (typeof contentType === "string") {
       if (contentType.includes("application/json")) {
         const body = await response.json() as any;
-        if (typeof body === "object" && body !== null)
-          body.statusCode ??= response.status;
+        if (body != null) body.statusCode ??= response.status;
         return body;
       }
 

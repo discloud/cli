@@ -15,7 +15,7 @@ export class DiscloudAPIError<T = any> extends Error {
         message = body.match(/<title>(.*)<\/title>/)?.[1] ?? body;
         break;
       case "object":
-        if (body !== null) {
+        if (body != null) {
           message = "message" in body ? body.message as string : "Unknown error";
           break;
         }

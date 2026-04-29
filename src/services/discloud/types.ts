@@ -8,11 +8,13 @@ export interface RESTOptions {
 
 export type RequestOptions = NonNullable<Parameters<typeof fetch>[1]>;
 
+type RequestBody = Record<string, unknown> | Record<string, unknown> & RequestInit["body"]
+
 export interface RequestData {
   /**
    * The body to send to this request.
    */
-  body?: RequestInit["body"] | unknown
+  body?: RequestBody
   /**
    * Files to be attached to this request
    */

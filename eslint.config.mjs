@@ -4,11 +4,20 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
-  { ignores: ["build/**"] },
+  { ignores: ["build/**", "test/**/*.mjs"] },
   { files: ["**/*.{mjs,ts}"], plugins: { js }, extends: ["js/recommended"] },
-  { files: ["**/*.{mjs}"], languageOptions: { sourceType: "script" } },
+  { files: ["**/*.mjs"], languageOptions: { sourceType: "script" } },
   { files: ["**/*.{mjs,ts}"], languageOptions: { globals: globals.node } },
-  tseslint.configs.recommended,
+  tseslint.configs.recommendedTypeChecked,
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: {
+          allowDefaultProject: ["*.mjs"],
+        },
+      },
+    },
+  },
   {
     files: ["*.js"],
     rules: {
@@ -18,9 +27,17 @@ export default defineConfig([
   {
     rules: {
       "@typescript-eslint/consistent-type-imports": ["warn", { fixStyle: "inline-type-imports" }],
+      "@typescript-eslint/only-throw-error": "warn",
       "@typescript-eslint/no-empty-object-type": "off",
       "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-floating-promises": "off",
+      "@typescript-eslint/no-unnecessary-type-assertion": "warn",
+      "@typescript-eslint/no-unsafe-argument": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
       "@typescript-eslint/no-unsafe-declaration-merging": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
       "@typescript-eslint/no-unused-vars": ["warn", {
         argsIgnorePattern: "^_",
         caughtErrorsIgnorePattern: "^_",
@@ -28,6 +45,10 @@ export default defineConfig([
         varsIgnorePattern: "^_",
       }],
       "@typescript-eslint/prefer-ts-expect-error": "warn",
+      "@typescript-eslint/require-await": "off",
+      "@typescript-eslint/restrict-template-expressions": "off",
+      "@typescript-eslint/return-await": "off",
+      "@typescript-eslint/sort-type-constituents": "warn",
       "comma-dangle": ["warn", "always-multiline"],
       "func-style": ["warn", "declaration"],
       indent: ["warn", 2, { SwitchCase: 1 }],

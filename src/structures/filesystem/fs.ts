@@ -28,11 +28,11 @@ export default class FileSystem implements IFileSystem {
     return existsSync(join(cwd, path));
   }
 
-  async glob(pattern: string | string[], cwd: string = this.core.workspaceFolder): Promise<string[]> {
+  async glob(pattern: string[] | string, cwd: string = this.core.workspaceFolder): Promise<string[]> {
     return Array.fromAsync(this.globIterate(pattern, cwd));
   }
 
-  async *globIterate(pattern: string | string[], cwd: string = this.core.workspaceFolder) {
+  async *globIterate(pattern: string[] | string, cwd: string = this.core.workspaceFolder) {
     const ignoreModule = new Ignore(CONFIG_FILENAME);
     const ignore = await ignoreModule.getIgnorePatterns(cwd);
 
@@ -45,7 +45,7 @@ export default class FileSystem implements IFileSystem {
     });
   }
 
-  protected async *_fsGlobIterate(pattern: string | string[], cwd: string = this.core.workspaceFolder) {
+  protected async *_fsGlobIterate(pattern: string[] | string, cwd: string = this.core.workspaceFolder) {
     const { glob } = await import("fs/promises");
 
     const ignoreModule = new Ignore(CONFIG_FILENAME);
@@ -59,7 +59,7 @@ export default class FileSystem implements IFileSystem {
 
   readdir(path: string, recursive?: boolean): Promise<string[]>
   readdir(path: string, options: FileSystemReadDirWithFileTypesOptions): Promise<Dirent[]>
-  async readdir(path: string, recursive?: boolean | FileSystemReadDirWithFileTypesOptions) {
+  async readdir(path: string, recursive?: FileSystemReadDirWithFileTypesOptions | boolean) {
     if (typeof recursive === "boolean") return await readdir(path, { recursive });
     return await readdir(path, recursive!);
   }
@@ -74,12 +74,12 @@ export default class FileSystem implements IFileSystem {
     await writeFile(...args);
   }
 
-  zip(glob: string | string[], cwd: string = this.core.workspaceFolder) {
+  zip(glob: string[] | string, cwd: string = this.core.workspaceFolder) {
     return Array.fromAsync(this.zipIterate(glob, cwd));
   }
 
-  zipIterate(glob: string | string[], cwd?: string): AsyncGenerator<Buffer>
-  async* zipIterate(glob: string | string[], cwd: string = this.core.workspaceFolder) {
+  zipIterate(glob: string[] | string, cwd?: string): AsyncGenerator<Buffer>
+  async* zipIterate(glob: string[] | string, cwd: string = this.core.workspaceFolder) {
     if (Array.isArray(glob)) glob = glob.join(" ");
 
     const child = spawn(`discloud zip -e buffer -g ${glob}`, {

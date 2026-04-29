@@ -9,7 +9,7 @@ export default class ConsolePrint implements IPrint {
   constructor(
     readonly core: Core,
   ) {
-    if (process.argv.includes("--debug")) this.debug = this.#debug;
+    if (process.argv.includes("--debug")) this.debug = this.#debug.bind(this);
     this.debug("Initalized ConsolePrint");
   }
 
@@ -133,7 +133,7 @@ function resolveTableObj(objOrArray: any, excludeKeys: string[] = []) {
     for (let i = 0; i < objOrArray.length; i++) {
       resolveTableObj(objOrArray[i], excludeKeys);
     }
-  } else if (typeof objOrArray === "object" && objOrArray !== null) {
+  } else if (objOrArray != null) {
     if (excludeKeys?.length) {
       for (let j = 0; j < excludeKeys.length; j++) {
         Reflect.deleteProperty(objOrArray, excludeKeys[j]);

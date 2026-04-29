@@ -50,7 +50,7 @@ export default class FsJsonStore<T extends Record<any, any>> implements IStore<T
 
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
-      if (!Reflect.has(data, key)) data[key] = isNaN(keys[i + 1] as any) ? {} : [];
+      if (!Reflect.has(data, key)) data[key] = isNaN(keys[i + 1] as number) ? {} : [];
       data = data[key];
     }
 

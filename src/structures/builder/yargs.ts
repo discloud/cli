@@ -25,6 +25,7 @@ export default class YargsBuilder implements IBuilder {
       .commandDir(path, { visit: (...args) => this.#resolveCommand(...args) })
       .completion()
       .fail((msg, _err, _yargs) => {
+        // eslint-disable-next-line @typescript-eslint/only-throw-error
         if (msg) throw msg;
       })
       .locale("en") // TODO: multi-locale
@@ -57,7 +58,7 @@ export default class YargsBuilder implements IBuilder {
         this.yargs.exit(1, error);
       }
 
-      if (error !== undefined && error !== null)
+      if (error != null)
         this.core.print.error(error);
 
       this.yargs.exit(1, error as Error);

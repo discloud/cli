@@ -23,8 +23,7 @@ export default <ICommand<CommandArgs>>{
     core.print.spin(`Fetching ${args.app}...`);
 
     const response = await core.api.get<
-      | RESTGetApiAppResult
-      | RESTGetApiAppAllResult
+      RESTGetApiAppAllResult | RESTGetApiAppResult
     >(Routes.app(args.app));
 
     if (!response.apps) return core.print.apiResponse(response);

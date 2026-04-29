@@ -37,7 +37,7 @@ export default class Zip implements IZip {
     }
   }
 
-  async glob(pattern: string | string[], cwd: string = process.cwd()) {
+  async glob(pattern: string[] | string, cwd: string = process.cwd()) {
     this.core.print.debug("Normalizing glob pattern: %s", pattern);
 
     pattern = normalizeGlobPattern(pattern);
@@ -63,7 +63,7 @@ export default class Zip implements IZip {
     this.core.print.debug("Successfully zipped");
   }
 
-  protected async _fsGlob(pattern: string | string[], cwd: string = process.cwd()) {
+  protected async _fsGlob(pattern: string[] | string, cwd: string = process.cwd()) {
     const { fsGlobIterate } = await import("@discloudapp/util");
 
     for await (const dirent of fsGlobIterate(pattern, { cwd, withFileTypes: true })) {

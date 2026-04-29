@@ -39,8 +39,7 @@ export default <ICommand<CommandArgs>>{
     const apinner = core.print.spin(`Fetching ${args.app} logs...`);
 
     const response = await core.api.get<
-      | RESTGetApiAppLogResult
-      | RESTGetApiAppAllLogResult
+      RESTGetApiAppAllLogResult | RESTGetApiAppLogResult
     >(Routes.teamLogs(args.app));
 
     if (!response.apps) return core.print.apiResponse(response);

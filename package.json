@@ -15,6 +15,7 @@
     "watch:tsc": "tsc --noEmit --watch",
     "prepublish": "npm run build",
     "build": "node esbuild.mjs --production",
+    "lint": "eslint --fix",
     "test": "npm run test:ts && npm run build && npm run test:node",
     "test:node": "node --test \"**/test/**/*.test.?(c|m)js\"",
     "test:ts": "tsc --noEmit"

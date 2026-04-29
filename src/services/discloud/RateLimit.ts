@@ -24,8 +24,8 @@ export default class RateLimit {
   }
 
   limit(headers: Headers, context: string) {
-    let remaining: string | number | null = headers.get("ratelimit-remaining");
-    let reset: string | number | null = headers.get("ratelimit-reset");
+    let remaining: number | string | null = headers.get("ratelimit-remaining");
+    let reset: number | string | null = headers.get("ratelimit-reset");
 
     if (!remaining || !reset) return;
 

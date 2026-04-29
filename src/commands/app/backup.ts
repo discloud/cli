@@ -40,8 +40,7 @@ export default <ICommand<CommandArgs>>{
     const spinner = core.print.spin(`Fetching ${args.app} backup...`);
 
     const response = await core.api.get<
-      | RESTGetApiAppBackupResult
-      | RESTGetApiAppAllBackupResult
+      RESTGetApiAppAllBackupResult | RESTGetApiAppBackupResult
     >(Routes.appBackup(args.app));
 
     if (!response.backups) return core.print.apiResponse(response);

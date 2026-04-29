@@ -25,12 +25,12 @@ export interface IFileSystem {
   /**
    * @param cwd default `process.cwd()`
    */
-  glob(pattern: string | string[], cwd?: string): Promise<string[]>
+  glob(pattern: string[] | string, cwd?: string): Promise<string[]>
 
   /**
    * @param cwd default `process.cwd()`
    */
-  globIterate(pattern: string | string[], cwd?: string): AsyncGenerator<string>
+  globIterate(pattern: string[] | string, cwd?: string): AsyncGenerator<string>
 
   readdir(path: string, recursive?: boolean): Promise<string[]>
   readdir(path: string, options: FileSystemReadDirWithFileTypesOptions): Promise<Dirent[]>
@@ -44,10 +44,10 @@ export interface IFileSystem {
   /**
    * @param cwd default `process.cwd()`
    */
-  zip(glob: string | string[], cwd?: string): Promise<Buffer[]>
+  zip(glob: string[] | string, cwd?: string): Promise<Buffer[]>
 
   /**
    * @param cwd default `process.cwd()`
    */
-  zipIterate(glob: string | string[], cwd?: string): AsyncGenerator<Buffer, void, unknown>
+  zipIterate(glob: string[] | string, cwd?: string): AsyncGenerator<Buffer, void, unknown>
 }
