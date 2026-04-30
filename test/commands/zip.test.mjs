@@ -48,7 +48,7 @@ suite("Testing zip command", async () => {
 
     const glob = `__not_expected_files__${Math.random()}`;
     const out = `test/__empty__${Math.random()}.zip`;
-    /** @external adm-zip@^0.5.16 */
+    /** @external adm-zip@^0.5.17 */
     const expectedFileSize = 22;
 
     await executeZipCommand(glob, { out });
