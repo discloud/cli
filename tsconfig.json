@@ -12,13 +12,13 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "rootDir": "src",
-    // "types": [],
+    "types": ["node"],
 
     /* Emit */
     "inlineSourceMap": true,
     "outDir": "build",
     "removeComments": true,
-    "importHelpers": true,
+    //"importHelpers": true,
     "newLine": "lf",
     "noEmitHelpers": true,
 
