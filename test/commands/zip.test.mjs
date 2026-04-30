@@ -4,7 +4,6 @@ import { on } from "events";
 import { existsSync, rmSync } from "fs";
 import { stat } from "fs/promises";
 import { suite, test } from "node:test";
-import { asyncGeneratorToArray } from "../utils/array.mjs";
 
 suite("Testing zip command", async () => {
   await test("Getting a empty zip buffer", async (t) => {
@@ -98,7 +97,7 @@ suite("Testing zip command", async () => {
    * @prop {string} out
    */
   async function executeZipCommand(glob, options) {
-    return Buffer.concat(await asyncGeneratorToArray(zipGenerator(glob, options)));
+    return Buffer.concat(await Array.fromAsync(zipGenerator(glob, options)));
   }
 
   /**
