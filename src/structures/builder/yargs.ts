@@ -111,8 +111,10 @@ export default class YargsBuilder implements IBuilder {
           if (this.core.api.isLimited)
             return this.core.print.error("Rate limited until: %s", this.core.api.resetDateString);
 
-        this.core.print.debug("Running with args:");
-        this.core.print.debug(inspect(args));
+        if (this.core.isDebug) {
+          this.core.print.debug("Running with args:");
+          this.core.print.debug(inspect(args));
+        }
 
         return command.run(this.core, args);
       },

@@ -30,7 +30,9 @@ export default class Core {
   readonly templater: ITemplater;
 
   constructor(readonly argv: string[]) {
-    this.print = new ConsolePrint(this);
+    this.#isDebug = process.argv.includes("--debug");
+
+    this.print = new ConsolePrint(this, this.#isDebug);
 
     this.print.debug("Initializing FileSystem");
     this.fs = new FileSystem(this);
@@ -62,6 +64,9 @@ export default class Core {
     this.builder = new YargsBuilder(this, _yargs);
     this.print.debug("Initialized Builder");
   }
+
+  readonly #isDebug: boolean;
+  get isDebug() { return this.#isDebug; }
 
   #cwd!: string;
   get workspaceFolder() {

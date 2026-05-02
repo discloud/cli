@@ -8,8 +8,9 @@ import { type IPrint } from "../../interfaces/print";
 export default class ConsolePrint implements IPrint {
   constructor(
     readonly core: Core,
+    readonly isDebug: boolean,
   ) {
-    if (process.argv.includes("--debug")) this.debug = this.#debug.bind(this);
+    if (isDebug) this.debug = this.#debug.bind(this);
     this.debug("Initalized ConsolePrint");
   }
 
