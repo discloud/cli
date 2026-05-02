@@ -20,17 +20,15 @@
 		"scope": "typescript",
 		"prefix": "command",
 		"body": [
-			"import { type CommandInterface } from \"../interfaces/command\";",
+			"import { type ICommand } from \"../interfaces/command\";",
 			"",
 			"interface CommandArgs { }",
 			"",
-			"export default <CommandInterface<CommandArgs>>{",
-			"\tname: \"$1\",",
+			"export default <ICommand<CommandArgs>>{",
+			"\tname: \"${1:${TM_FILENAME_BASE/(^\\w+)/${1:/snakecase}/}}\",",
 			"\tdescription: \"$2\",",
 			"",
-			"\tasync run(core, args) {",
-			"\t\t$0",
-			"\t},",
+			"\tasync run(core, args) {$0},",
 			"};",
 			""
 		]
