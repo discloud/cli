@@ -91,6 +91,7 @@ export default class REST implements IApi {
     if (requestToken) this.rateLimiter.verify(requestToken);
 
     const isReadonly = !config.method || config.method === RequestMethod.Get;
+    const hasBody = config.method === RequestMethod.Post || config.method === RequestMethod.Put;
     const retries = isReadonly ? MAX_RETRIES : 1;
 
     let lastError: unknown;
@@ -102,11 +103,11 @@ export default class REST implements IApi {
         await sleep(delay);
       }
 
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+      const controller = hasBody ? null : new AbortController();
+      const timeout = controller ? setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS) : null;
 
       try {
-        const response = await fetch(url, { ...config, signal: controller.signal });
+        const response = await fetch(url, { ...config, ...(controller ? { signal: controller.signal } : {}) });
 
         if (requestToken) this.#handleResponseHeaders(response.headers, requestToken);
 
@@ -138,7 +139,7 @@ export default class REST implements IApi {
         if (attempt < retries - 1) continue;
         throw err;
       } finally {
-        clearTimeout(timeout);
+        if (timeout) clearTimeout(timeout);
       }
     }
 
