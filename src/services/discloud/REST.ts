@@ -7,6 +7,14 @@ import RateLimit from "./RateLimit";
 import { type InternalRequestData, type RequestData, type RequestOptions, type RESTOptions, type RouteLike } from "./types";
 import { tokenIsDiscloudJwt } from "./utils";
 
+const REQUEST_TIMEOUT_MS = 30_000;
+const MAX_RETRIES = 3;
+const RETRY_BASE_DELAY_MS = 500;
+
+function sleep(ms: number) {
+  return new Promise<void>(resolve => setTimeout(resolve, ms));
+}
+
 export default class REST implements IApi {
   readonly options: Partial<RESTOptions>;
   readonly rateLimiter: RateLimit;
@@ -82,22 +90,59 @@ export default class REST implements IApi {
 
     if (requestToken) this.rateLimiter.verify(requestToken);
 
-    const response = await fetch(url, config);
+    const isReadonly = !config.method || config.method === RequestMethod.Get;
+    const retries = isReadonly ? MAX_RETRIES : 1;
 
-    if (requestToken) this.#handleResponseHeaders(response.headers, requestToken);
+    let lastError: unknown;
 
-    const responseBody = await this.#resolveResponseBody(response);
+    for (let attempt = 0; attempt < retries; attempt++) {
+      if (attempt > 0) {
+        const delay = RETRY_BASE_DELAY_MS * 2 ** (attempt - 1);
+        this.core.print.debug("Retrying request (attempt %d/%d) after %dms...", attempt + 1, retries, delay);
+        await sleep(delay);
+      }
 
-    if (!response.ok)
-      throw new DiscloudAPIError(
-        responseBody,
-        response.status,
-        config.method ?? "GET",
-        pathname,
-        config.body,
-      );
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
-    return responseBody;
+      try {
+        const response = await fetch(url, { ...config, signal: controller.signal });
+
+        if (requestToken) this.#handleResponseHeaders(response.headers, requestToken);
+
+        if (!response.ok && response.status >= 500 && isReadonly && attempt < retries - 1) {
+          lastError = response;
+          continue;
+        }
+
+        const responseBody = await this.#resolveResponseBody(response);
+
+        if (!response.ok)
+          throw new DiscloudAPIError(
+            responseBody,
+            response.status,
+            config.method ?? "GET",
+            pathname,
+            config.body,
+          );
+
+        return responseBody;
+      } catch (err) {
+        if ((err as Error)?.name === "AbortError") {
+          lastError = new Error(`Request timed out after ${REQUEST_TIMEOUT_MS / 1000}s: ${pathname}`);
+          if (attempt < retries - 1) continue;
+          throw lastError;
+        }
+        if (err instanceof DiscloudAPIError) throw err;
+        lastError = err;
+        if (attempt < retries - 1) continue;
+        throw err;
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+
+    throw lastError;
   }
 
   #getHeaderValue(headers: RequestOptions["headers"], headerKey: any) {
