@@ -1,11 +1,11 @@
 import { Ignore } from "@discloudapp/util";
-import { spawn } from "child_process";
-import { on } from "events";
+import { on, once } from "events";
 import { existsSync, type Dirent } from "fs";
 import { readdir, readFile, writeFile } from "fs/promises";
 import { globIterate } from "glob";
 import { type } from "os";
 import { join, relative } from "path";
+import { spawn } from "child_process";
 import type Core from "../../core";
 import { type FileSystemReadDirWithFileTypesOptions, type IFileSystem } from "../../interfaces/filesystem";
 import { CONFIG_FILENAME } from "../../services/discloud/constants";
@@ -15,6 +15,17 @@ export default class FileSystem implements IFileSystem {
   constructor(
     protected readonly core: Core,
   ) { }
+
+  readonly #ignoreCache = new Map<string, string[]>();
+
+  async #getIgnorePatterns(cwd: string): Promise<string[]> {
+    if (this.#ignoreCache.has(cwd)) return this.#ignoreCache.get(cwd)!;
+
+    const ignoreModule = new Ignore(CONFIG_FILENAME);
+    const patterns = await ignoreModule.getIgnorePatterns(cwd);
+    this.#ignoreCache.set(cwd, patterns);
+    return patterns;
+  }
 
   asAbsolutePath(path: string, cwd: string = this.core.workspaceFolder): string {
     return join(cwd, path);
@@ -33,8 +44,7 @@ export default class FileSystem implements IFileSystem {
   }
 
   async *globIterate(pattern: string[] | string, cwd: string = this.core.workspaceFolder) {
-    const ignoreModule = new Ignore(CONFIG_FILENAME);
-    const ignore = await ignoreModule.getIgnorePatterns(cwd);
+    const ignore = await this.#getIgnorePatterns(cwd);
 
     yield* globIterate(pattern, {
       cwd,
@@ -48,8 +58,7 @@ export default class FileSystem implements IFileSystem {
   protected async *_fsGlobIterate(pattern: string[] | string, cwd: string = this.core.workspaceFolder) {
     const { glob } = await import("fs/promises");
 
-    const ignoreModule = new Ignore(CONFIG_FILENAME);
-    const exclude = await ignoreModule.getIgnorePatterns(cwd);
+    const exclude = await this.#getIgnorePatterns(cwd);
 
     yield* glob(pattern, {
       cwd,
@@ -88,6 +97,13 @@ export default class FileSystem implements IFileSystem {
       timeout: MINUTE_IN_MILLISECONDS,
     });
 
-    for await (const [chunk] of on(child.stdout, "data", { close: ["end"] })) yield chunk;
+    const stderrChunks: Buffer[] = [];
+    child.stderr?.on("data", (chunk: Buffer) => stderrChunks.push(chunk));
+
+    try {
+      for await (const [chunk] of on(child.stdout, "data", { close: ["end"] })) yield chunk;
+    } finally {
+      await once(child, "close").catch(() => {});
+    }
   }
 }
