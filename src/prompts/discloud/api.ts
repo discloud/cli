@@ -5,9 +5,13 @@ import { promptTrier } from "../utils";
 
 export async function promptApiToken(): Promise<string> {
   return promptTrier(() => password({
-    message: "Your Discloud token:",
-    mask: true,
-    validate: tokenIsDiscloudJwt,
+    message: "  API token:",
+    mask: "●",
+    validate: (value) => {
+      if (!tokenIsDiscloudJwt(value))
+        return "Invalid token format. Copy it from discloud.com/dashboard → API Token";
+      return true;
+    },
   }));
 }
 
