@@ -1,4 +1,4 @@
-import { APTPackages } from "@discloudapp/api-types/v2";
+import { type AppTypes, APTPackages } from "@discloudapp/api-types/v2";
 import { checkbox, confirm, number, search, select } from "@inquirer/prompts";
 import { open, readdir } from "fs/promises";
 import { dirname, join, sep } from "path/posix";
@@ -92,7 +92,7 @@ export function promptAppRam(min?: number, max?: number): Promise<number> {
   }));
 }
 
-export function promptAppType(type?: string): Promise<string> {
+export function promptAppType(type?: AppTypes): Promise<string> {
   return promptTrier(() => select({
     message: "Input the type of your app",
     choices: ["bot", "site"],
