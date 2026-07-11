@@ -9,5 +9,5 @@ export interface IZip {
    */
   glob(pattern: string[] | string, cwd?: string): Promise<void>
   getBuffer(): Promise<Buffer>
-  writeZip(targetFileName?: string): Promise<boolean>
+  writeZip(targetFileName?: string): Promise<void>
 }
