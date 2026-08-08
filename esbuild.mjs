@@ -2,14 +2,15 @@ import { context } from "esbuild";
 import { readFileSync } from "fs";
 import Replace from "unplugin-replace/esbuild";
 
-export function versionInjector() {
+function versionInjector() {
+  /** @type {import("type-fest").PackageJson} */
+  let pkg;
   return Replace({
     include: [/\.(js|ts)$/],
     values: [{
       find: "__PACKAGE_VERSION__",
       replacement() {
-        /** @type {import("type-fest").PackageJson} */
-        const pkg = JSON.parse(readFileSync("./package.json", "utf8"));
+        pkg ??= JSON.parse(readFileSync("./package.json", "utf8"));
         return pkg.version;
       },
     }],
@@ -24,12 +25,26 @@ const esbuildProblemMatcherPlugin = {
     build.onStart(() => console.log("[watch] build started"));
 
     build.onEnd((result) => {
-      for (let i = 0; i < result.errors.length; i++) {
-        const error = result.errors[i];
+      if (result.warnings.length) {
+        const messages = [], params = [];
 
-        console.error("✘ [ERROR] %s", error.text);
+        for (const m of result.warnings) {
+          messages.push("⚠ [WARN] %s\n    %s:%s:%s:");
+          params.push(m.text, m.location.file, m.location.line, m.location.column);
+        }
 
-        console.error("    %s:%s:%s:", error.location.file, error.location.line, error.location.column);
+        console.warn(messages.join("\n\n"), ...params);
+      }
+
+      if (result.errors.length) {
+        const messages = [], params = [];
+
+        for (const m of result.errors) {
+          messages.push("✘ [ERROR] %s\n    %s:%s:%s:");
+          params.push(m.text, m.location.file, m.location.line, m.location.column);
+        }
+
+        console.error(messages.join("\n\n"), ...params);
       }
 
       console.log("[watch] build finished");
