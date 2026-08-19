@@ -1889,9 +1889,9 @@ isexe@^2.0.0:
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
 jose@^6.2.8:
-  version "6.2.8"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-6.2.8.tgz#39c1459fe5eac84eb39b1623b8077dcf9ca6c506"
-  integrity sha512-Bsdjwm3Qsd/P0jR+BHDe3LytDfY7WBq2HmCCLIwuVRHMuEC9ae7/R474GIUdF1NgCyZjzVo/A9DOiOBtXq8ZoQ==
+  version "6.2.9"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-6.2.9.tgz#344fa11af928f8000a4f81972c4d567d587170f0"
+  integrity sha512-XrchZOFZUl/T3vTwRe8XK+cJrGtMF4th1ARnDfwbBXFKThGhlsxEE4Zu03AD/bjJSt/9jT/mxrOCkJWOg77aPA==
 
 js-tokens@^10.0.0:
   version "10.0.0"
