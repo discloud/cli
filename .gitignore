@@ -59,6 +59,7 @@ typings/
 
 # Optional npm cache directory
 .npm
+.bun
 
 # Optional eslint cache
 .eslintcache
@@ -112,3 +113,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Bun lock
+bun.lock
+bun.lockb

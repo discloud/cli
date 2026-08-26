@@ -15,10 +15,13 @@ const defaultOptions: Options = {
 
 const defaultNestChar: DefaultNestChar = ".";
 
+const WRITE_DEBOUNCE_MS = 50;
+
 export default class FsJsonStore<T extends Record<any, any>> implements IStore<T> {
   readonly #data: T;
   readonly options: Options;
   readonly #decoding: BufferEncoding = "utf8";
+  #writeTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(readonly path: string, options?: Partial<Options>) {
     this.options = Object.assign(defaultOptions, options);
@@ -85,16 +88,36 @@ export default class FsJsonStore<T extends Record<any, any>> implements IStore<T
     }
   }
 
+  #scheduleWrite() {
+    if (this.#writeTimer) clearTimeout(this.#writeTimer);
+    this.#writeTimer = setTimeout(() => {
+      writeFileSync(this.path, this.#encode(this.#data), this.#decoding);
+      this.#writeTimer = null;
+    }, WRITE_DEBOUNCE_MS);
+  }
+
+  #flushWrite(data?: Partial<T>) {
+    if (this.#writeTimer) {
+      clearTimeout(this.#writeTimer);
+      this.#writeTimer = null;
+    }
+    writeFileSync(this.path, this.#encode(Object.assign(this.#data, data)), this.#decoding);
+  }
+
   clear() {
     // @ts-expect-error ts(2540)
     this.#data = {};
 
-    this.update(this.#data);
+    this.#flushWrite(this.#data);
 
     return this;
   }
 
   destroy() {
+    if (this.#writeTimer) {
+      clearTimeout(this.#writeTimer);
+      this.#writeTimer = null;
+    }
     try { rmSync(this.path); } catch { }
 
     return this;
@@ -104,7 +127,7 @@ export default class FsJsonStore<T extends Record<any, any>> implements IStore<T
   delete(key: string) {
     Reflect.deleteProperty(this.#data, key);
 
-    this.update();
+    this.#scheduleWrite();
 
     return this;
   }
@@ -121,13 +144,13 @@ export default class FsJsonStore<T extends Record<any, any>> implements IStore<T
   set(key: string, value: unknown) {
     this.#setNestedData(key, value);
 
-    this.update(this.#data);
+    this.#scheduleWrite();
 
     return this;
   }
 
   update(data?: Partial<T>) {
-    writeFileSync(this.path, this.#encode(Object.assign(this.#data, data)), this.#decoding);
+    this.#flushWrite(data);
 
     return this.data;
   }
