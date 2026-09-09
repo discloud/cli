@@ -1949,9 +1949,9 @@ isexe@^2.0.0:
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
 jose@^6.2.8:
-  version "6.2.11"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-6.2.11.tgz#32e1d51a41e038176baead00b8008b73a65566b8"
-  integrity sha512-A5NPn7g8EAzGU3IzRs+Yiq8K5n3ypYS75M5+KKiVHdUexfpWK1kP4ZMq7QnTGDoMj6TJ1dtcEJjW60yZDXS4hg==
+  version "6.2.12"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-6.2.12.tgz#65663e146edd010b98ece83f81737d3aa95fd0d7"
+  integrity sha512-9NiFmJEex0sy2Dk58j2UGBSHgUs2ypF9eZSu4L6vjOX3Dp96Sw1F3uL+H+D1sx02jZZdzUT0HgvCy59CuvXcWw==
 
 js-tokens@^10.0.0:
   version "10.0.0"
