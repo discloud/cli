@@ -14,7 +14,7 @@ suite("template DiscloudConfig test", async () => {
       String: "String",
     };
 
-    const expected = "# https://docs.discloud.com/en/discloud.config\nNumber=0\nEmptyString=\nString=String\n";
+    const expected = "# https://docs.discloud.com/configurations/discloud.config\nNumber=0\nEmptyString=\nString=String\n";
 
     const rendered = await ejs.renderFile(templateFilePath, { props }, { async: true });
 
