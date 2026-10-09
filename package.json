@@ -35,7 +35,7 @@
     "@inquirer/prompts": "^8.7.2",
     "adm-zip": "^0.6.1",
     "easy-table": "^1.2.0",
-    "ejs": "^6.0.1",
+    "ejs": "^7.0.1",
     "glob": "^13.0.6",
     "globify-gitignore": "^1.0.3",
     "jose": "^6.2.12",
