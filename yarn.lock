@@ -2386,7 +2386,7 @@ restore-cursor@^5.0.0:
     onetime "^7.0.0"
     signal-exit "^4.1.0"
 
-rolldown-string@^0.3.0:
+rolldown-string@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/rolldown-string/-/rolldown-string-0.3.1.tgz#36e905e066b57544694162fe3af63765ab2f117a"
   integrity sha512-dv8GOXkYqUQdI0rsXB8hmzO95pKWSuX2eg5/JSJa9czfEVIFuKNR7ZJDfat8LlmD35RAhWY+evS7/wXXqFDfSg==
@@ -2891,15 +2891,15 @@ undici-types@~6.21.0:
   integrity sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==
 
 unplugin-replace@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/unplugin-replace/-/unplugin-replace-0.9.0.tgz#36fcb03e42ec27dc4359d5eca4f6a8037019ef80"
-  integrity sha512-h8wjMvpNYGGNZ4llzFgrLal13LmniGkjDTMoCCon5eaoy29FbD7TLMbQetRkU9+2S7EPA+0FYKHN6/8/4eI+UA==
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/unplugin-replace/-/unplugin-replace-0.9.1.tgz#33f30092b721e2a57124316878f790220202741e"
+  integrity sha512-bEt5kZEcJ3qFR2fUzAqyNQLOEue3HbTFE4vvMkwkAMNMk0aAWf0NwBKKI6qM5eU1xK8ynJinH4jkDxhC+Jlbsg==
   dependencies:
     js-tokens "^10.0.0"
-    rolldown-string "^0.3.0"
-    unplugin "^3.0.0"
+    rolldown-string "^0.3.1"
+    unplugin "^3.4.0"
 
-unplugin@^3.0.0:
+unplugin@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/unplugin/-/unplugin-3.4.0.tgz#c3e19efdb040222f1e767ec07233410995e29275"
   integrity sha512-9skdIFlCsPdFV7wUfZxNsFInlW+7nJmGu2gkTu0OUhF56aXGsHab9x52/QhdJ4lC7ZDPWTxbiC4ANqVlsuaW3w==
