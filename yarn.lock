@@ -487,7 +487,7 @@
   dependencies:
     adm-zip "*"
 
-"@types/configstore@*":
+"@types/configstore@^6":
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/@types/configstore/-/configstore-6.0.2.tgz#0b3d5e176cc5db6c1636a87a333d333693243f3a"
   integrity sha512-OS//b51j9uyR3zvwD04Kfs5kHpve2qalQ18JhY/ho3voGYUTPLEG90/ocfKPI48hyHH8T04f7KEEbK6Ue60oZQ==
@@ -520,11 +520,11 @@
     undici-types "~6.21.0"
 
 "@types/update-notifier@^6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@types/update-notifier/-/update-notifier-6.0.8.tgz#b145580a5cf218e862ad384bede152118eba0bb0"
-  integrity sha512-IlDFnfSVfYQD+cKIg63DEXn3RFmd7W1iYtKQsJodcHK9R1yr8aKbKaPKfBxzPpcHCq2DU8zUq4PIPmy19Thjfg==
+  version "6.0.9"
+  resolved "https://registry.yarnpkg.com/@types/update-notifier/-/update-notifier-6.0.9.tgz#f043290cfac22535629749634a0d897828e7e0a7"
+  integrity sha512-10lRzgXVppJdo7f8WgPnp1z25QrdLlNQpUzw0uJqqOVyGAn6t9F3yEKlLdDcn75iIADDXfXNJXXkJWe3eExsEg==
   dependencies:
-    "@types/configstore" "*"
+    "@types/configstore" "^6"
     boxen "^7.1.1"
 
 "@types/yargs-parser@*":
