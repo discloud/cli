@@ -1061,10 +1061,10 @@ easy-table@^1.2.0:
   optionalDependencies:
     wcwidth "^1.0.1"
 
-ejs@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/ejs/-/ejs-6.0.1.tgz#88ea8ce00335c3575d7c3602dd76e84b0bd60f43"
-  integrity sha512-UaaM14yby8U3k02ihS1Bmj5Kz2d7CCQM1scxpgs4Mhkq8F1wR2gl3+Ts4h5Ne4Mnt7M9m4Dw7jsuMr3+xO4vZA==
+ejs@^7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/ejs/-/ejs-7.0.2.tgz#e2acc73603c917be05b1e033f6b33ccbfa843678"
+  integrity sha512-LcDSEP6Oclb9sTiSyG0MpG0RuKvLDRxCOOt+2sIk+kdk1rMkFU8SRnT0qaNt5zvU0LOV1YXXOvIoZL/sKwabvw==
 
 emoji-regex@^10.3.0:
   version "10.6.0"
